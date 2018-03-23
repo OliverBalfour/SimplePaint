@@ -6,6 +6,17 @@
 	--footer-height: var(--icon-size);
 	--toolbar-width: calc(var(--icon-size) * 2);
 	--options-width: 300px;
+
+	--area-border: 1px solid lightslategrey;
+	--area-background: darkslategrey;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	overflow: hidden;
 }
 
 .menu {
@@ -14,7 +25,8 @@
 	left: 0;
 	height: var(--menu-height);
 	width: 100%;
-	background: red;
+	border-bottom: var(--area-border);
+	background: var(--area-background);
 }
 
 .toolbar {
@@ -23,7 +35,8 @@
 	left: 0;
 	height: calc(100% - var(--menu-height) - var(--footer-height));
 	width: var(--toolbar-width);
-	background: green;
+	border-right: var(--area-border);
+	background: var(--area-background);
 }
 
 .tool-options {
@@ -32,7 +45,8 @@
 	right: 0;
 	height: calc(100% - var(--menu-height) - var(--footer-height));
 	width: var(--options-width);
-	background: blue;
+	border-left: var(--area-border);
+	background: var(--area-background);
 }
 
 .footer {
@@ -41,7 +55,8 @@
 	left: 0;
 	height: var(--footer-height);
 	width: 100%;
-	background: grey;
+	border-top: var(--area-border);
+	background: var(--area-background);
 }
 
 .image-canvas {
