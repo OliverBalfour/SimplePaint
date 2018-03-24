@@ -12,10 +12,17 @@ const mouse = {
 	x: 0, y: 0,
 	// 0 is left, 1 is middle, 2 is right, null is up
 	button: null,
-	canvas: false
+	canvas: false,
+	drawing: false
 }
 
-let painting = false;
+let tool = 'pen';
+function changeTool (button) {
+	setTool(button.getAttribute('data-tool'));
+}
+function setTool (name) {
+	tool = name;
+}
 
 function boundingBoxCollision (a, b) {
 	return a.x < b.x + b.w
@@ -58,23 +65,22 @@ body.addEventListener('mousedown', e => {
 	updateMouseCoords(e);
 	mouse.button = e.button;
 	if (mouse.canvas && mouse.button === 0) {
-		painting = true;
-		ctx.strokeStyle = 'red';
-		ctx.strokeWidth = 10;
-		ctx.moveTo(mouse.x, mouse.y);
+		mouse.drawing = true;
+		tools[tool].left_down(ctx, mouse);
 	}
 });
 body.addEventListener('mouseup', e => {
 	updateMouseCoords(e);
+	if (mouse.drawing && mouse.button === 0) {
+		mouse.drawing = false;
+		tools[tool].left_up(ctx, mouse);
+	}
 	mouse.button = null;
-	painting = false;
 });
 body.addEventListener('mousemove', e => {
 	updateMouseCoords(e);
-	if (painting) {
-		ctx.lineTo(mouse.x, mouse.y);
-		ctx.stroke();
-	}
+	if (mouse.drawing && mouse.button === 0)
+		tools[tool].left_drag(ctx, mouse);
 });
 body.addEventListener('keydown', e => {
 	keys[e.which || e.keyCode] = true;

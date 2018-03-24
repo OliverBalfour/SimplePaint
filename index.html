@@ -10,18 +10,23 @@
 			Menu
 		</div>
 		<div class='toolbar'>
-			Toolbar
+			<button onclick='changeTool(this)' data-tool='pen'>Pen</button>
+			<button onclick='changeTool(this)' data-tool='line'>Line</button>
+			<button onclick='changeTool(this)' data-tool='rect'>Rect</button>
+			<button onclick='changeTool(this)' data-tool='ellipse'>Ellipse</button>
+			<button onclick='changeTool(this)' data-tool='text'>Text</button>
 		</div>
 		<div class='tool-options'>
 			Tool options
 		</div>
 		<div class='footer'>
 			Footer
-			<span class="x-coord"></span>
-			<span class="y-coord"></span>
+			<span class='x-coord'></span>
+			<span class='y-coord'></span>
 		</div>
 		<canvas class='image-canvas'></canvas>
 		<script type='text/javascript' src='mousetrap.min.js'></script>
+		<script type='text/javascript' src='tools.js'></script>
 		<script type='text/javascript' src='index.js'></script>
 	</body>
 </html>
