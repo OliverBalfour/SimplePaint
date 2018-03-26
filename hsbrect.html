@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Colour Picker</title>
+	<style type="text/css">
+#color-picker:active {
+  cursor: default;
+}
+
+#color-picker-sb {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  touch-action: none;
+  position: relative;
+}
+
+#color-picker-white {
+  width: 150px;
+  height: 150px;
+  background-color: #fff;
+}
+
+#color-picker-thumb {
+  position: relative;
+  margin-top: -7.5px;
+  margin-left: -7.5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 7.5px;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 2px;
+}
+
+#color-picker-checker {
+  display: inline-block;
+}
+
+#color-picker-color {
+  margin: 0;
+}
+	</style>
+</head>
+<body>
+	<div id="color-picker">
+		<div id="color-picker-sb"></div>
+		<span>hue: </span><input id="color-picker-hue-slider" type="range" min="0" max="360"><br>
+		<span>opacity: </span><input id="brush-opacity-slider" type="range" min="0" max="100"><br>
+		<span>color: </span>
+		<div id="color-picker-checker">
+			<p id="color-picker-color"></p>
+		</div>
+	</div>
+	<script type="text/javascript" src='tinycolor.js'></script>
+	<script type="text/javascript" src='hsbrect.js'></script>
+	<script type="text/javascript">
+var colorPickerHueSlider = document.getElementById('color-picker-hue-slider');
+var colorPickerSb = document.getElementById('color-picker-sb');
+var colorPickerHSBRect = new HSBRect(150, 150);
+colorPickerHSBRect.DOMElement.id = 'color-picker-hsbrect';
+colorPickerSb.appendChild(colorPickerHSBRect.DOMElement);
+var colorPickerThumb = document.createElement('div');
+colorPickerThumb.id = 'color-picker-thumb';
+colorPickerSb.appendChild(colorPickerThumb);
+colorPickerHueSlider.value = 0;
+
+function setColor() {
+    var halfThumbRadius = 7.5;
+    var sbSize = 150;
+    var h = colorPickerHueSlider.value;
+    var s = parseFloat(
+        colorPickerThumb.style.getPropertyValue('margin-left'));
+    var b = parseFloat(
+        colorPickerThumb.style.getPropertyValue('margin-top'));
+    s = (s + halfThumbRadius) / sbSize;
+    b = 1 - ((b + halfThumbRadius + sbSize) / sbSize);
+    // brush.setColor(tinycolor({h: h, s:s, v: b}).toRgbString());
+    // var a = croquis.getPaintingOpacity();
+    var a = parseInt(document.querySelector('#brush-opacity-slider').value) / 100
+    var color = tinycolor({h: h, s:s, v: b, a: a});
+    colorPickerColor.style.backgroundColor = color.toRgbString();
+    colorPickerColor.textContent = color.toHexString();
+}
+
+colorPickerHueSlider.onchange = function () {
+    colorPickerHSBRect.hue = colorPickerHueSlider.value;
+    setColor();
+}
+
+function colorPickerPointerDown(e) {
+    document.addEventListener('pointermove', colorPickerPointerMove);
+    colorPickerPointerMove(e);
+}
+function colorPickerPointerUp(e) {
+    document.removeEventListener('pointermove', colorPickerPointerMove);
+}
+function colorPickerPointerMove(e) {
+    var boundRect = colorPickerSb.getBoundingClientRect();
+    var x = (e.clientX - boundRect.left);
+    var y = (e.clientY - boundRect.top);
+    pickColor(x, y);
+}
+function minmax(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+}
+function pickColor(x, y) {
+    var halfThumbRadius = 7.5;
+    var sbSize = 150;
+    colorPickerThumb.style.setProperty('margin-left',
+        (minmax(x, 0, sbSize) - halfThumbRadius) + 'px');
+    colorPickerThumb.style.setProperty('margin-top',
+        (minmax(y, 0, sbSize) - (sbSize + halfThumbRadius)) + 'px');
+    colorPickerThumb.style.setProperty('border-color',
+        (y < sbSize * 0.5)? '#000' : '#fff');
+    setColor();
+}
+colorPickerSb.addEventListener('pointerdown', colorPickerPointerDown);
+document.addEventListener('pointerup', colorPickerPointerUp);
+
+var backgroundCheckerImage;
+(function () {
+    backgroundCheckerImage = document.createElement('canvas');
+    backgroundCheckerImage.width = backgroundCheckerImage.height = 20;
+    var backgroundImageContext = backgroundCheckerImage.getContext('2d');
+    backgroundImageContext.fillStyle = '#fff';
+    backgroundImageContext.fillRect(0, 0, 20, 20);
+    backgroundImageContext.fillStyle = '#ccc';
+    backgroundImageContext.fillRect(0, 0, 10, 10);
+    backgroundImageContext.fillRect(10, 10, 20, 20);
+})();
+
+var colorPickerChecker = document.getElementById('color-picker-checker');
+colorPickerChecker.style.backgroundImage = 'url(' +
+    backgroundCheckerImage.toDataURL() + ')';
+var colorPickerColor = document.getElementById('color-picker-color');
+
+pickColor(0, 150);
+
+	</script>
+</body>
+</html>

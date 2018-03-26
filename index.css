@@ -59,11 +59,19 @@ body {
 	background: var(--area-background);
 }
 
-.image-canvas {
+.canvases {
 	position: absolute;
 	top: var(--menu-height);
 	left: var(--toolbar-width);
 	height: calc(100% - var(--menu-height) - var(--footer-height));
 	width: calc(100% - var(--toolbar-width) - var(--options-width));
 	background: black;
+}
+
+.canvases canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }

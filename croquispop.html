@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Croquispop</title>
+    <link rel="stylesheet" type="text/css" href="./croquispop.css">
+    <!--[if lt IE 11]>
+    <link rel="stylesheet" type="text/css"
+          href="./input-range-polyfill/input-range-polyfill.css">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css"
+          href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css">
+	<script src="./hand.minified-1.3.6.js"></script>
+  </head>
+  <body unselectable="on">
+    <object id="tablet-api" type="application/x-wacomtabletplugin"></object>
+    <div id="tool-shelf">
+      <span>Stabilizer level: </span>
+      <input id="tool-stabilize-level-slider" type="range" min="3" max="20">
+      <span>weight: </span>
+      <input id="tool-stabilize-weight-slider" type="range" min="20" max="80">
+      <br>
+      <span class="comment">(Higher stabilizer level makes lines smoother,
+        and higher weight makes rendering slower.)</span>
+    </div>
+    <br>
+    <div id="brush-image-shelf">
+      <div class="brush-image on" id="circle-brush"></div>
+      <img src="./img/brush/b0.png" class="brush-image"></img>
+      <img src="./img/brush/b1.png" class="brush-image"></img>
+      <img src="./img/brush/b2.png" class="brush-image"></img>
+      <img src="./img/brush/b3.png" class="brush-image"></img>
+      <img src="./img/brush/b4.png" class="brush-image"></img>
+      <img src="./img/brush/b5.png" class="brush-image"></img>
+    </div>
+    <div id="canvas-area">
+    </div>
+    <div id="right-side">
+      <div id="color-picker">
+        <div id="color-picker-sb">
+        </div>
+        <span>hue: </span>
+        <input id="color-picker-hue-slider" type="range" min="0" max="360">
+        <br>
+        <span>opacity: </span>
+        <input id="brush-opacity-slider" type="range" min="0" max="100">
+        <br>
+        <span>color: </span>
+        <div id="color-picker-checker">
+          <p id="color-picker-color"></p>
+        </div>
+      </div>
+      <hr>
+      <div id="brush-shelf">
+        <span>eraser: </span>
+        <input id="select-eraser-checkbox" type="checkbox">
+        <hr>
+        <span>Brush size: </span>
+        <input id="brush-size-slider" type="range" min="1" max="100">
+        <br>
+        <span>flow: </span>
+        <input id="brush-flow-slider" type="range" min="0" max="100">
+        <br>
+        <span>spacing: </span>
+        <input id="brush-spacing-slider" type="range" min="0" max="1000">
+        <br>
+        <span>angle: </span>
+        <input id="brush-angle-slider" type="range" min="0" max="360">
+        <br>
+        <span>rotate to direction: </span>
+        <input id="brush-rotate-to-direction-checkbox" type="checkbox">
+      </div>
+      <hr>
+      <button type="button" id="clear-button">erase all</button>
+      <br>
+      <button type="button" id="fill-button">fill layer</button>
+    </div>
+    <p class="comment">If pressure is not applied, try installing the
+      <a href="http://www.wacom.com/support/drivers" target="_blank">
+        recent version of the graphics tablet driver.</a></p>
+    <!--[if lt IE 11]>
+    <script src="./input-range-polyfill/input-range-polyfill.js"></script>
+    <![endif]-->
+    <script src="./TinyColor/tinycolor.js"></script>
+    <script src="./HSBRect/HSBRect.js"></script>
+    <script src="./croquis.js/croquis.js"></script>
+    <script src="./croquispop.js"></script>
+    <!--[if lt IE 10]>
+    <script>
+      // code from: http://stackoverflow.com/a/4448965/1711246
+      function makeUnselectable(node) {
+        if (node.nodeType == 1) {
+          node.setAttribute('unselectable', 'on');
+        }
+        var child = node.firstChild;
+        while (child) {
+          makeUnselectable(child);
+          child = child.nextSibling;
+        }
+      }
+      makeUnselectable(document.body);
+    </script>
+    <![endif]-->
+  </body>
+</html>

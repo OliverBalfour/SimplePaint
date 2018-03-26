@@ -1,17 +1,22 @@
 
+function dispatchEvent(event, ctx, mouse) {
+	if (tools[tool].hasOwnProperty(event))
+		tools[tool][event](ctx, mouse);
+}
+
 const tools = {
 	pen: {
-		left_down: (ctx, mouse) => {
+		leftMouseDown: (ctx, mouse) => {
 			ctx.strokeStyle = 'red';
 			ctx.strokeWidth = 10;
 			ctx.beginPath();
 			ctx.moveTo(mouse.x, mouse.y);
 		},
-		left_drag: (ctx, mouse) => {
+		leftMouseMove: (ctx, mouse) => {
 			ctx.lineTo(mouse.x, mouse.y);
 			ctx.stroke();
 		},
-		left_up: (ctx, mouse) => {
+		leftMouseUp: (ctx, mouse) => {
 			ctx.closePath();
 		}
 	}

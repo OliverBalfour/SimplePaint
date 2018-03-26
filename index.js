@@ -2,10 +2,12 @@
 const val = sel => document.querySelector(sel).value;
 const body = document.body;
 
-const canvas = document.querySelector('.image-canvas');
-const canvasBox = canvas.getBoundingClientRect();
+const canvas = document.querySelector('#canvas-preview');
+let canvasBox = canvas.getBoundingClientRect();
 setCanvasSize();
 const ctx = canvas.getContext('2d');
+
+let debug = true;
 
 const keys = [];
 const mouse = {
@@ -66,21 +68,21 @@ body.addEventListener('mousedown', e => {
 	mouse.button = e.button;
 	if (mouse.canvas && mouse.button === 0) {
 		mouse.drawing = true;
-		tools[tool].left_down(ctx, mouse);
+		dispatchEvent('leftMouseDown', ctx, mouse);
 	}
 });
 body.addEventListener('mouseup', e => {
 	updateMouseCoords(e);
 	if (mouse.drawing && mouse.button === 0) {
 		mouse.drawing = false;
-		tools[tool].left_up(ctx, mouse);
+		dispatchEvent('leftMouseUp', ctx, mouse);
 	}
 	mouse.button = null;
 });
 body.addEventListener('mousemove', e => {
 	updateMouseCoords(e);
 	if (mouse.drawing && mouse.button === 0)
-		tools[tool].left_drag(ctx, mouse);
+		dispatchEvent('leftMouseMove', ctx, mouse);
 });
 body.addEventListener('keydown', e => {
 	keys[e.which || e.keyCode] = true;
