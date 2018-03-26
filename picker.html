@@ -30,6 +30,7 @@ function ColourPicker (onUpdate, width, height) {
 	// indicated by small black/white circle
 	this.point = {x: 0.5, y: 0}
 	this.selectedColour = tinycolor({h: 0, s: 0, l: 0, a: 0});
+	this.transparentBlack = tinycolor({h: 0, s: 0, l: 0, a: 0});
 
 	this.imageDataCache = null;
 	this.updateImageDataCache = () => {
@@ -48,7 +49,7 @@ function ColourPicker (onUpdate, width, height) {
 				a: this.imageDataCache.data[i + 3]
 			});
 		else
-			return tinycolor({h: 0, s: 0, l: 0, a: 0});
+			return this.transparentBlack;
 	}
 
 	this.updateMouseCoords = event => {
@@ -57,42 +58,57 @@ function ColourPicker (onUpdate, width, height) {
 		this.mouse.y = event.clientY - this.box.top;
 	}
 
-	this.mouseInsideTriangle = () => {
+	this.getMeasurements = () => {
 		let w = this.canvas.width,
 			h = this.canvas.height,
+			// smaller and larger dimension
 			min = Math.min(w, h),
 			max = Math.max(w, h),
+			// margin on either side of colour picker
 			mx = h < w ? Math.floor((max - min) / 2) : 0,
-			my = w < h ? Math.floor((max - min) / 2) : 0;
-
-		let triangleRadius = Math.floor(min / 2) - this.hueCircleWidth;
-
-		let leftX = w / 2 - Math.sqrt(3)/2 * triangleRadius,
-			rightX = w / 2 + Math.sqrt(3)/2 * triangleRadius,
-			topY = my + this.hueCircleWidth,
+			my = w < h ? Math.floor((max - min) / 2) : 0,
+			hueCircleWidth = this.hueCircleWidth,
+			// distance from corner to center of triangle
+			// not technically a radius, there's another word for it which I've forgotten
+			triangleRadius = Math.floor(min / 2) - hueCircleWidth,
+			// `sqrt(3) / 2 * radius` is half the side length of the triangle
+			triangleSideLength = Math.sqrt(3) * triangleRadius,
+			leftX = w / 2 - triangleSideLength / 2,
+			rightX = w / 2 + triangleSideLength / 2,
+			topY = my + hueCircleWidth,
 			bottomY = (h + triangleRadius) / 2;
+
+		return {
+			w, h, min, max, mx, my,
+			hueCircleWidth, triangleRadius, triangleSideLength,
+			leftX, rightX, topY, bottomY
+		};
+	}
+
+	this.mouseInsideTriangle = () => {
+		let m = this.getMeasurements();
 
 		// if mouse is below bottom of triangle, or too far left or right to possibly collide
 		// ie bounding box collision detection
 		if (
-			this.mouse.y > bottomY ||
-			this.mouse.x < leftX ||
-			this.mouse.x > rightX ||
-			this.mouse.y < topY
+			this.mouse.y > m.bottomY ||
+			this.mouse.x < m.leftX ||
+			this.mouse.x > m.rightX ||
+			this.mouse.y < m.topY
 		)
 			return false;
 
 		// if the angle from the right bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
-			(this.mouse.y - bottomY)
-			/ (this.mouse.x - rightX)
+			(this.mouse.y - m.bottomY)
+			/ (this.mouse.x - m.rightX)
 		) / Math.PI * 180 > 60)
 			return false;
 
 		// if the angle from the left bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
-			(this.mouse.y - bottomY)
-			/ (this.mouse.x - leftX)
+			(this.mouse.y - m.bottomY)
+			/ (this.mouse.x - m.leftX)
 		) / Math.PI * 180 < -60)
 			return false;
 
@@ -105,25 +121,18 @@ function ColourPicker (onUpdate, width, height) {
 	}
 
 	this.drawCircle = () => {
-		let w = this.canvas.width,
-			h = this.canvas.height,
-			// smaller and larger dimension
-			min = Math.min(w, h),
-			max = Math.max(w, h),
-			// margin on either side of colour picker
-			mx = h < w ? Math.floor((max - min) / 2) : 0,
-			my = w < h ? Math.floor((max - min) / 2) : 0,
-			segments = max * 4;
+		let m = this.getMeasurements(),
+			segments = m.max * 4;
 
 		this.ctx.save();
-		this.ctx.lineWidth = this.hueCircleWidth;
+		this.ctx.lineWidth = m.hueCircleWidth;
 
 		for (let i = 0; i <= 2 * Math.PI; i += Math.PI / segments) {
 			this.ctx.strokeStyle = tinycolor({ h: i / Math.PI * 180, s: 100, l: 50 }).toHslString();
 			this.ctx.beginPath();
 			this.ctx.arc(
-				Math.floor(w / 2), Math.floor(h / 2),
-				Math.floor(min / 2) - this.hueCircleWidth / 2,
+				Math.floor(m.w / 2), Math.floor(m.h / 2),
+				Math.floor(m.min / 2) - m.hueCircleWidth / 2,
 				i, i + Math.PI / segments + 0.05
 			);
 			this.ctx.stroke();
@@ -134,26 +143,14 @@ function ColourPicker (onUpdate, width, height) {
 	}
 
 	this.drawTriangle = () => {
-		let w = this.canvas.width,
-			h = this.canvas.height,
-			// smaller and larger dimension
-			min = Math.min(w, h),
-			max = Math.max(w, h),
-			// margin on either side of colour picker
-			mx = h < w ? Math.floor((max - min) / 2) : 0,
-			my = w < h ? Math.floor((max - min) / 2) : 0;
-
-		// distance from corner to center of triangle
-		// not technically a radius, there's another word for it which I've forgotten
-		let triangleRadius = Math.floor(min / 2) - this.hueCircleWidth;
+		let m = this.getMeasurements();
 
 		const fillTriangle = fill => {
 			this.ctx.fillStyle = fill;
 			this.ctx.beginPath();
-			this.ctx.moveTo(w / 2, my + this.hueCircleWidth);
-			// sqrt(3) / 2 * radius is half the side length of the triangle
-			this.ctx.lineTo(w / 2 + Math.sqrt(3)/2 * triangleRadius, h / 2 + triangleRadius / 2);
-			this.ctx.lineTo(w / 2 - Math.sqrt(3)/2 * triangleRadius, h / 2 + triangleRadius / 2);
+			this.ctx.moveTo(m.w / 2, m.topY);
+			this.ctx.lineTo(m.leftX, m.bottomY);
+			this.ctx.lineTo(m.rightX, m.bottomY);
 			this.ctx.fill();
 			this.ctx.closePath();
 		}
@@ -161,21 +158,21 @@ function ColourPicker (onUpdate, width, height) {
 		// clear old triangle
 		this.ctx.fillStyle = '#ccc';
 		this.ctx.beginPath();
-		this.ctx.arc(w / 2, h / 2, Math.floor(min / 2) - this.hueCircleWidth, 0, Math.PI * 2);
+		this.ctx.arc(m.w / 2, m.h / 2, m.triangleRadius, 0, Math.PI * 2);
 		this.ctx.fill();
 		this.ctx.closePath();
 
 		const saturationGradient = this.ctx.createLinearGradient(
-			w / 2 - Math.sqrt(3)/2 * triangleRadius, 0,
-			w / 2 + Math.sqrt(3)/2 * triangleRadius, 0
+			m.leftX, 0,
+			m.rightX, 0
 		);
 		saturationGradient.addColorStop(0, 'white');
 		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50 }).toHslString());
 		fillTriangle(saturationGradient);
 
 		const lightnessGradient = this.ctx.createLinearGradient(
-			0, this.hueCircleWidth,
-			0, h / 2 + triangleRadius / 2
+			0, m.topY,
+			0, m.bottomY
 		);
 		lightnessGradient.addColorStop(0, 'black');
 		lightnessGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -191,12 +188,20 @@ function ColourPicker (onUpdate, width, height) {
 			this.hue = Math.atan2(y, x) * 180 / Math.PI;
 			if (this.hue < 0)
 				this.hue += 360;
+			this.selectedColour = this.getColour();
 			this.draw();
 		} else if (this.dragging === 'triangle') {
+			let colour = this.getColour();
+			if (colour !== this.transparentBlack) {
+				this.selectedColour = colour;
+				// let triangleRadius = Math.floor(Math.min(this.canvas.width, this.canvas.height) / 2) - this.hueCircleWidth,
+				// 	leftX = this.canvas.width / 2 - Math.sqrt(3)/2 * triangleRadius;
+				// this.point.x = (this.mouse.x - leftX) / (2 * Math.sqrt(3) * triangleRadius);
+				// this.point.y = (this.mouse.y - topY);
+			}
 			this.drawTriangle();
 		}
 
-		this.selectedColour = this.getColour();
 		this.onUpdate(this.selectedColour);
 	}
 
