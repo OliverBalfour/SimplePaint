@@ -50,12 +50,14 @@ function ColourPicker (onUpdate, width, height) {
 	this.mouse = { x: 0, y: 0 };
 	// dragging: 'none', 'hue', or 'triangle'
 	this.dragging = 'none';
+	// number of pixels to give as a margin to avoid antialiased edges being selectable
+	this.triangleMargin = 3;
 
 	// hue, 0-360, on the hue circle
 	this.hue = 0;
 	// x,y point (0-1 scaled across width) on the saturation/lightness triangle
 	// indicated by small black/white circle
-	this.point = {x: 0.5, y: 0}
+	this.point = {x: 0.5, y: 0.05}
 	this.selectedColour = tinycolor({h: 0, s: 0, l: 0});
 
 	this.imageDataCache = null;
@@ -105,6 +107,7 @@ function ColourPicker (onUpdate, width, height) {
 			mx = h < w ? Math.floor((max - min) / 2) : 0,
 			my = w < h ? Math.floor((max - min) / 2) : 0,
 			hueCircleWidth = this.hueCircleWidth,
+			triangleMargin = this.triangleMargin,
 			// distance from corner to center of triangle
 			// not technically a radius, there's another word for it which I've forgotten
 			triangleRadius = Math.floor(min / 2) - hueCircleWidth,
@@ -117,7 +120,8 @@ function ColourPicker (onUpdate, width, height) {
 
 		return {
 			w, h, min, max, mx, my,
-			hueCircleWidth, triangleRadius, triangleSideLength,
+			hueCircleWidth, triangleMargin,
+			triangleRadius, triangleSideLength,
 			leftX, rightX, topY, bottomY
 		};
 	}
@@ -128,30 +132,28 @@ function ColourPicker (onUpdate, width, height) {
 	this.mouseInsideTriangle = () => {
 		let m = this.getMeasurements();
 
-		// TODO: number of pixels to give as a margin to avoid antialiased edges being selectable
-		let margin = 0;
-
 		// if mouse is below bottom of triangle, or too far left or right to possibly collide
 		// ie bounding box collision detection
 		if (
-			this.mouse.y > m.bottomY - margin ||
-			this.mouse.x < m.leftX + margin ||
-			this.mouse.x > m.rightX - margin ||
-			this.mouse.y < m.topY + margin
+			this.mouse.y > m.bottomY - m.triangleMargin ||
+			this.mouse.x < m.leftX + m.triangleMargin ||
+			this.mouse.x > m.rightX - m.triangleMargin ||
+			// 2 * margin because otherwise right/left edge detection can throw the indicator outside the margin
+			this.mouse.y < m.topY + 2 * m.triangleMargin
 		)
 			return 0;
 
 		// if the angle from the right bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
 			(this.mouse.y - m.bottomY)
-			/ (this.mouse.x - m.rightX)
+			/ (this.mouse.x - m.rightX + m.triangleMargin)
 		) / Math.PI * 180 > 60)
 			return 1;
 
 		// if the angle from the left bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
 			(this.mouse.y - m.bottomY)
-			/ (this.mouse.x - m.leftX)
+			/ (this.mouse.x - m.leftX - m.triangleMargin)
 		) / Math.PI * 180 < -60)
 			return 2;
 
@@ -189,7 +191,9 @@ function ColourPicker (onUpdate, width, height) {
 	}
 
 	this.drawTriangle = () => {
-		let m = this.getMeasurements();
+		let m = this.getMeasurements(),
+			// extra margin to ensure edge colours are selectable
+			margin = m.triangleMargin + 4;
 
 		const fillTriangle = fill => {
 			this.ctx.fillStyle = fill;
@@ -211,8 +215,8 @@ function ColourPicker (onUpdate, width, height) {
 
 		// draw saturation gradient
 		const saturationGradient = this.ctx.createLinearGradient(
-			m.leftX + 4, 0,
-			m.rightX - 4, 0
+			m.leftX + margin, 0,
+			m.rightX - margin, 0
 		);
 		saturationGradient.addColorStop(0, tinycolor({ h: this.hue, s: 100, l: 50, a: 0 }).toHslString());
 		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50, a: 1 }).toHslString());
@@ -220,8 +224,8 @@ function ColourPicker (onUpdate, width, height) {
 
 		// draw lightness gradient over the top
 		const lightnessGradient = this.ctx.createLinearGradient(
-			0, m.topY + 4,
-			0, m.bottomY - 4
+			0, m.topY + margin,
+			0, m.bottomY - margin
 		);
 		lightnessGradient.addColorStop(0, 'rgba(0, 0, 0, 1');
 		lightnessGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -282,23 +286,23 @@ function ColourPicker (onUpdate, width, height) {
 			let code = this.mouseInsideTriangle();
 			if (code !== true) {
 				if (code === 0) {
-					if (this.mouse.y > m.bottomY)
-						this.mouse.y = m.bottomY - 1;
-					if (this.mouse.y < m.topY)
-						this.mouse.y = m.topY + 1;
-					if (this.mouse.x > m.rightX)
-						this.mouse.x = m.rightX - 1;
-					if (this.mouse.x < m.leftX)
-						this.mouse.x = m.leftX + 1;
+					if (this.mouse.y > m.bottomY - m.triangleMargin)
+						this.mouse.y = m.bottomY - m.triangleMargin;
+					if (this.mouse.y < m.topY + 2 * m.triangleMargin)
+						this.mouse.y = m.topY + 2 * m.triangleMargin;
+					if (this.mouse.x > m.rightX - m.triangleMargin)
+						this.mouse.x = m.rightX - m.triangleMargin - 1;
+					if (this.mouse.x < m.leftX + m.triangleMargin)
+						this.mouse.x = m.leftX + m.triangleMargin + 1;
 					// update to make adjustments for any other collisions
 					code = this.mouseInsideTriangle();
 				}
 				if (code === 1) {
 					// the formula for the right edge line is
 					// x = y / sqrt(3)
-					this.mouse.x = m.w / 2 + (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) - 1;
+					this.mouse.x = m.w / 2 + (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) - m.triangleMargin;
 				} else if (code === 2) {
-					this.mouse.x = m.w / 2 - (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) + 1;
+					this.mouse.x = m.w / 2 - (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) + m.triangleMargin;
 				}
 			}
 
