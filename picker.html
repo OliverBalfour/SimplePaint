@@ -12,6 +12,10 @@
 			top: 0;
 			left: 0;
 			border: 1px solid black;
+			z-index: -1;
+		}
+		span {
+			border: 1px solid black;
 		}
 	</style>
 </head>
@@ -40,7 +44,8 @@ function ColourPicker (onUpdate, width, height) {
 	this.canvas.height = this.indicatorCanvas.height
 		= !isNaN(height) && height > 0 ? Math.round(height) : this.canvas.width;
 
-	this.hueCircleWidth = Math.min(this.canvas.width, this.canvas.height) / 8;
+	this.hueCircleWidth = Math.min(this.canvas.width, this.canvas.height) / 12;
+	this.backgroundColour = '#848380';
 
 	this.mouse = { x: 0, y: 0 };
 	// dragging: 'none', 'hue', or 'triangle'
@@ -58,8 +63,8 @@ function ColourPicker (onUpdate, width, height) {
 
 	this.getColour = () => {
 		let m = this.getMeasurements(),
-			x = m.leftX + this.point.x * m.triangleSideLength,
-			y = m.topY + this.point.y * (1.5 * m.triangleRadius);
+			x = Math.round(m.leftX + this.point.x * m.triangleSideLength),
+			y = Math.round(m.topY + this.point.y * (1.5 * m.triangleRadius));
 
 		let i = 4 * (y * this.canvas.width + x);
 
@@ -69,6 +74,19 @@ function ColourPicker (onUpdate, width, height) {
 			b: this.imageDataCache.data[i + 2],
 			a: this.imageDataCache.data[i + 3]
 		});
+	}
+
+	// TODO: setColour function
+	this.setColour = colour => {
+		// let hsl = colour.toHsl();
+		// // hue
+		// this.hue = hsl.h;
+		// // saturation
+		// this.point.x = hsl.s;
+		// // lightness
+		// this.point.y;
+
+		// this.draw();
 	}
 
 	this.updateMouseCoords = event => {
@@ -104,37 +122,45 @@ function ColourPicker (onUpdate, width, height) {
 		};
 	}
 
+	// returns true for hit, or a number representing where it missed
+	// so don't naively go `if (this.mouseInsideTriangle())`
+	// 0 is bounding box, 1 is right edge, 2 is left edge
 	this.mouseInsideTriangle = () => {
 		let m = this.getMeasurements();
+
+		// TODO: number of pixels to give as a margin to avoid antialiased edges being selectable
+		let margin = 0;
 
 		// if mouse is below bottom of triangle, or too far left or right to possibly collide
 		// ie bounding box collision detection
 		if (
-			this.mouse.y > m.bottomY ||
-			this.mouse.x < m.leftX ||
-			this.mouse.x > m.rightX ||
-			this.mouse.y < m.topY
+			this.mouse.y > m.bottomY - margin ||
+			this.mouse.x < m.leftX + margin ||
+			this.mouse.x > m.rightX - margin ||
+			this.mouse.y < m.topY + margin
 		)
-			return false;
+			return 0;
 
 		// if the angle from the right bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
 			(this.mouse.y - m.bottomY)
 			/ (this.mouse.x - m.rightX)
 		) / Math.PI * 180 > 60)
-			return false;
+			return 1;
 
 		// if the angle from the left bottom corner to the mouse is > 60 degrees
 		if (Math.atan(
 			(this.mouse.y - m.bottomY)
 			/ (this.mouse.x - m.leftX)
 		) / Math.PI * 180 < -60)
-			return false;
+			return 2;
 
 		return true;
 	}
 
 	this.draw = () => {
+		this.ctx.fillStyle = this.backgroundColour;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		this.drawCircle();
 		this.drawTriangle();
 	}
@@ -176,27 +202,28 @@ function ColourPicker (onUpdate, width, height) {
 		}
 
 		// clear old triangle
-		this.ctx.fillStyle = '#ccc';
+		this.ctx.fillStyle = this.backgroundColour;
 		this.ctx.beginPath();
 		this.ctx.arc(m.w / 2, m.h / 2, m.triangleRadius, 0, Math.PI * 2);
 		this.ctx.fill();
 		this.ctx.closePath();
+		fillTriangle('white');
 
 		// draw saturation gradient
 		const saturationGradient = this.ctx.createLinearGradient(
-			m.leftX, 0,
-			m.rightX, 0
+			m.leftX + 4, 0,
+			m.rightX - 4, 0
 		);
-		saturationGradient.addColorStop(0, 'white');
-		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50 }).toHslString());
+		saturationGradient.addColorStop(0, tinycolor({ h: this.hue, s: 100, l: 50, a: 0 }).toHslString());
+		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50, a: 1 }).toHslString());
 		fillTriangle(saturationGradient);
 
 		// draw lightness gradient over the top
 		const lightnessGradient = this.ctx.createLinearGradient(
-			0, m.topY,
-			0, m.bottomY
+			0, m.topY + 4,
+			0, m.bottomY - 4
 		);
-		lightnessGradient.addColorStop(0, 'black');
+		lightnessGradient.addColorStop(0, 'rgba(0, 0, 0, 1');
 		lightnessGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 		fillTriangle(lightnessGradient);
 
@@ -252,16 +279,38 @@ function ColourPicker (onUpdate, width, height) {
 
 			let m = this.getMeasurements();
 
-			if (this.mouseInsideTriangle()) {
-				this.point.x = (this.mouse.x - m.leftX) / m.triangleSideLength;
-				this.point.y = (this.mouse.y - m.topY) / (1.5 * m.triangleRadius);
+			let code = this.mouseInsideTriangle();
+			if (code !== true) {
+				if (code === 0) {
+					if (this.mouse.y > m.bottomY)
+						this.mouse.y = m.bottomY - 1;
+					if (this.mouse.y < m.topY)
+						this.mouse.y = m.topY + 1;
+					if (this.mouse.x > m.rightX)
+						this.mouse.x = m.rightX - 1;
+					if (this.mouse.x < m.leftX)
+						this.mouse.x = m.leftX + 1;
+					// update to make adjustments for any other collisions
+					code = this.mouseInsideTriangle();
+				}
+				if (code === 1) {
+					// the formula for the right edge line is
+					// x = y / sqrt(3)
+					this.mouse.x = m.w / 2 + (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) - 1;
+				} else if (code === 2) {
+					this.mouse.x = m.w / 2 - (this.mouse.y - m.h / 2 + m.triangleRadius) / Math.sqrt(3) + 1;
+				}
 			}
+
+			this.point.x = (this.mouse.x - m.leftX) / m.triangleSideLength;
+			this.point.y = (this.mouse.y - m.topY) / (1.5 * m.triangleRadius);
 
 			this.drawIndicators();
 		}
 
 		this.selectedColour = this.getColour();
-		this.onUpdate(this.selectedColour);
+		if (this.onUpdate)
+			this.onUpdate(this.selectedColour);
 	}
 
 	this.indicatorCanvas.addEventListener('mousedown', event => {
@@ -273,7 +322,7 @@ function ColourPicker (onUpdate, width, height) {
 			// distance from corner to center of triangle
 			triangleRadius = Math.floor(Math.min(this.canvas.width, this.canvas.height) / 2) - this.hueCircleWidth;
 
-		if (this.mouseInsideTriangle())
+		if (this.mouseInsideTriangle() === true)
 			this.dragging = 'triangle';
 		else if (Math.hypot(x, y) > triangleRadius && Math.hypot(x, y) < triangleRadius + this.hueCircleWidth)
 			this.dragging = 'hue';
@@ -305,8 +354,11 @@ function ColourPicker (onUpdate, width, height) {
 
 }
 
+const el = document.querySelector('span');
 const picker = new ColourPicker(colour => {
-	document.querySelector('span').style.backgroundColor = colour.toHslString();
+	el.style.backgroundColor = colour.toHslString();
+	el.innerText = colour.toHexString();
+	el.style.color = colour.isDark() ? 'white' : 'black';
 }, 512, 512);
 document.querySelector('.picker').appendChild(picker.element);
 </script>
