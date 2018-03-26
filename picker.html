@@ -3,7 +3,17 @@
 <head>
 	<title>Colour Picker 2.0</title>
 	<meta charset="utf-8">
-	<style type="text/css">canvas{border:1px solid black}</style>
+	<style type="text/css">
+		.picker div {
+			position: relative;
+		}
+		.picker div canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			border: 1px solid black;
+		}
+	</style>
 </head>
 <body>
 <div class='picker'></div>
@@ -11,12 +21,24 @@
 <script src='tinycolor/tinycolor.js'></script>
 <script>
 function ColourPicker (onUpdate, width, height) {
+
+	this.element = document.createElement('div');
+
 	this.canvas = document.createElement('canvas');
 	this.ctx = this.canvas.getContext('2d');
+
+	this.indicatorCanvas = document.createElement('canvas');
+	this.ictx = this.indicatorCanvas.getContext('2d');
+
+	this.element.appendChild(this.canvas);
+	this.element.appendChild(this.indicatorCanvas);
+
 	this.onUpdate = onUpdate;
 
-	this.canvas.width = !isNaN(width) && width > 0 ? Math.round(width) : 128;
-	this.canvas.height = !isNaN(height) && height > 0 ? Math.round(height) : this.canvas.width;
+	this.canvas.width = this.indicatorCanvas.width
+		= !isNaN(width) && width > 0 ? Math.round(width) : 128;
+	this.canvas.height = this.indicatorCanvas.height
+		= !isNaN(height) && height > 0 ? Math.round(height) : this.canvas.width;
 
 	this.hueCircleWidth = Math.min(this.canvas.width, this.canvas.height) / 8;
 
@@ -29,8 +51,7 @@ function ColourPicker (onUpdate, width, height) {
 	// x,y point (0-1 scaled across width) on the saturation/lightness triangle
 	// indicated by small black/white circle
 	this.point = {x: 0.5, y: 0}
-	this.selectedColour = tinycolor({h: 0, s: 0, l: 0, a: 0});
-	this.transparentBlack = tinycolor({h: 0, s: 0, l: 0, a: 0});
+	this.selectedColour = tinycolor({h: 0, s: 0, l: 0});
 
 	this.imageDataCache = null;
 	this.updateImageDataCache = () => this.imageDataCache = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
@@ -137,21 +158,7 @@ function ColourPicker (onUpdate, width, height) {
 			this.ctx.closePath();
 		}
 
-		// draw indicator
-		let theta = this.hue / 180 * Math.PI;
-		this.ctx.strokeStyle = 'black';
-		this.ctx.lineWidth = 1;
-		this.ctx.beginPath();
-		this.ctx.moveTo(
-			Math.cos(theta) * m.triangleRadius + m.w / 2,
-			Math.sin(theta) * m.triangleRadius + m.h / 2
-		);
-		this.ctx.lineTo(
-			Math.cos(theta) * (m.triangleRadius + m.hueCircleWidth) + m.w / 2,
-			Math.sin(theta) * (m.triangleRadius + m.hueCircleWidth) + m.h / 2
-		);
-		this.ctx.stroke();
-
+		this.drawIndicators();
 		this.updateImageDataCache();
 	}
 
@@ -193,21 +200,41 @@ function ColourPicker (onUpdate, width, height) {
 		lightnessGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 		fillTriangle(lightnessGradient);
 
-		// draw indicator
+		this.drawIndicators();
+		this.updateImageDataCache();
+	}
 
+	this.drawIndicators = () => {
+		let m = this.getMeasurements();
+		this.ictx.clearRect(0, 0, this.indicatorCanvas.width, this.indicatorCanvas.height);
+
+		// hue indicator
+		let theta = this.hue / 180 * Math.PI;
+		this.ictx.strokeStyle = 'black';
+		this.ictx.lineWidth = 1;
+		this.ictx.beginPath();
+		this.ictx.moveTo(
+			Math.cos(theta) * m.triangleRadius + m.w / 2,
+			Math.sin(theta) * m.triangleRadius + m.h / 2
+		);
+		this.ictx.lineTo(
+			Math.cos(theta) * (m.triangleRadius + m.hueCircleWidth) + m.w / 2,
+			Math.sin(theta) * (m.triangleRadius + m.hueCircleWidth) + m.h / 2
+		);
+		this.ictx.stroke();
+
+		// triangle indicator
 		let ix = m.leftX + this.point.x * m.triangleSideLength,
 			iy = m.topY + this.point.y * (1.5 * m.triangleRadius);
 
-		this.ctx.strokeStyle = 'white';
-		this.ctx.beginPath();
-		this.ctx.arc(ix, iy, 4, 0, 2 * Math.PI);
-		this.ctx.stroke();
-		this.ctx.strokeStyle = 'black';
-		this.ctx.beginPath();
-		this.ctx.arc(ix, iy, 5, 0, 2 * Math.PI);
-		this.ctx.stroke();
-
-		this.updateImageDataCache();
+		this.ictx.strokeStyle = 'white';
+		this.ictx.beginPath();
+		this.ictx.arc(ix, iy, 4, 0, 2 * Math.PI);
+		this.ictx.stroke();
+		this.ictx.strokeStyle = 'black';
+		this.ictx.beginPath();
+		this.ictx.arc(ix, iy, 5, 0, 2 * Math.PI);
+		this.ictx.stroke();
 	}
 
 	this.update = () => {
@@ -219,7 +246,7 @@ function ColourPicker (onUpdate, width, height) {
 			if (this.hue < 0)
 				this.hue += 360;
 
-			this.draw();
+			this.drawTriangle();
 
 		} else if (this.dragging === 'triangle') {
 
@@ -230,14 +257,14 @@ function ColourPicker (onUpdate, width, height) {
 				this.point.y = (this.mouse.y - m.topY) / (1.5 * m.triangleRadius);
 			}
 
-			this.drawTriangle();
+			this.drawIndicators();
 		}
 
 		this.selectedColour = this.getColour();
 		this.onUpdate(this.selectedColour);
 	}
 
-	this.canvas.addEventListener('mousedown', event => {
+	this.indicatorCanvas.addEventListener('mousedown', event => {
 		this.updateMouseCoords(event);
 		this.drawTriangle();
 
@@ -256,7 +283,7 @@ function ColourPicker (onUpdate, width, height) {
 		if (this.dragging !== 'none')
 			this.update();
 	});
-	this.canvas.addEventListener('mouseup', event => {
+	this.indicatorCanvas.addEventListener('mouseup', event => {
 		this.updateMouseCoords(event);
 		this.drawTriangle();
 
@@ -265,9 +292,8 @@ function ColourPicker (onUpdate, width, height) {
 
 		this.dragging = 'none';
 	});
-	this.canvas.addEventListener('mousemove', event => {
+	this.indicatorCanvas.addEventListener('mousemove', event => {
 		this.updateMouseCoords(event);
-		this.drawTriangle();
 
 		if (this.dragging !== 'none')
 			this.update();
@@ -276,11 +302,13 @@ function ColourPicker (onUpdate, width, height) {
 	// init
 	this.draw();
 	this.updateImageDataCache();
+
 }
+
 const picker = new ColourPicker(colour => {
 	document.querySelector('span').style.backgroundColor = colour.toHslString();
 }, 512, 512);
-document.querySelector('.picker').appendChild(picker.canvas);
+document.querySelector('.picker').appendChild(picker.element);
 </script>
 </body>
 </html>
