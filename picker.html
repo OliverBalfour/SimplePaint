@@ -33,23 +33,21 @@ function ColourPicker (onUpdate, width, height) {
 	this.transparentBlack = tinycolor({h: 0, s: 0, l: 0, a: 0});
 
 	this.imageDataCache = null;
-	this.updateImageDataCache = () => {
-		this.imageDataCache = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-	}
-	this.updateImageDataCache();
+	this.updateImageDataCache = () => this.imageDataCache = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
 	this.getColour = () => {
-		let i = this.mouse.y * this.canvas.width + this.mouse.x;
-		i *= 4;
-		if (this.mouseInsideTriangle())
-			return tinycolor({
-				r: this.imageDataCache.data[i],
-				g: this.imageDataCache.data[i + 1],
-				b: this.imageDataCache.data[i + 2],
-				a: this.imageDataCache.data[i + 3]
-			});
-		else
-			return this.transparentBlack;
+		let m = this.getMeasurements(),
+			x = m.leftX + this.point.x * m.triangleSideLength,
+			y = m.topY + this.point.y * (1.5 * m.triangleRadius);
+
+		let i = 4 * (y * this.canvas.width + x);
+
+		return tinycolor({
+			r: this.imageDataCache.data[i],
+			g: this.imageDataCache.data[i + 1],
+			b: this.imageDataCache.data[i + 2],
+			a: this.imageDataCache.data[i + 3]
+		});
 	}
 
 	this.updateMouseCoords = event => {
@@ -124,20 +122,35 @@ function ColourPicker (onUpdate, width, height) {
 		let m = this.getMeasurements(),
 			segments = m.max * 4;
 
-		this.ctx.save();
 		this.ctx.lineWidth = m.hueCircleWidth;
 
+		// draw circle; composed of a few hundred small stroked arcs of different colours
 		for (let i = 0; i <= 2 * Math.PI; i += Math.PI / segments) {
 			this.ctx.strokeStyle = tinycolor({ h: i / Math.PI * 180, s: 100, l: 50 }).toHslString();
 			this.ctx.beginPath();
 			this.ctx.arc(
 				Math.floor(m.w / 2), Math.floor(m.h / 2),
 				Math.floor(m.min / 2) - m.hueCircleWidth / 2,
-				i, i + Math.PI / segments + 0.05
+				i, i + Math.PI / segments + 0.01
 			);
 			this.ctx.stroke();
 			this.ctx.closePath();
 		}
+
+		// draw indicator
+		let theta = this.hue / 180 * Math.PI;
+		this.ctx.strokeStyle = 'black';
+		this.ctx.lineWidth = 1;
+		this.ctx.beginPath();
+		this.ctx.moveTo(
+			Math.cos(theta) * m.triangleRadius + m.w / 2,
+			Math.sin(theta) * m.triangleRadius + m.h / 2
+		);
+		this.ctx.lineTo(
+			Math.cos(theta) * (m.triangleRadius + m.hueCircleWidth) + m.w / 2,
+			Math.sin(theta) * (m.triangleRadius + m.hueCircleWidth) + m.h / 2
+		);
+		this.ctx.stroke();
 
 		this.updateImageDataCache();
 	}
@@ -162,6 +175,7 @@ function ColourPicker (onUpdate, width, height) {
 		this.ctx.fill();
 		this.ctx.closePath();
 
+		// draw saturation gradient
 		const saturationGradient = this.ctx.createLinearGradient(
 			m.leftX, 0,
 			m.rightX, 0
@@ -170,6 +184,7 @@ function ColourPicker (onUpdate, width, height) {
 		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50 }).toHslString());
 		fillTriangle(saturationGradient);
 
+		// draw lightness gradient over the top
 		const lightnessGradient = this.ctx.createLinearGradient(
 			0, m.topY,
 			0, m.bottomY
@@ -178,6 +193,20 @@ function ColourPicker (onUpdate, width, height) {
 		lightnessGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 		fillTriangle(lightnessGradient);
 
+		// draw indicator
+
+		let ix = m.leftX + this.point.x * m.triangleSideLength,
+			iy = m.topY + this.point.y * (1.5 * m.triangleRadius);
+
+		this.ctx.strokeStyle = 'white';
+		this.ctx.beginPath();
+		this.ctx.arc(ix, iy, 4, 0, 2 * Math.PI);
+		this.ctx.stroke();
+		this.ctx.strokeStyle = 'black';
+		this.ctx.beginPath();
+		this.ctx.arc(ix, iy, 5, 0, 2 * Math.PI);
+		this.ctx.stroke();
+
 		this.updateImageDataCache();
 	}
 
@@ -185,31 +214,32 @@ function ColourPicker (onUpdate, width, height) {
 		if (this.dragging === 'hue') {
 			let x = this.mouse.x - this.canvas.width / 2,
 				y = this.mouse.y - this.canvas.height / 2;
+
 			this.hue = Math.atan2(y, x) * 180 / Math.PI;
 			if (this.hue < 0)
 				this.hue += 360;
-			this.selectedColour = this.getColour();
+
 			this.draw();
+
 		} else if (this.dragging === 'triangle') {
-			let colour = this.getColour();
-			if (colour !== this.transparentBlack) {
-				this.selectedColour = colour;
-				// let triangleRadius = Math.floor(Math.min(this.canvas.width, this.canvas.height) / 2) - this.hueCircleWidth,
-				// 	leftX = this.canvas.width / 2 - Math.sqrt(3)/2 * triangleRadius;
-				// this.point.x = (this.mouse.x - leftX) / (2 * Math.sqrt(3) * triangleRadius);
-				// this.point.y = (this.mouse.y - topY);
+
+			let m = this.getMeasurements();
+
+			if (this.mouseInsideTriangle()) {
+				this.point.x = (this.mouse.x - m.leftX) / m.triangleSideLength;
+				this.point.y = (this.mouse.y - m.topY) / (1.5 * m.triangleRadius);
 			}
+
 			this.drawTriangle();
 		}
 
+		this.selectedColour = this.getColour();
 		this.onUpdate(this.selectedColour);
 	}
 
 	this.canvas.addEventListener('mousedown', event => {
 		this.updateMouseCoords(event);
 		this.drawTriangle();
-
-		let colour = this.getColour();
 
 		let x = this.mouse.x - this.canvas.width / 2,
 			y = this.mouse.y - this.canvas.height / 2,
@@ -242,7 +272,10 @@ function ColourPicker (onUpdate, width, height) {
 		if (this.dragging !== 'none')
 			this.update();
 	});
+
+	// init
 	this.draw();
+	this.updateImageDataCache();
 }
 const picker = new ColourPicker(colour => {
 	document.querySelector('span').style.backgroundColor = colour.toHslString();
