@@ -215,7 +215,7 @@ function ColourPicker (onUpdate, width, height) {
 
 		// draw a one pixel horizontal line gradient between the fully saturated hue and the transparent blended white
 		// can't be a standard linear gradient, that only works with square pickers
-		for (let i = 0; i < m.triangleRadius * 1.5; i++) {
+		for (let i = 0; i < m.triangleRadius * 1.5 + 1; i++) {
 			// see code in this.update() for maths explanation etc.
 			let x = i / Math.sqrt(3),
 				y = i + m.h / 2 - m.triangleRadius;
@@ -237,7 +237,7 @@ function ColourPicker (onUpdate, width, height) {
 
 			this.ctx.fillStyle = saturationGradient;
 			this.ctx.beginPath();
-			this.ctx.fillRect(m.w / 2 - x, y, 2 * x, 1);
+			this.ctx.fillRect(m.w / 2 - x, Math.round(y), 2 * x, 1);
 			this.ctx.closePath();
 		}
 
