@@ -10,7 +10,17 @@
     <![endif]-->
     <link rel="stylesheet" type="text/css"
           href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css">
-	<script src="./hand.minified-1.3.6.js"></script>
+          <style type="text/css">
+   #color-picker div {
+      position: relative;
+    }
+    #color-picker div canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid black;
+    }</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
   </head>
   <body unselectable="on">
     <object id="tablet-api" type="application/x-wacomtabletplugin"></object>
@@ -36,20 +46,7 @@
     <div id="canvas-area">
     </div>
     <div id="right-side">
-      <div id="color-picker">
-        <div id="color-picker-sb">
-        </div>
-        <span>hue: </span>
-        <input id="color-picker-hue-slider" type="range" min="0" max="360">
-        <br>
-        <span>opacity: </span>
-        <input id="brush-opacity-slider" type="range" min="0" max="100">
-        <br>
-        <span>color: </span>
-        <div id="color-picker-checker">
-          <p id="color-picker-color"></p>
-        </div>
-      </div>
+      <div id="color-picker"></div>
       <hr>
       <div id="brush-shelf">
         <span>eraser: </span>
@@ -81,9 +78,9 @@
     <!--[if lt IE 11]>
     <script src="./input-range-polyfill/input-range-polyfill.js"></script>
     <![endif]-->
-    <script src="./TinyColor/tinycolor.js"></script>
-    <script src="./HSBRect/HSBRect.js"></script>
-    <script src="./croquis.js/croquis.js"></script>
+    <script src="./tinycolor/dist/tinycolor-min.js"></script>
+    <script src="./colourpicker/colour-picker.js"></script>
+    <script src="./croquis.js"></script>
     <script src="./croquispop.js"></script>
     <!--[if lt IE 10]>
     <script>

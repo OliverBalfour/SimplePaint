@@ -135,69 +135,10 @@ function updatePointer() {
 }
 updatePointer();
 
-//color picker
-var colorPickerHueSlider =
-    document.getElementById('color-picker-hue-slider');
-var colorPickerSb = document.getElementById('color-picker-sb');
-var colorPickerHSBRect = new HSBRect(150, 150);
-colorPickerHSBRect.DOMElement.id = 'color-picker-hsbrect';
-colorPickerSb.appendChild(colorPickerHSBRect.DOMElement);
-var colorPickerThumb = document.createElement('div');
-colorPickerThumb.id = 'color-picker-thumb';
-colorPickerSb.appendChild(colorPickerThumb);
-colorPickerHueSlider.value = tinycolor(brush.getColor()).toHsv().h;
-
-function setColor() {
-    var halfThumbRadius = 7.5;
-    var sbSize = 150;
-    var h = colorPickerHueSlider.value;
-    var s = parseFloat(
-        colorPickerThumb.style.getPropertyValue('margin-left'));
-    var b = parseFloat(
-        colorPickerThumb.style.getPropertyValue('margin-top'));
-    s = (s + halfThumbRadius) / sbSize;
-    b = 1 - ((b + halfThumbRadius + sbSize) / sbSize);
-    brush.setColor(tinycolor({h: h, s:s, v: b}).toRgbString());
-    var a = croquis.getPaintingOpacity();
-    var color = tinycolor({h: h, s:s, v: b, a: a});
-    colorPickerColor.style.backgroundColor = color.toRgbString();
-    colorPickerColor.textContent = color.toHexString();
-}
-
-colorPickerHueSlider.onchange = function () {
-    colorPickerHSBRect.hue = colorPickerHueSlider.value;
-    setColor();
-}
-
-function colorPickerPointerDown(e) {
-    document.addEventListener('pointermove', colorPickerPointerMove);
-    colorPickerPointerMove(e);
-}
-function colorPickerPointerUp(e) {
-    document.removeEventListener('pointermove', colorPickerPointerMove);
-}
-function colorPickerPointerMove(e) {
-    var boundRect = colorPickerSb.getBoundingClientRect();
-    var x = (e.clientX - boundRect.left);
-    var y = (e.clientY - boundRect.top);
-    pickColor(x, y);
-}
-function minmax(value, min, max) {
-    return Math.min(max, Math.max(min, value));
-}
-function pickColor(x, y) {
-    var halfThumbRadius = 7.5;
-    var sbSize = 150;
-    colorPickerThumb.style.setProperty('margin-left',
-        (minmax(x, 0, sbSize) - halfThumbRadius) + 'px');
-    colorPickerThumb.style.setProperty('margin-top',
-        (minmax(y, 0, sbSize) - (sbSize + halfThumbRadius)) + 'px');
-    colorPickerThumb.style.setProperty('border-color',
-        (y < sbSize * 0.5)? '#000' : '#fff');
-    setColor();
-}
-colorPickerSb.addEventListener('pointerdown', colorPickerPointerDown);
-document.addEventListener('pointerup', colorPickerPointerUp);
+const picker = new ColourPicker(colour => {
+    brush.setColor(colour.toRgbString());
+}, 128);
+document.querySelector('#color-picker').appendChild(picker.element);
 
 var backgroundCheckerImage;
 (function () {
@@ -211,12 +152,8 @@ var backgroundCheckerImage;
     backgroundImageContext.fillRect(10, 10, 20, 20);
 })();
 
-var colorPickerChecker = document.getElementById('color-picker-checker');
-colorPickerChecker.style.backgroundImage = 'url(' +
+// colorPickerChecker.style.backgroundImage = 'url(' +
     backgroundCheckerImage.toDataURL() + ')';
-var colorPickerColor = document.getElementById('color-picker-color');
-
-pickColor(0, 150);
 
 //stabilizer shelf
 var toolStabilizeLevelSlider =
@@ -236,7 +173,6 @@ var brushSpacingSlider = document.getElementById('brush-spacing-slider');
 var brushAngleSlider = document.getElementById('brush-angle-slider');
 var brushRotateToDirectionCheckbox = document.getElementById('brush-rotate-to-direction-checkbox');
 brushSizeSlider.value = brush.getSize();
-brushOpacitySlider.value = croquis.getPaintingOpacity() * 100;
 brushFlowSlider.value = brush.getFlow() * 100;
 brushSpacingSlider.value = brush.getSpacing() * 100;
 brushAngleSlider.value = brush.getAngle();
@@ -257,10 +193,6 @@ selectEraserCheckbox.onchange = function () {
 brushSizeSlider.onchange = function () {
     brush.setSize(brushSizeSlider.value);
     updatePointer();
-}
-brushOpacitySlider.onchange = function () {
-    croquis.setPaintingOpacity(brushOpacitySlider.value * 0.01);
-    setColor();
 }
 brushFlowSlider.onchange = function () {
     brush.setFlow(brushFlowSlider.value * 0.01);
