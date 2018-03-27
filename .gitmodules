@@ -1,3 +1,6 @@
 [submodule "tinycolor"]
 	path = tinycolor
 	url = https://github.com/bgrins/TinyColor
+[submodule "colourpicker"]
+	path = colourpicker
+	url = https://github.com/Tobsta/ColourPicker
