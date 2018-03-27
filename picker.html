@@ -12,7 +12,6 @@
 			top: 0;
 			left: 0;
 			border: 1px solid black;
-			z-index: -1;
 		}
 		span {
 			border: 1px solid black;
@@ -20,8 +19,8 @@
 	</style>
 </head>
 <body>
-<div class='picker'></div>
 <span>Hello</span>
+<div class='picker'></div>
 <script src='tinycolor/tinycolor.js'></script>
 <script>
 function ColourPicker (onUpdate, width, height) {
@@ -78,17 +77,23 @@ function ColourPicker (onUpdate, width, height) {
 		});
 	}
 
-	// TODO: setColour function
+	// this has a margin of error of about 8 per colour channel
 	this.setColour = colour => {
-		// let hsl = colour.toHsl();
-		// // hue
-		// this.hue = hsl.h;
-		// // saturation
-		// this.point.x = hsl.s;
-		// // lightness
-		// this.point.y;
+		let hsv = colour.toHsv();
 
-		// this.draw();
+		// hue
+		this.hue = hsv.h;
+
+		// value
+		this.point.y = hsv.v;
+
+		// saturation
+		// this is a bit trickier, as saturation is the position horizontally
+		// across the triangle at the height/y of the saturation
+		this.point.x = (hsv.s / 2) + 0.25;
+
+		this.draw();
+		this.update();
 	}
 
 	this.updateMouseCoords = event => {
