@@ -213,14 +213,33 @@ function ColourPicker (onUpdate, width, height) {
 		this.ctx.closePath();
 		fillTriangle('white');
 
-		// draw saturation gradient
-		const saturationGradient = this.ctx.createLinearGradient(
-			m.leftX + margin, 0,
-			m.rightX - margin, 0
-		);
-		saturationGradient.addColorStop(0, tinycolor({ h: this.hue, s: 100, l: 50, a: 0 }).toHslString());
-		saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50, a: 1 }).toHslString());
-		fillTriangle(saturationGradient);
+		// draw a one pixel horizontal line gradient between the fully saturated hue and the transparent blended white
+		// can't be a standard linear gradient, that only works with square pickers
+		for (let i = 0; i < m.triangleRadius * 1.5; i++) {
+			// see code in this.update() for maths explanation etc.
+			let x = i / Math.sqrt(3),
+				y = i + m.h / 2 - m.triangleRadius;
+
+			// draw saturation gradient
+			const saturationGradient = this.ctx.createLinearGradient(
+				m.w / 2 + x - m.triangleMargin, y,
+				m.w / 2 - x + m.triangleMargin, y
+			);
+
+			// at the very top, the gradient is rendered backwards without this check
+			if (x < m.triangleMargin) {
+				saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50, a: 1 }).toHslString());
+				saturationGradient.addColorStop(0, tinycolor({ h: this.hue, s: 100, l: 50, a: 0 }).toHslString());
+			} else {
+				saturationGradient.addColorStop(0, tinycolor({ h: this.hue, s: 100, l: 50, a: 1 }).toHslString());
+				saturationGradient.addColorStop(1, tinycolor({ h: this.hue, s: 100, l: 50, a: 0 }).toHslString());
+			}
+
+			this.ctx.fillStyle = saturationGradient;
+			this.ctx.beginPath();
+			this.ctx.fillRect(m.w / 2 - x, y, 2 * x, 1);
+			this.ctx.closePath();
+		}
 
 		// draw lightness gradient over the top
 		const lightnessGradient = this.ctx.createLinearGradient(
@@ -319,7 +338,6 @@ function ColourPicker (onUpdate, width, height) {
 
 	this.indicatorCanvas.addEventListener('mousedown', event => {
 		this.updateMouseCoords(event);
-		this.drawTriangle();
 
 		let x = this.mouse.x - this.canvas.width / 2,
 			y = this.mouse.y - this.canvas.height / 2,
@@ -338,7 +356,6 @@ function ColourPicker (onUpdate, width, height) {
 	});
 	this.indicatorCanvas.addEventListener('mouseup', event => {
 		this.updateMouseCoords(event);
-		this.drawTriangle();
 
 		if (this.dragging !== 'none')
 			this.update();
@@ -363,7 +380,7 @@ const picker = new ColourPicker(colour => {
 	el.style.backgroundColor = colour.toHslString();
 	el.innerText = colour.toHexString();
 	el.style.color = colour.isDark() ? 'white' : 'black';
-}, 512, 512);
+}, 256);
 document.querySelector('.picker').appendChild(picker.element);
 </script>
 </body>
