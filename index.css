@@ -89,7 +89,7 @@ body {
 	top: 0;
 	left: 0;
 }
-#colour {
+.colour-picker-preview {
 	border-top: 1px solid black;
 	border-right: 1px solid black;
 	position: absolute;
@@ -97,4 +97,8 @@ body {
 	left: 0;
 	margin-left: 0;
 	z-index: 1;
+}
+
+.line-thickness {
+	width: 100%;
 }

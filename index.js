@@ -96,7 +96,7 @@ window.addEventListener('resize', () => {
 });
 
 
-const el = document.querySelector('#colour');
+const el = document.querySelector('.colour-picker-preview');
 const picker = new ColourPicker(c => {
 	el.style.backgroundColor = c.toHslString();
 	el.innerText = c.toHexString();
@@ -104,3 +104,7 @@ const picker = new ColourPicker(c => {
 	colour = c;
 }, 300);
 document.querySelector('.picker').appendChild(picker.element);
+
+document.querySelector('.line-thickness').onchange = e => {
+	thickness = parseFloat(e.target.value);
+}
