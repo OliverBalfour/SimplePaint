@@ -12,6 +12,8 @@ const tools = {
 		leftMouseDown: (ctx, mouse) => {
 			ctx.strokeStyle = colour;
 			ctx.lineWidth = thickness;
+			ctx.lineCap = 'round';
+			ctx.lineJoin = 'round';
 			ctx.beginPath();
 			ctx.moveTo(mouse.x, mouse.y);
 		},

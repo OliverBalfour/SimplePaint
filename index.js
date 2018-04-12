@@ -109,4 +109,5 @@ document.querySelector('.picker').appendChild(picker.element);
 
 document.querySelector('.line-thickness').onchange = e => {
 	thickness = parseFloat(e.target.value);
+	document.querySelector('.js-line-thickness').innerText = thickness;
 }

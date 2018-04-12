@@ -84,3 +84,8 @@ input[type=range]::-ms-thumb {
 input[type=range]:focus::-ms-fill-lower {
 	background: var(--range-track-background);
 }
+
+
+fieldset {
+	padding: 0 5px;
+}
