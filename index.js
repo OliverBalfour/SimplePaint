@@ -95,3 +95,12 @@ window.addEventListener('resize', () => {
 	setCanvasSize();
 });
 
+
+const el = document.querySelector('#colour');
+const picker = new ColourPicker(c => {
+	el.style.backgroundColor = c.toHslString();
+	el.innerText = c.toHexString();
+	el.style.color = c.isDark() ? 'white' : 'black';
+	colour = c;
+}, 300);
+document.querySelector('.picker').appendChild(picker.element);

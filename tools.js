@@ -1,4 +1,6 @@
 
+let colour = 'red';
+
 function dispatchEvent(event, ctx, mouse) {
 	if (tools[tool].hasOwnProperty(event))
 		tools[tool][event](ctx, mouse);
@@ -7,7 +9,7 @@ function dispatchEvent(event, ctx, mouse) {
 const tools = {
 	pen: {
 		leftMouseDown: (ctx, mouse) => {
-			ctx.strokeStyle = 'red';
+			ctx.strokeStyle = colour;
 			ctx.strokeWidth = 10;
 			ctx.beginPath();
 			ctx.moveTo(mouse.x, mouse.y);
