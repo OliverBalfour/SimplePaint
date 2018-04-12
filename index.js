@@ -4,8 +4,9 @@ const body = document.body;
 
 const canvas = document.querySelector('#canvas-preview');
 let canvasBox = canvas.getBoundingClientRect();
-setCanvasSize();
 const ctx = canvas.getContext('2d');
+
+setCanvasSize();
 
 let debug = true;
 
@@ -61,6 +62,7 @@ function updateMouseCoords (e) {
 function setCanvasSize () {
 	canvas.width = canvasBox.width;
 	canvas.height = canvasBox.height;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 body.addEventListener('mousedown', e => {

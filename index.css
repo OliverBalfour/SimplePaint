@@ -65,7 +65,7 @@ body {
 	left: var(--toolbar-width);
 	height: calc(100% - var(--menu-height) - var(--footer-height));
 	width: calc(100% - var(--toolbar-width) - var(--options-width));
-	background: black;
+	background: white;
 }
 
 .canvases canvas {

@@ -1,6 +1,6 @@
 
-let colour = 'red';
-let thickness = 10;
+let colour = 'black';
+let thickness = 0.1;
 
 function dispatchEvent(event, ctx, mouse) {
 	if (tools[tool].hasOwnProperty(event))

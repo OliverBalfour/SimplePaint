@@ -1,0 +1,86 @@
+:root {
+	--range-track-background: #666;
+	--range-track-border: 0.5px solid #333;
+	--range-track-height: 6px;
+	--range-thumb-background: white;
+	--range-thumb-size: 12px;
+	--range-thumb-border: 0;
+	--range-thumb-border-radius: 6px;
+}
+
+input[type=range] {
+	-webkit-appearance: none;
+	margin: 0;
+	padding: 4px;
+	width: 100%;
+}
+input[type=range]:focus {
+	outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: var(--range-track-height);
+	cursor: pointer;
+	animate: 0.2s;
+	background: var(--range-track-background);
+	border-radius: 1.3px;
+	border: var(--range-track-border);
+}
+input[type=range]::-webkit-slider-thumb {
+	border: var(--range-thumb-border);
+	width: var(--range-thumb-size);
+	height: var(--range-thumb-size);
+	border-radius: var(--range-thumb-border-radius);
+	background: var(--range-thumb-background);
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -14px;
+}
+input[type=range]::-moz-range-track {
+	width: 100%;
+	height: var(--range-track-height);
+	cursor: pointer;
+	animate: 0.2s;
+	background: var(--range-track-background);
+	border-radius: 1.3px;
+	border: var(--range-track-border);
+}
+input[type=range]::-moz-range-thumb {
+	border: var(--range-thumb-border);
+	width: var(--range-thumb-size);
+	height: var(--range-thumb-size);
+	border-radius: var(--range-thumb-border-radius);
+	background: var(--range-thumb-background);
+	cursor: pointer;
+}
+input[type=range]::-ms-track {
+	width: 100%;
+	height: var(--range-track-height);
+	cursor: pointer;
+	animate: 0.2s;
+	background: transparent;
+	border-color: transparent;
+	border-width: 16px 0;
+	color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+	background: #2a6495;
+	border: var(--range-track-border);
+	border-radius: 2.6px;
+}
+input[type=range]::-ms-fill-upper {
+	background: var(--range-track-background);
+	border: var(--range-track-border);
+	border-radius: 2.6px;
+}
+input[type=range]::-ms-thumb {
+	border: var(--range-thumb-border);
+	width: var(--range-thumb-size);
+	height: var(--range-thumb-size);
+	border-radius: var(--range-thumb-border-radius);
+	background: var(--range-thumb-background);
+	cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+	background: var(--range-track-background);
+}
