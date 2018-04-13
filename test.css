@@ -47,6 +47,8 @@ body {
 	width: var(--options-width);
 	border-left: var(--area-border);
 	background: var(--area-background);
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .footer {
@@ -101,4 +103,46 @@ body {
 
 .line-thickness {
 	width: 100%;
+}
+
+
+
+
+#tablet-api {
+  position: absolute;
+  top: -1000px;
+}
+
+.croquis-dirty-rect-display {
+  touch-action: none;
+}
+
+#circle-brush {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 15px;
+  background-color: #000;
+}
+
+.brush-pointer {
+  position: absolute;
+  font-size: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.brush-image {
+  height: 30px;
+  width: auto;
+  opacity: 0.5;
+}
+
+.brush-image:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.brush-image.on {
+  opacity: 1;
 }

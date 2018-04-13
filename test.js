@@ -2,7 +2,7 @@
 var croquis = new Croquis();
 
 var brush = new Croquis.Brush();
-brush.setSize(6);
+brush.setSize(30);
 brush.setColor('#000');
 brush.setSpacing(0.2);
 
