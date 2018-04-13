@@ -47,7 +47,7 @@ body {
 	width: var(--options-width);
 	border-left: var(--area-border);
 	background: var(--area-background);
-	overflow-y: auto;
+	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
@@ -80,8 +80,8 @@ body {
 
 .picker {
 	position: relative;
-	height: var(--options-width);
-	width: var(--options-width);
+	height: calc(var(--options-width) - 20px);
+	width: calc(var(--options-width) - 20px);
 }
 .picker div {
 	position: relative;
@@ -95,7 +95,7 @@ body {
 	border-top: 1px solid black;
 	border-right: 1px solid black;
 	position: absolute;
-	top: var(--options-width);
+	top: calc(var(--options-width) - 40px);
 	left: 0;
 	margin-left: 0;
 	z-index: 1;
@@ -145,4 +145,11 @@ body {
 
 .brush-image.on {
   opacity: 1;
+}
+
+.tool-options * {
+	color: white;
+}
+.tool-options button {
+	color: black;
 }

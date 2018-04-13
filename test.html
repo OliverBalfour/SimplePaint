@@ -18,71 +18,57 @@
 			<button onclick='changeTool(this)' data-tool='text'>Text</button>
 		</div>
 		<div class='tool-options'>
-			<span class='colour-picker-preview'></span>
+			<span class='colour-picker-preview' style='color: white; background: black;'>#000000</span>
 			<div class='picker'></div>
-			<fieldset>
-				<legend>Thickness: <code class='js-line-thickness'>30</code></legend>
-				<input type='range' class='line-thickness' min='0.1' max='100' step='0.1' value='30' />
-			</fieldset>
-			<hr>
 
-		<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
-		<div id='tool-shelf'>
-			<span>Stabilizer level: </span>
-			<input id='tool-stabilize-level-slider' type='range' min='3' max='20'>
-			<span>weight: </span>
-			<input id='tool-stabilize-weight-slider' type='range' min='20' max='80'>
-			<br>
-			<span class='comment'>(Higher stabilizer level makes lines smoother,
-				and higher weight makes rendering slower.)</span>
-		</div>
-		<br>
-		<div id='brush-image-shelf'>
-			<div class='brush-image on' id='circle-brush'></div>
-			<img src='./brush/b0.png' class='brush-image'></img>
-			<img src='./brush/b1.png' class='brush-image'></img>
-			<img src='./brush/b2.png' class='brush-image'></img>
-			<img src='./brush/b3.png' class='brush-image'></img>
-			<img src='./brush/b4.png' class='brush-image'></img>
-			<img src='./brush/b5.png' class='brush-image'></img>
-		</div>
-		<div id='right-side'>
-			<div id='color-picker'>
-				<div id='color-picker-sb'>
+			<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
+			<fieldset>
+				<legend>Render options</legend>
+				<div id='tool-shelf'>
+					<span>Stabilizer level: </span>
+					<input id='tool-stabilize-level-slider' type='range' min='3' max='20'>
+					<span>weight: </span>
+					<input id='tool-stabilize-weight-slider' type='range' min='20' max='80'>
+					<br>
+					<span class='comment'>(Higher stabilizer level makes lines smoother,
+						and higher weight makes rendering slower.)</span>
 				</div>
-				<span>hue: </span>
-				<input id='color-picker-hue-slider' type='range' min='0' max='360'>
-				<br>
-				<span>opacity: </span>
-				<input id='brush-opacity-slider' type='range' min='0' max='100'>
-				<br>
-				<span>color: </span>
-				<div id='color-picker-checker'>
-					<p id='color-picker-color'></p>
+			</fieldset>
+			<fieldset>
+				<legend>Brush</legend>
+				<div id='brush-image-shelf'>
+					<div class='brush-image on' id='circle-brush'></div>
+					<img src='./brush/b0.png' class='brush-image'></img>
+					<img src='./brush/b1.png' class='brush-image'></img>
+					<img src='./brush/b2.png' class='brush-image'></img>
+					<img src='./brush/b3.png' class='brush-image'></img>
+					<img src='./brush/b4.png' class='brush-image'></img>
+					<img src='./brush/b5.png' class='brush-image'></img>
 				</div>
-			</div>
-			<hr>
-			<div id='brush-shelf'>
-				<span>eraser: </span>
+			</fieldset>
+			<fieldset id='brush-shelf'>
+				<legend>Brush options</legend>
+				<span>Thickness: <code class='js-line-thickness'>30</code></span>
+				<input type='range' class='line-thickness' min='0.1' max='100' step='0.1' value='30' />
+				<span>Eraser</span>
 				<input id='select-eraser-checkbox' type='checkbox'>
-				<hr>
-				<span>flow: </span>
+				<span>Flow</span>
 				<input id='brush-flow-slider' type='range' min='0' max='100'>
 				<br>
-				<span>spacing: </span>
+				<span>Spacing</span>
 				<input id='brush-spacing-slider' type='range' min='0' max='1000'>
 				<br>
-				<span>angle: </span>
+				<span>Angle</span>
 				<input id='brush-angle-slider' type='range' min='0' max='360'>
 				<br>
-				<span>rotate to direction: </span>
+				<span>Rotate to direction</span>
 				<input id='brush-rotate-to-direction-checkbox' type='checkbox'>
-			</div>
-			<hr>
-			<button type='button' id='clear-button'>erase all</button>
-			<br>
-			<button type='button' id='fill-button'>fill layer</button>
-		</div>
+			</fieldset>
+			<fieldset>
+				<legend>Actions</legend>
+				<button type='button' id='clear-button'>Erase all</button>
+				<button type='button' id='fill-button'>Fill layer</button>
+			</fieldset>
 		</div>
 		<div class='footer'>
 			Footer

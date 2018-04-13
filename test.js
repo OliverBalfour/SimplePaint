@@ -239,7 +239,7 @@ const picker = new ColourPicker(c => {
 	el.style.color = c.isDark() ? 'white' : 'black';
 	brush.setColor(c);
     updatePointer();
-}, 300);
+}, 280);
 document.querySelector('.picker').appendChild(picker.element);
 
 document.querySelector('.line-thickness').onchange = e => {
