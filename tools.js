@@ -1,6 +1,8 @@
 
-let colour = 'black';
-let thickness = 0.1;
+const pen = {
+	colour: 'black',
+	thickness: 6
+}
 
 function dispatchEvent(event, ctx, mouse) {
 	if (tools[tool].hasOwnProperty(event))
@@ -9,20 +11,39 @@ function dispatchEvent(event, ctx, mouse) {
 
 const tools = {
 	pen: {
-		leftMouseDown: (ctx, mouse) => {
-			ctx.strokeStyle = colour;
-			ctx.lineWidth = thickness;
+		leftMouseDown: (apply, ctx, mouse) => {
+			ctx.strokeStyle = pen.colour;
+			ctx.lineWidth = pen.thickness;
 			ctx.lineCap = 'round';
 			ctx.lineJoin = 'round';
 			ctx.beginPath();
 			ctx.moveTo(mouse.x, mouse.y);
 		},
-		leftMouseMove: (ctx, mouse) => {
+		leftMouseMove: (apply, ctx, mouse) => {
 			ctx.lineTo(mouse.x, mouse.y);
 			ctx.stroke();
 		},
-		leftMouseUp: (ctx, mouse) => {
+		leftMouseUp: (apply, ctx, mouse) => {
 			ctx.closePath();
+			apply();
+		}
+	},
+	line: {
+		leftMouseDown: (apply, ctx, mouse) => {
+			ctx.strokeStyle = pen.colour;
+			ctx.lineWidth = pen.thickness;
+			ctx.lineCap = 'round';
+			ctx.lineJoin = 'round';
+			ctx.beginPath();
+			ctx.moveTo(mouse.x, mouse.y);
+		},
+		leftMouseMove: (apply, ctx, mouse) => {
+		},
+		leftMouseUp: (apply, ctx, mouse) => {
+			ctx.lineTo(mouse.x, mouse.y);
+			ctx.stroke();
+			ctx.closePath();
+			apply();
 		}
 	}
 }

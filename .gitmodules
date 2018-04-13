@@ -4,3 +4,6 @@
 [submodule "colourpicker"]
 	path = colourpicker
 	url = https://github.com/Tobsta/ColourPicker
+[submodule "croquis"]
+	path = croquis
+	url = https://github.com/disjukr/croquis.js

@@ -65,26 +65,30 @@ function setCanvasSize () {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function apply () {
+	//
+}
+
 body.addEventListener('mousedown', e => {
 	updateMouseCoords(e);
 	mouse.button = e.button;
 	if (mouse.canvas && mouse.button === 0) {
 		mouse.drawing = true;
-		dispatchEvent('leftMouseDown', ctx, mouse);
+		dispatchEvent('leftMouseDown', apply, ctx, mouse);
 	}
 });
 body.addEventListener('mouseup', e => {
 	updateMouseCoords(e);
 	if (mouse.drawing && mouse.button === 0) {
 		mouse.drawing = false;
-		dispatchEvent('leftMouseUp', ctx, mouse);
+		dispatchEvent('leftMouseUp', apply, ctx, mouse);
 	}
 	mouse.button = null;
 });
 body.addEventListener('mousemove', e => {
 	updateMouseCoords(e);
 	if (mouse.drawing && mouse.button === 0)
-		dispatchEvent('leftMouseMove', ctx, mouse);
+		dispatchEvent('leftMouseMove', apply, ctx, mouse);
 });
 body.addEventListener('keydown', e => {
 	keys[e.which || e.keyCode] = true;
@@ -103,11 +107,11 @@ const picker = new ColourPicker(c => {
 	el.style.backgroundColor = c.toHslString();
 	el.innerText = c.toHexString();
 	el.style.color = c.isDark() ? 'white' : 'black';
-	colour = c;
+	pen.colour = c;
 }, 300);
 document.querySelector('.picker').appendChild(picker.element);
 
 document.querySelector('.line-thickness').onchange = e => {
-	thickness = parseFloat(e.target.value);
-	document.querySelector('.js-line-thickness').innerText = thickness;
+	pen.thickness = parseFloat(e.target.value);
+	document.querySelector('.js-line-thickness').innerText = pen.thickness;
 }
