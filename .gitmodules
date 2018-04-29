@@ -7,3 +7,6 @@
 [submodule "croquis"]
 	path = croquis
 	url = https://github.com/disjukr/croquis.js
+[submodule "mousetrap"]
+	path = mousetrap
+	url = https://github.com/ccampbell/mousetrap
