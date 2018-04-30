@@ -29,7 +29,7 @@
 					<input type='range' class='render-stabilizer' min='3' max='20'>
 
 					<span title='Higher weight slows rendering down'>Weight: <code class='js-render-weight'></code></span>
-					<input type='range' class='render-weight' min='20' max='80'>
+					<input type='range' class='render-weight' min='0' max='80'>
 				</div>
 			</fieldset>
 			<fieldset>
@@ -42,6 +42,7 @@
 					<img src='./brush/b3.png' class='brush-image'></img>
 					<img src='./brush/b4.png' class='brush-image'></img>
 					<img src='./brush/b5.png' class='brush-image'></img>
+					<button class='new-brush-button' onclick='uploadBrush()'>+</button>
 				</div>
 			</fieldset>
 			<fieldset id='brush-shelf'>
@@ -63,7 +64,7 @@
 				<input type='range' class='brush-angle' min='0' max='360'>
 
 				<span>Rotate to direction</span>
-				<input id='brush-rotate-to-direction-checkbox' type='checkbox'>
+				<input type='checkbox' class='brush-rotate'>
 			</fieldset>
 			<fieldset>
 				<legend>Actions</legend>
@@ -78,15 +79,9 @@
 		</div>
 		<div class='canvases'>
 		</div>
-
-		<noscript>
-			<p class='comment'>
-				If pressure is not applied, try installing the
-				<a href='http://www.wacom.com/support/drivers' target='_blank'>
-					recent version of the graphics tablet driver.
-				</a>
-			</p>
-		</noscript>
+		<div class='modals'>
+			
+		</div>
 
 		<script src='./colourpicker/colour-picker.js'></script>
 		<script src='./croquis/croquis.js'></script>

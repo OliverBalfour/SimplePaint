@@ -224,6 +224,12 @@ document.querySelector('.brush-angle').onchange = e => {
 	document.querySelector('.js-brush-angle').innerText = brush.getAngle();
 }
 
+// Rotate brush to direction
+document.querySelector('.brush-rotate').checked = brush.getRotateToDirection();
+document.querySelector('.brush-rotate').onchange = e => {
+	brush.setRotateToDirection(e.target.checked);
+}
+
 // Mouse position indicators
 
 document.addEventListener('mousemove', (e) => {
@@ -300,3 +306,23 @@ function getRelativePosition() {
 	mouse.ry = mouse.y - rect.top;
 	return { x: mouse.rx, y: mouse.ry };
 }
+
+// Upload a brush
+
+function uploadBrush () {
+	getImage()
+		.then((img) => {
+			document.querySelector('#brush-image-shelf')
+		})
+		.catch((e) => {
+			alert('Error:\n' + e);
+		});
+}
+
+function getImage() {
+	return new Promise ((resolve, reject) => {
+		reject()
+		document.querySelector('')
+	});
+}
+
