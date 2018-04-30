@@ -13,9 +13,7 @@
 		<div class='toolbar'>
 			<button onclick='changeTool(this)' data-tool='pen'>Pen</button>
 			<button onclick='changeTool(this)' data-tool='line'>Line</button>
-			<button onclick='changeTool(this)' data-tool='rect'>Rect</button>
-			<button onclick='changeTool(this)' data-tool='ellipse'>Ellipse</button>
-			<button onclick='changeTool(this)' data-tool='text'>Text</button>
+			<button onclick='changeTool(this)' data-tool='eraser'>Eraser</button>
 		</div>
 		<div class='tool-options'>
 			<span class='colour-picker-preview'>
@@ -27,13 +25,11 @@
 			<fieldset>
 				<legend>Render options</legend>
 				<div id='tool-shelf'>
-					<span>Stabilizer level: <code class='js-line-stabilizer'>30</code></span>
-					<input id='tool-stabilize-level-slider' type='range' min='3' max='20'>
-					<span>Weight: <code class='js-line-weight'>30</code></span>
-					<input id='tool-stabilize-weight-slider' type='range' min='20' max='80'>
-					<br>
-					<span class='comment'>(Higher stabilizer level makes lines smoother,
-						and higher weight makes rendering slower.)</span>
+					<span title='Higher stabilizer level makes lines smoother'>Stabilizer level: <code class='js-render-stabilizer'></code></span>
+					<input type='range' class='render-stabilizer' min='3' max='20'>
+
+					<span title='Higher weight slows rendering down'>Weight: <code class='js-render-weight'></code></span>
+					<input type='range' class='render-weight' min='20' max='80'>
 				</div>
 			</fieldset>
 			<fieldset>
@@ -50,29 +46,29 @@
 			</fieldset>
 			<fieldset id='brush-shelf'>
 				<legend>Brush options</legend>
-				<span>Opacity: </span>
-				<input id='brush-opacity-slider' type='range' min='0' max='100'>
-				<span>Thickness: <code class='js-line-thickness'>30</code></span>
-				<input type='range' class='line-thickness' min='0.1' max='100' step='0.1' value='30'>
-				<span>Eraser</span>
-				<input id='select-eraser-checkbox' type='checkbox'>
-				<br>
-				<span>Flow</span>
-				<input id='brush-flow-slider' type='range' min='0' max='100'>
-				<br>
-				<span>Spacing</span>
-				<input id='brush-spacing-slider' type='range' min='0' max='100'>
-				<br>
-				<span>Angle</span>
-				<input id='brush-angle-slider' type='range' min='0' max='360'>
-				<br>
+
+				<span>Opacity: <code class='js-brush-opacity'></code></span>
+				<input type='range' class='brush-opacity' min='0' max='100'>
+
+				<span>Thickness: <code class='js-brush-size'></code></span>
+				<input type='range' class='brush-size' min='0.1' max='100' step='0.1'>
+
+				<span>Flow: <code class='js-brush-flow'></code></span>
+				<input type='range' class='brush-flow' min='0' max='100'>
+
+				<span>Spacing: <code class='js-brush-spacing'></code></span>
+				<input type='range' class='brush-spacing' min='0' max='100'>
+
+				<span>Angle: <code class='js-brush-angle'></code></span>
+				<input type='range' class='brush-angle' min='0' max='360'>
+
 				<span>Rotate to direction</span>
 				<input id='brush-rotate-to-direction-checkbox' type='checkbox'>
 			</fieldset>
 			<fieldset>
 				<legend>Actions</legend>
-				<button type='button' onclick='clearLayer();'>Erase all</button>
-				<button type='button' onclick='fillLayer();'>Fill layer</button>
+				<button type='button' onclick='clearLayer()'>Erase all</button>
+				<button type='button' onclick='fillLayer()'>Fill layer</button>
 			</fieldset>
 		</div>
 		<div class='footer'>

@@ -28,6 +28,7 @@ const mouse = {
 	x: 0, y: 0,
 	rx: 0, ry: 0
 }
+let tool = 'pen';
 
 // Register mouse events
 
@@ -38,10 +39,11 @@ function canvasPointerDown(e) {
 	getRelativePosition();
 	if (pointerEventsNone)
 		canvasContainer.style.setProperty('cursor', 'none');
-	if (e.pointerType === "pen" && e.button == 5)
+	if (tool === 'eraser' || (tool === 'pen' && e.pointerType === 'pen' && e.button == 5))
 		croquis.setPaintingKnockout(true);
-	croquis.down(mouse.rx, mouse.ry, e.pointerType === "pen" ? e.pressure : 1);
-	document.addEventListener('pointermove', canvasPointerMove);
+	croquis.down(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
+	if (tool === 'pen' || tool === 'eraser')
+		document.addEventListener('pointermove', canvasPointerMove);
 	document.addEventListener('pointerup', canvasPointerUp);
 }
 function canvasPointerMove(e) {
@@ -49,7 +51,7 @@ function canvasPointerMove(e) {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 	getRelativePosition();
-	croquis.move(mouse.rx, mouse.ry, e.pointerType === "pen" ? e.pressure : 1);
+	croquis.move(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 }
 function canvasPointerUp(e) {
 	setPointerEvent(e);
@@ -58,8 +60,8 @@ function canvasPointerUp(e) {
 	getRelativePosition();
 	if (pointerEventsNone)
 		canvasContainer.style.setProperty('cursor', 'crosshair');
-	croquis.up(mouse.rx, mouse.ry, e.pointerType === "pen" ? e.pressure : 1);
-	if (e.pointerType === "pen" && e.button == 5)
+	croquis.up(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
+	if (e.pointerType === 'pen' && e.button == 5)
 		setTimeout(function() {croquis.setPaintingKnockout(selectEraserCheckbox.checked)}, 30);//timeout should be longer than 20 (knockoutTickInterval in Croquis)
 	document.removeEventListener('pointermove', canvasPointerMove);
 	document.removeEventListener('pointerup', canvasPointerUp);
@@ -129,61 +131,6 @@ function croquisPointerMove(e) {
 	}
 }
 
-// Render options
-
-var toolStabilizeLevelSlider =
-	document.getElementById('tool-stabilize-level-slider');
-var toolStabilizeWeightSlider =
-	document.getElementById('tool-stabilize-weight-slider');
-toolStabilizeLevelSlider.value = croquis.getToolStabilizeLevel();
-toolStabilizeWeightSlider.value = croquis.getToolStabilizeWeight() * 100;
-
-// Brush options
-
-let selectEraserCheckbox = document.getElementById('select-eraser-checkbox'),
-	brushOpacitySlider = document.getElementById('brush-opacity-slider'),
-	brushFlowSlider = document.getElementById('brush-flow-slider'),
-	brushSpacingSlider = document.getElementById('brush-spacing-slider'),
-	brushAngleSlider = document.getElementById('brush-angle-slider'),
-	brushRotateToDirectionCheckbox = document.getElementById('brush-rotate-to-direction-checkbox');
-
-brushOpacitySlider.value = croquis.getPaintingOpacity() * 100;
-brushFlowSlider.value = brush.getFlow() * 100;
-brushSpacingSlider.value = brush.getSpacing() * 100;
-brushAngleSlider.value = brush.getAngle();
-brushRotateToDirectionCheckbox.checked = brush.getRotateToDirection();
-
-toolStabilizeLevelSlider.onchange = function () {
-	croquis.setToolStabilizeLevel(toolStabilizeLevelSlider.value);
-	toolStabilizeLevelSlider.value = croquis.getToolStabilizeLevel();
-}
-toolStabilizeWeightSlider.onchange = function () {
-	croquis.setToolStabilizeWeight(toolStabilizeWeightSlider.value * 0.01);
-	toolStabilizeWeightSlider.value = croquis.getToolStabilizeWeight() * 100;
-}
-
-selectEraserCheckbox.onchange = function () {
-	croquis.setPaintingKnockout(selectEraserCheckbox.checked);
-}
-brushOpacitySlider.onchange = function () {
-	croquis.setPaintingOpacity(brushOpacitySlider.value * 0.01);
-}
-brushFlowSlider.onchange = function () {
-	brush.setFlow(brushFlowSlider.value * 0.01);
-}
-brushSpacingSlider.onchange = function () {
-	brush.setSpacing(brushSpacingSlider.value * 0.01);
-}
-brushAngleSlider.onchange = function () {
-	brush.setAngle(brushAngleSlider.value);
-	updatePointer();
-}
-brushRotateToDirectionCheckbox.onchange = function () {
-	brush.setRotateToDirection(brushRotateToDirectionCheckbox.checked);
-}
-
-
-
 // Colour picker
 
 const colourPickerPreview = document.querySelector('.colour-picker-preview');
@@ -209,12 +156,72 @@ let backgroundCheckerImage;
 })();
 colourPickerPreview.style.backgroundImage = 'url(' + backgroundCheckerImage.toDataURL() + ')';
 
+// Render options
+
+// Stabilizer level
+document.querySelector('.render-stabilizer').value
+ = document.querySelector('.js-render-stabilizer').innerText
+ = croquis.getToolStabilizeLevel();
+document.querySelector('.render-stabilizer').onchange = e => {
+	croquis.setToolStabilizeLevel(parseFloat(e.target.value));
+	document.querySelector('.js-render-stabilizer').innerText = croquis.getToolStabilizeLevel();
+}
+
+// Weight
+document.querySelector('.render-weight').value
+ = document.querySelector('.js-render-weight').innerText
+ = croquis.getToolStabilizeWeight() * 100;
+document.querySelector('.render-weight').onchange = e => {
+	croquis.setToolStabilizeWeight(parseFloat(e.target.value) * 0.01);
+	document.querySelector('.js-render-weight').innerText = croquis.getToolStabilizeWeight() * 100;
+}
+
 // Brush options
 
-document.querySelector('.line-thickness').onchange = e => {
+// Brush opacity
+document.querySelector('.brush-opacity').value
+ = document.querySelector('.js-brush-opacity').innerText
+ = croquis.getPaintingOpacity() * 100;
+document.querySelector('.brush-opacity').onchange = e => {
+	croquis.setPaintingOpacity(parseFloat(e.target.value) * 0.01);
+	document.querySelector('.js-brush-opacity').innerText = croquis.getPaintingOpacity() * 100;
+}
+
+// Brush size
+document.querySelector('.brush-size').value
+ = document.querySelector('.js-brush-size').innerText
+ = brush.getSize();
+document.querySelector('.brush-size').onchange = e => {
 	brush.setSize(parseFloat(e.target.value));
-	document.querySelector('.js-line-thickness').innerText = brush.getSize();
+	document.querySelector('.js-brush-size').innerText = brush.getSize();
 	updatePointer();
+}
+
+// Brush flow
+document.querySelector('.brush-flow').value
+ = document.querySelector('.js-brush-flow').innerText
+ = brush.getFlow() * 100;
+document.querySelector('.brush-flow').onchange = e => {
+	brush.setFlow(parseFloat(e.target.value) * 0.01);
+	document.querySelector('.js-brush-flow').innerText = brush.getFlow() * 100;
+}
+
+// Brush spacing
+document.querySelector('.brush-spacing').value
+ = document.querySelector('.js-brush-spacing').innerText
+ = brush.getSpacing() * 100;
+document.querySelector('.brush-spacing').onchange = e => {
+	brush.setSpacing(parseFloat(e.target.value) * 0.01);
+	document.querySelector('.js-brush-spacing').innerText = brush.getSpacing() * 100;
+}
+
+// Brush angle
+document.querySelector('.brush-angle').value
+ = document.querySelector('.js-brush-angle').innerText
+ = brush.getAngle();
+document.querySelector('.brush-angle').onchange = e => {
+	brush.setAngle(parseFloat(e.target.value));
+	document.querySelector('.js-brush-angle').innerText = brush.getAngle();
 }
 
 // Mouse position indicators
@@ -243,18 +250,22 @@ document.addEventListener('mousemove', (e) => {
 Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.redo);
 Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
 
+// Tools
 
-// Utilities
+function changeTool (el) {
+	tool = el.getAttribute('data-tool');
+}
 
+// Utility functions
 
 function setPointerEvent(e) {
-	if (e.pointerType !== "pen" && Croquis.Tablet.pen() && Croquis.Tablet.pen().pointerType) {//it says it's not a pen but it might be a wacom pen
-		e.pointerType = "pen";
+	if (e.pointerType !== 'pen' && Croquis.Tablet.pen() && Croquis.Tablet.pen().pointerType) {//it says it's not a pen but it might be a wacom pen
+		e.pointerType = 'pen';
 		e.pressure = Croquis.Tablet.pressure();
 		if (Croquis.Tablet.isEraser()) {
 			Object.defineProperties(e, {
-				"button": { value: 5 },
-				"buttons": { value: 32 }
+				'button': { value: 5 },
+				'buttons': { value: 32 }
 			});
 		}
 	}
