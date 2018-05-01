@@ -89,3 +89,18 @@ input[type=range]:focus::-ms-fill-lower {
 fieldset {
 	padding: 0 5px;
 }
+
+
+
+.small-button {
+	height: 24px;
+	width: 24px;
+	padding: 0;
+	font-size: 19px;
+	padding-top: -13px;
+	padding-left: 3px;
+	background: lightgrey;
+	border-radius: 3px;
+	border: 1px solid grey;
+	cursor: pointer;
+}

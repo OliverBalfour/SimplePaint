@@ -19,6 +19,16 @@ body {
 	overflow: hidden;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family: sans-serif;
+	margin-top: 0;
+	font-weight: 300;
+}
+
+.hidden {
+	display: none;
+}
+
 .menu {
 	position: absolute;
 	top: 0;
@@ -60,6 +70,31 @@ body {
 	width: 100%;
 	border-top: var(--area-border);
 	background: var(--area-background);
+}
+
+.modals {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 2;
+	padding: 100px 260px;
+}
+
+.modal {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: white;
+	padding: 20px;
+}
+
+.modal-close {
+	position: absolute;
+	top: 108px;
+	right: 268px;
 }
 
 .canvases {
@@ -144,6 +179,10 @@ body {
 
 .brush-image.on {
   opacity: 1;
+}
+
+.tool-options .new-brush-button {
+	color: black;
 }
 
 .tool-options * {

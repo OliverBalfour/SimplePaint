@@ -310,19 +310,52 @@ function getRelativePosition() {
 // Upload a brush
 
 function uploadBrush () {
-	getImage()
-		.then((img) => {
-			document.querySelector('#brush-image-shelf')
+	getImage(
+		'Please upload an image',
+		'The image will be added as a brush. Make sure to use transparency and not white for empty spaces within the brush.'
+	)
+		.then((data) => {
+			let img = document.createElement('img');
+			document.querySelector('#brush-image-shelf').insertBefore(
+				img,
+				document.querySelector('.new-brush-button')
+			);
+			img.classList.add('brush-image');
+			img.src = data;
+			img.addEventListener('pointerdown', brushImagePointerDown);
 		})
 		.catch((e) => {
 			alert('Error:\n' + e);
 		});
 }
 
-function getImage() {
+// resolve returns image data, reject returns error
+const getImagePromise = { resolve: null, reject: null };
+function getImage (title, info) {
 	return new Promise ((resolve, reject) => {
-		reject()
-		document.querySelector('')
+		getImagePromise = {resolve, reject};
+		document.querySelector('.modal-image-upload').children[0].innerText = title;
+		document.querySelector('.modal-image-upload').children[1].innerText = info;
+		openModal('modal-image-upload');
 	});
 }
+function uploadImage () {
+	if (document.querySelector('.image-upload-input').files.length) {
+		let reader = new FileReader();
+		reader.readAsDataURL(document.querySelector('.image-upload-input').files[0]);
+		reader.addEventListener('load', () => {
+			closeModal('modal-image-upload');
+			getImagePromise.resolve(reader.result);
+			getImagePromise = { resolve: null, reject: null };
+		});
+	}
+}
 
+function openModal (className) {
+	document.querySelector('.modals').classList.remove('hidden');
+	document.querySelector('.' + className).classList.remove('hidden');
+}
+function closeModal (className) {
+	document.querySelector('.modals').classList.add('hidden');
+	document.querySelector('.' + className).classList.add('hidden');
+}

@@ -42,7 +42,7 @@
 					<img src='./brush/b3.png' class='brush-image'></img>
 					<img src='./brush/b4.png' class='brush-image'></img>
 					<img src='./brush/b5.png' class='brush-image'></img>
-					<button class='new-brush-button' onclick='uploadBrush()'>+</button>
+					<div class='new-brush-button small-button' onclick='uploadBrush()'>+</div>
 				</div>
 			</fieldset>
 			<fieldset id='brush-shelf'>
@@ -79,8 +79,14 @@
 		</div>
 		<div class='canvases'>
 		</div>
-		<div class='modals'>
-			
+		<div class='modals hidden'>
+			<div class='modal hidden modal-image-upload'>
+				<h2></h2><p></p>
+				<div class='modal-close small-button' onclick='closeModal("modal-image-upload")'>&times;</div>
+				<input type='file' class='image-upload-input' accept='image/*'>
+				<br>
+				<button onclick='uploadImage()'>Done</button>
+			</div>
 		</div>
 
 		<script src='./colourpicker/colour-picker.js'></script>
