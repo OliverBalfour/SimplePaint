@@ -143,42 +143,42 @@ h1, h2, h3, h4, h5, h6 {
 
 
 #tablet-api {
-  position: absolute;
-  top: -1000px;
+	position: absolute;
+	top: -1000px;
 }
 
 .croquis-dirty-rect-display {
-  touch-action: none;
+	touch-action: none;
 }
 
-#circle-brush {
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-  border-radius: 15px;
-  background-color: #000;
+.circle-brush {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	border-radius: 15px;
+	background-color: #000;
 }
 
 .brush-pointer {
-  position: absolute;
-  font-size: 0;
-  pointer-events: none;
-  z-index: 9999;
+	position: absolute;
+	font-size: 0;
+	pointer-events: none;
+	z-index: 9999;
 }
 
 .brush-image {
-  height: 30px;
-  width: auto;
-  opacity: 0.5;
+	height: 30px;
+	width: 30px;
+	opacity: 0.5;
 }
 
 .brush-image:hover {
-  cursor: pointer;
-  opacity: 1;
+	cursor: pointer;
+	opacity: 1;
 }
 
 .brush-image.on {
-  opacity: 1;
+	opacity: 1;
 }
 
 .tool-options .new-brush-button {

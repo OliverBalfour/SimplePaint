@@ -83,9 +83,9 @@ function fillLayer () {
 
 // Brush images
 
-let circleBrush = document.getElementById('circle-brush'),
+let circleBrushes = Array.from(document.getElementsByClassName('circle-brush')),
 	brushImages = Array.from(document.getElementsByClassName('brush-image')),
-	currentBrush = circleBrush;
+	currentBrush = circleBrushes[0];
 
 brushImages.forEach(brush => {
 	brush.addEventListener('pointerdown', brushImagePointerDown);
@@ -93,8 +93,8 @@ brushImages.forEach(brush => {
 
 function brushImagePointerDown(e) {
 	var image = e.currentTarget;
-	currentBrush.className = 'brush-image';
-	image.className = 'brush-image on';
+	currentBrush.classList.remove('on');
+	image.classList.add('on');
 	currentBrush = image;
 
 	[ 'opacity', 'size', 'flow', 'spacing', 'angle' ]
@@ -112,7 +112,7 @@ function brushImagePointerDown(e) {
 		el.onchange({ target: el });
 	}
 
-	if (image == circleBrush)
+	if (circleBrushes.indexOf(image) !== -1)
 		image = null;
 	brush.setImage(image);
 	updatePointer();
@@ -297,7 +297,7 @@ function updatePointer() {
 	if (pointerEventsNone) {
 		var image = currentBrush;
 		var threshold;
-		if (currentBrush == circleBrush) {
+		if (circleBrushes.indexOf(currentBrush) !== -1) {
 			image = null;
 			threshold = 0xff;
 		}
