@@ -39,10 +39,13 @@ function canvasPointerDown(e) {
 	getRelativePosition();
 	if (pointerEventsNone)
 		canvasContainer.style.setProperty('cursor', 'none');
+	if (tool === 'picker')
+		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
 	if (tool === 'eraser' || (tool === 'pen' && e.pointerType === 'pen' && e.button == 5))
 		croquis.setPaintingKnockout(true);
-	croquis.down(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
-	if (tool === 'pen' || tool === 'eraser')
+	if (tool !== 'picker')
+		croquis.down(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
+	if (tool !== 'line')
 		document.addEventListener('pointermove', canvasPointerMove);
 	document.addEventListener('pointerup', canvasPointerUp);
 }
@@ -51,7 +54,10 @@ function canvasPointerMove(e) {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 	getRelativePosition();
-	croquis.move(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
+	if (tool === 'picker')
+		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
+	else
+		croquis.move(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 }
 function canvasPointerUp(e) {
 	setPointerEvent(e);
@@ -60,7 +66,10 @@ function canvasPointerUp(e) {
 	getRelativePosition();
 	if (pointerEventsNone)
 		canvasContainer.style.setProperty('cursor', 'crosshair');
-	croquis.up(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
+	if (tool === 'picker')
+		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
+	else
+		croquis.up(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 	if (e.pointerType === 'pen' && e.button == 5)
 		setTimeout(function() {croquis.setPaintingKnockout(selectEraserCheckbox.checked)}, 30);//timeout should be longer than 20 (knockoutTickInterval in Croquis)
 	document.removeEventListener('pointermove', canvasPointerMove);

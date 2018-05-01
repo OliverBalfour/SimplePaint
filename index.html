@@ -7,6 +7,7 @@
 		<link rel='stylesheet' type='text/css' href='ui.css'>
 	</head>
 	<body>
+		<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
 		<div class='menu'>
 			Menu
 		</div>
@@ -14,6 +15,7 @@
 			<button onclick='changeTool(this)' data-tool='pen'>Pen</button>
 			<button onclick='changeTool(this)' data-tool='line'>Line</button>
 			<button onclick='changeTool(this)' data-tool='eraser'>Eraser</button>
+			<button onclick='changeTool(this)' data-tool='picker'>Eyedropper</button>
 		</div>
 		<div class='tool-options'>
 			<span class='colour-picker-preview'>
@@ -21,7 +23,11 @@
 			</span>
 			<div class='picker'></div>
 
-			<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
+			<fieldset>
+				<legend>Layers</legend>
+				<div class='layers-shelf'></div>
+			</fieldset>
+
 			<fieldset>
 				<legend>Render options</legend>
 				<div id='tool-shelf'>
