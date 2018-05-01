@@ -96,6 +96,22 @@ function brushImagePointerDown(e) {
 	currentBrush.className = 'brush-image';
 	image.className = 'brush-image on';
 	currentBrush = image;
+
+	[ 'opacity', 'size', 'flow', 'spacing', 'angle' ]
+	.forEach(attr => {
+		if (image.getAttribute('data-' + attr)) {
+			let el = document.querySelector('.brush-' + attr);
+			el.value = image.getAttribute('data-' + attr);
+			el.onchange({ target: el });
+		}
+	});
+
+	if (image.getAttribute('data-rotate')) {
+		let el = document.querySelector('.brush-rotate');
+		el.checked = (image.getAttribute('data-rotate') === 'true');
+		el.onchange({ target: el });
+	}
+
 	if (image == circleBrush)
 		image = null;
 	brush.setImage(image);
