@@ -346,7 +346,7 @@ function uploadBrush () {
 }
 
 // resolve returns image data, reject returns error
-const getImagePromise = { resolve: null, reject: null };
+let getImagePromise = { resolve: null, reject: null };
 function getImage (title, info) {
 	return new Promise ((resolve, reject) => {
 		getImagePromise = {resolve, reject};
