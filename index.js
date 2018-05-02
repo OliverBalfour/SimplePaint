@@ -22,6 +22,7 @@ croquis.addLayer();
 croquis.fillLayer('#fff');
 croquis.addLayer();
 croquis.selectLayer(1);
+croquis.setUndoLimit(100);
 croquis.unlockHistory();
 
 {
