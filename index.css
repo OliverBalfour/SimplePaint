@@ -180,14 +180,27 @@ h1, h2, h3, h4, h5, h6 {
 	opacity: 1;
 }
 
-.tool-options .new-brush-button {
+.tool-options div.small-button {
 	color: black;
 	display: inline-block;
+}
+
+.remove-layer-button {
+	margin-left: 10px;
 }
 
 .tool-options * {
 	color: white;
 }
+
 .tool-options button {
 	color: black;
+}
+
+.layer {
+	display: block;
+	padding: 6px;
+}
+.layer.active {
+	font-weight: 600;
 }

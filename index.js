@@ -24,6 +24,12 @@ croquis.addLayer();
 croquis.selectLayer(1);
 croquis.unlockHistory();
 
+{
+	let layers = croquis.getLayers();
+	layers[0].setAttribute('data-name', 'Background');
+	layers[1].setAttribute('data-name', 'Layer 1');
+}
+
 const mouse = {
 	x: 0, y: 0,
 	rx: 0, ry: 0
@@ -43,6 +49,8 @@ function canvasPointerDown(e) {
 		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
 	if (tool === 'eraser' || (tool === 'pen' && e.pointerType === 'pen' && e.button == 5))
 		croquis.setPaintingKnockout(true);
+	else
+		croquis.setPaintingKnockout(false);
 	if (tool !== 'picker')
 		croquis.down(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 	if (tool !== 'line')
@@ -383,4 +391,44 @@ function openModal (className) {
 function closeModal (className) {
 	document.querySelector('.modals').classList.add('hidden');
 	document.querySelector('.' + className).classList.add('hidden');
+}
+
+function updateLayers () {
+	let shelf = document.querySelector('.layers-shelf'),
+		num = croquis.getLayerCount(),
+		layers = croquis.getLayers();
+
+	shelf.innerHTML = '';
+
+	for (let i = 0; i < num; i++) {
+		let el = document.createElement('div');
+		el.classList.add('layer');
+		el.addEventListener('click', layerClick);
+		el.innerHTML = layers[i].getAttribute('data-name')
+		 + "<div class='remove-layer-button small-button' onclick='removeLayer(this)'>&times;</div>";
+		shelf.appendChild(el);
+	}
+
+	Array.from(shelf.children)[croquis.getCurrentLayerIndex()].classList.add('active');
+}
+updateLayers();
+
+function layerClick (e) {
+	let layers = Array.from(e.target.parentElement.children);
+	croquis.selectLayer(layers.indexOf(e.target));
+	layers.forEach(layer => {
+		layer.classList.remove('active');
+	});
+	layers[croquis.getCurrentLayerIndex()].classList.add('active');
+}
+
+function addLayer () {
+	let layerName = prompt('Layer name:');
+	croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', layerName);
+	updateLayers();
+}
+
+function removeLayer (el) {
+	croquis.removeLayer(Array.from(el.parentElement.parentElement.children).indexOf(el.parentElement));
+	updateLayers();
 }
