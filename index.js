@@ -62,9 +62,10 @@ function canvasPointerMove(e) {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 	getRelativePosition();
-	if (tool === 'picker')
+	// only pick 1/10 of the time to reduce lag
+	if (tool === 'picker' && Math.random() < 0.1)
 		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
-	else
+	else if (tool !== 'picker')
 		croquis.move(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 }
 function canvasPointerUp(e) {
@@ -288,6 +289,11 @@ document.addEventListener('mousemove', (e) => {
 
 Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.redo);
 Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
+
+Mousetrap.bind('p', () => tool = 'pen');
+Mousetrap.bind('l', () => tool = 'line');
+Mousetrap.bind('e', () => tool = 'eraser');
+Mousetrap.bind(['o', 'c'], () => tool = 'picker');
 
 // Tools
 
