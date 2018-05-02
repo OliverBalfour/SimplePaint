@@ -290,7 +290,7 @@ document.addEventListener('mousemove', (e) => {
 Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.redo);
 Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
 
-Mousetrap.bind('p', () => tool = 'pen');
+Mousetrap.bind(['p', 'n'], () => tool = 'pen');
 Mousetrap.bind('l', () => tool = 'line');
 Mousetrap.bind('e', () => tool = 'eraser');
 Mousetrap.bind(['o', 'c'], () => tool = 'picker');
