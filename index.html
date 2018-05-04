@@ -9,7 +9,81 @@
 	<body>
 		<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
 		<div class='menu'>
-			Menu
+			<ul class='menu-bar'>
+				<li>
+					<span>File</span>
+					<ul class='submenu'>
+						<li><span onclick="alert('TODO')">New</span></li>
+						<li><span onclick="alert('TODO')">Open</span></li>
+						<li><span onclick="alert('TODO')">Save (Ctrl+S)</span></li>
+						<li>
+							<span>Save as<p>&#10093;</p></span>
+							<ul class='submenu'>
+								<li><span onclick="alert('TODO')">.png</span></li>
+								<li><span onclick="alert('TODO')">.jpg</span></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<span>Edit</span>
+					<ul class='submenu'>
+						<li><span onclick='croquis.undo()'>Undo (Ctrl+Z)</li>
+						<li><span onclick='croquis.redo()'>Redo (Ctrl+Y)</li>
+					</ul>
+				</li>
+				<li>
+					<span>View</span>
+					<ul class='submenu'>
+						<li><span onclick="alert('TODO')">Toggle fullscreen</span></li>
+						<li><span onclick="alert('TODO')">Show tool bar</span></li>
+						<li><span onclick="alert('TODO')">Show tool options</span></li>
+						<li><span onclick="alert('TODO')">Show status bar</span></li>
+						<li><span onclick="alert('TODO')">Zoom in</span></li>
+						<li><span onclick="alert('TODO')">Zoom out</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>Image</span>
+					<ul class='submenu'>
+						<li>
+							<span>Rotate<p>&#10093;</p></span>
+							<ul class='submenu'>
+								<li><span onclick="alert('TODO')">90&#176; (clockwise)</li>
+								<li><span onclick="alert('TODO')">180&#176;</li>
+								<li><span onclick="alert('TODO')">270&#176;</li>
+							</ul>
+						</li>
+						<li><span onclick="alert('TODO')">Resize canvas</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>Layer</span>
+					<ul class='submenu'>
+						<li><span onclick="alert('TODO')">New layer</span></li>
+						<li><span onclick="alert('TODO')">Delete active layer</span></li>
+						<li><span onclick="alert('TODO')">Merge layers</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>Filter</span>
+					<ul class='submenu'>
+						<li><span onclick="alert('TODO')">Gaussian blur</span></li>
+						<li><span onclick="alert('TODO')">Sobel edge detection</span></li>
+						<li><span onclick="alert('TODO')">Saturate/ Desaturate</span></li>
+						<li><span onclick="alert('TODO')">Greyscale</span></li>
+						<li><span onclick="alert('TODO')">Hue shift</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>Help</span>
+					<ul class='submenu'>
+						<li><span onclick="alert('TODO')">About</span></li>
+						<li><span><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></span></li>
+					</ul>
+				</li>
+			</ul>
+			<span style='color: #1B2E2E; float: right; padding: 2px'>Image Editor</span>
 		</div>
 		<div class='toolbar'>
 			<button onclick='changeTool(this)' title='Hotkey: P or N' data-tool='pen'>Pen</button>

@@ -6,6 +6,11 @@
 	--range-thumb-size: 12px;
 	--range-thumb-border: 0;
 	--range-thumb-border-radius: 6px;
+
+	--menu-text-color: white;
+	--menu-background: darkslategrey;
+	--menu-background-hover: lightslategrey;
+	--menu-item-width: 120px;
 }
 
 input[type=range] {
@@ -103,4 +108,80 @@ fieldset {
 	border-radius: 3px;
 	border: 1px solid grey;
 	cursor: pointer;
+}
+
+
+
+.menu-bar, .menu-bar ul {
+	list-style: none;
+	position: relative;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.menu-bar span {
+	display: block;
+	color: var(--menu-text-color);
+	text-decoration: none;
+	font-size: 12px;
+	padding: 5px 8px;
+	cursor: default;
+}
+.menu-bar span[onclick] {
+	cursor: pointer;
+}
+.menu-bar span[onclick^='alert'] {
+	color: grey;
+}
+.menu-bar p {
+	padding: 0;
+	margin: 0;
+	display: block;
+	color: var(--menu-text-color);
+	font-size: 12px;
+	float: right;
+}
+.menu-bar a {
+	color: var(--menu-text-color);
+	text-decoration: none;
+}
+
+.menu-bar li {
+	position: relative;
+	float: left;
+	margin: 0;
+	padding: 0;
+	background: var(--menu-background);
+}
+
+.menu-bar li.current-menu-item, .menu-bar li:hover {
+	background: var(--menu-background-hover);
+}
+
+.menu-bar ul {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: var(--menu-background);
+	padding: 0;
+}
+
+.menu-bar ul li {
+	float: none;
+	width: var(--menu-item-width);
+}
+
+.menu-bar ul span {
+	line-height: 120%;
+}
+
+.menu-bar ul ul {
+	top:0;
+	left:100%
+}
+
+.menu-bar li:hover > ul {
+	display:block
 }

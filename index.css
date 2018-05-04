@@ -2,7 +2,7 @@
 :root {
 	--icon-size: 24px;
 
-	--menu-height: 60px;
+	--menu-height: 26px;
 	--footer-height: var(--icon-size);
 	--toolbar-width: calc(var(--icon-size) * 2);
 	--options-width: 300px;
@@ -13,6 +13,7 @@
 
 * {
 	box-sizing: border-box;
+	font-family: sans-serif;
 }
 
 body {
@@ -37,6 +38,7 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	border-bottom: var(--area-border);
 	background: var(--area-background);
+	z-index: 1;
 }
 
 .toolbar {
