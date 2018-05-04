@@ -364,8 +364,8 @@ let getImagePromise = { resolve: null, reject: null };
 function getImage (title, info) {
 	return new Promise ((resolve, reject) => {
 		getImagePromise = {resolve, reject};
-		document.querySelector('.modal-image-upload').children[0].innerText = title;
-		document.querySelector('.modal-image-upload').children[1].innerText = info;
+		document.querySelector('.modal-image-upload').children[1].innerText = title;
+		document.querySelector('.modal-image-upload').children[2].innerText = info;
 		openModal('modal-image-upload');
 	});
 }

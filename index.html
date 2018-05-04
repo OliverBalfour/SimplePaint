@@ -78,7 +78,7 @@
 				<li>
 					<span>Help</span>
 					<ul class='submenu'>
-						<li><span onclick="alert('TODO')">About</span></li>
+						<li><span onclick='openModal("modal-about")'>About</span></li>
 						<li><span><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></span></li>
 					</ul>
 				</li>
@@ -177,11 +177,27 @@
 		</div>
 		<div class='modals hidden'>
 			<div class='modal hidden modal-image-upload'>
-				<h2></h2><p></p>
 				<div class='modal-close small-button' onclick='closeModal("modal-image-upload")'>&times;</div>
+				<h2></h2><p></p>
 				<input type='file' class='image-upload-input' accept='image/*'>
 				<br>
 				<button onclick='uploadImage()'>Done</button>
+			</div>
+			<div class='modal hidden modal-about'>
+				<div class='modal-close small-button' onclick='closeModal("modal-about")'>&times;</div>
+				<h2>About</h2>
+				<p>
+					Simple HTML5 Canvas based image editor designed for the web and ChromeOS.
+				</p>
+				<p>
+					Dependencies:
+					<ul>
+						<li>croquis.js (for brush implementation)</li>
+						<li>tinycolor.js (for colour manipulation)</li>
+						<li>mousetrap.js (for keyboard shortcuts)</li>
+					</ul>
+				</p>
+				<p>Copyright Oliver Balfour, 2018. <a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
 			</div>
 		</div>
 
