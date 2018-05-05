@@ -3,7 +3,7 @@
 	--icon-size: 24px;
 
 	--menu-height: 26px;
-	--footer-height: var(--icon-size);
+	--footer-height: 26px;
 	--toolbar-width: calc(var(--icon-size) * 2);
 	--options-width: 300px;
 
@@ -72,6 +72,7 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	border-top: var(--area-border);
 	background: var(--area-background);
+	z-index: 1;
 }
 
 .modals {

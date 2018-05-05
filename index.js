@@ -517,13 +517,47 @@ function toggleFullscreen () {
 		exitFullscreen();
 }
 
+const rootStyle = getComputedStyle(document.documentElement);
+const view = {
+	statusBar: {
+		open: true,
+		prop: '--footer-height',
+		size: rootStyle.getPropertyValue('--footer-height')
+	},
+	toolBar: {
+		open: true,
+		prop: '--toolbar-width',
+		size: rootStyle.getPropertyValue('--toolbar-width')
+	},
+	toolOptions: {
+		open: true,
+		prop: '--options-width',
+		size: rootStyle.getPropertyValue('--options-width')
+	}
+}
+
+// section must be the name of a child of the `view` object (statusBar etc.)
+function toggleView (section) {
+	if (view[section].open) {
+		document.documentElement.style.setProperty(view[section].prop, '0px');
+	} else {
+		document.documentElement.style.setProperty(view[section].prop, view[section].size);
+	}
+
+	view[section].open = !view[section].open;
+}
+
 // Keyboard shortcuts
 
 // Import
-Mousetrap.bind(['ctrl+o', 'meta+o'], openImage);
+Mousetrap.bind(['ctrl+o', 'meta+o'], e => {
+	e.preventDefault();
+	openImage();
+});
 
 // Export
-Mousetrap.bind(['ctrl+e', 'meta+e'], () => {
+Mousetrap.bind(['ctrl+s', 'meta+s'], e => {
+	e.preventDefault();
 	croquis.createFlattenThumbnail().toBlob(blob => {
 		saveAs(blob, 'image.' + (lastImageExport === 'image/png' ? 'png' : 'jpg'));
 	});
@@ -538,3 +572,13 @@ Mousetrap.bind(['p', 'n'], () => tool = 'pen');
 Mousetrap.bind('l', () => tool = 'line');
 Mousetrap.bind('e', () => tool = 'eraser');
 Mousetrap.bind(['o', 'c'], () => tool = 'picker');
+
+// Distraction free mode
+Mousetrap.bind('tab', e => {
+	e.preventDefault();
+	toggleView('toolBar');
+	toggleView('toolOptions');
+});
+
+// Fullscreen
+Mousetrap.bind('f11', toggleFullscreen);

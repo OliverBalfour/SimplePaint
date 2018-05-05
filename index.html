@@ -16,7 +16,7 @@
 						<li><span onclick="alert('TODO')">New</span></li>
 						<li><span onclick='openImage()'>Open (Ctrl+O)</span></li>
 						<li><span onclick="alert('TODO')">Open as Layer</span></li>
-						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+E)</span></a></li>
+						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+S)</span></a></li>
 						<li>
 							<span>Save as<p>&#10093;</p></span>
 							<ul class='submenu'>
@@ -36,10 +36,10 @@
 				<li>
 					<span>View</span>
 					<ul class='submenu'>
-						<li><span onclick='toggleFullscreen()'>Toggle fullscreen</span></li>
-						<li><span onclick="alert('TODO')">Show tool bar</span></li>
-						<li><span onclick="alert('TODO')">Show tool options</span></li>
-						<li><span onclick="alert('TODO')">Show status bar</span></li>
+						<li><span onclick='toggleFullscreen()'>Toggle fullscreen (F11)</span></li>
+						<li><span onclick='toggleView("toolBar")'>Toggle tool bar (Tab)</span></li>
+						<li><span onclick='toggleView("toolOptions")'>Toggle tool options (Tab)</span></li>
+						<li><span onclick='toggleView("statusBar")'>Toggle status bar</span></li>
 						<li><span onclick="alert('TODO')">Zoom in</span></li>
 						<li><span onclick="alert('TODO')">Zoom out</span></li>
 					</ul>
