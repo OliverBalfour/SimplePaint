@@ -388,12 +388,39 @@ function openImage () {
 	)
 		.then((data) => {
 			let img = document.createElement('img');
-			img.classList.add('brush-image');
 			img.src = data;
 			img.onload = () => {
 				let canvas = croquis.getLayers()[croquis.getCurrentLayerIndex()].children[0],
 					ctx = canvas.getContext('2d');
 				ctx.drawImage(img, 0, 0);
+			}
+		})
+		.catch((e) => {
+			alert('Error:\n' + e);
+		});
+}
+function openImageAsLayer () {
+	getImage(
+		'Please upload an image to use as a layer',
+		'The image will be blitted 1-to-1 to the canvas. (The image is not resized, this will be fixed later.)'
+	)
+		.then((data) => {
+			let img = document.createElement('img');
+			img.src = data;
+			croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', 'Pasted image');
+
+			let layers = Array.from(document.querySelector('.layers-shelf').children);
+			croquis.selectLayer(layers.length - 1);
+			layers.forEach(layer => {
+				layer.classList.remove('active');
+			});
+			layers[croquis.getCurrentLayerIndex()].classList.add('active');
+
+			img.onload = () => {
+				let canvas = croquis.getLayers()[layers.length].children[0],
+					ctx = canvas.getContext('2d');
+				ctx.drawImage(img, 0, 0);
+				updateLayers();
 			}
 		})
 		.catch((e) => {
@@ -588,6 +615,10 @@ function toggleLayerThumbnails () {
 Mousetrap.bind(['ctrl+o', 'meta+o'], e => {
 	e.preventDefault();
 	openImage();
+});
+Mousetrap.bind(['ctrl+alt+o', 'meta+alt+o'], e => {
+	e.preventDefault();
+	openImageAsLayer();
 });
 
 // Export
