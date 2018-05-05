@@ -37,6 +37,26 @@ const mouse = {
 }
 let tool = 'pen';
 
+const rootStyle = getComputedStyle(document.documentElement);
+const view = {
+	statusBar: {
+		open: true,
+		prop: '--footer-height',
+		size: rootStyle.getPropertyValue('--footer-height')
+	},
+	toolBar: {
+		open: true,
+		prop: '--toolbar-width',
+		size: rootStyle.getPropertyValue('--toolbar-width')
+	},
+	toolOptions: {
+		open: true,
+		prop: '--options-width',
+		size: rootStyle.getPropertyValue('--options-width')
+	},
+	layerThumbs: true
+}
+
 // Register mouse events
 
 function canvasPointerDown(e) {
@@ -414,6 +434,16 @@ function closeModal (className) {
 
 // Layers
 
+function getLayerThumbnail (i) {
+	let w = croquis.getCanvasWidth(),
+		h = croquis.getCanvasHeight(),
+		size = 32,
+		wm = w > h ? size : w / h * size,
+		hm = h > w ? size : h / w * size;
+
+	return croquis.createLayerThumbnail(i, wm, hm);
+}
+
 function updateLayers () {
 	let shelf = document.querySelector('.layers-shelf'),
 		num = croquis.getLayerCount(),
@@ -425,14 +455,23 @@ function updateLayers () {
 		let el = document.createElement('div');
 		el.classList.add('layer');
 		el.addEventListener('click', layerClick);
-		el.innerHTML = layers[i].getAttribute('data-name')
+
+		el.innerHTML = (view.layerThumbs ? "<img src='" + getLayerThumbnail(i).toDataURL('image/png') + "' />" : '')
+		 + '<span>' + layers[i].getAttribute('data-name') + '</span>'
 		 + "<div class='remove-layer-button small-button' onclick='removeLayer(this)'>&times;</div>";
+
 		shelf.appendChild(el);
 	}
 
 	Array.from(shelf.children)[croquis.getCurrentLayerIndex()].classList.add('active');
 }
 updateLayers();
+
+function updateLayerThumbnails () {
+	Array.from(document.querySelectorAll('.layer img')).forEach((img, i) => {
+		img.src = getLayerThumbnail(i).toDataURL('image/png');
+	});
+}
 
 function layerClick (e) {
 	let layers = Array.from(e.target.parentElement.children);
@@ -517,25 +556,6 @@ function toggleFullscreen () {
 		exitFullscreen();
 }
 
-const rootStyle = getComputedStyle(document.documentElement);
-const view = {
-	statusBar: {
-		open: true,
-		prop: '--footer-height',
-		size: rootStyle.getPropertyValue('--footer-height')
-	},
-	toolBar: {
-		open: true,
-		prop: '--toolbar-width',
-		size: rootStyle.getPropertyValue('--toolbar-width')
-	},
-	toolOptions: {
-		open: true,
-		prop: '--options-width',
-		size: rootStyle.getPropertyValue('--options-width')
-	}
-}
-
 // section must be the name of a child of the `view` object (statusBar etc.)
 function toggleView (section) {
 	if (view[section].open) {
@@ -545,6 +565,21 @@ function toggleView (section) {
 	}
 
 	view[section].open = !view[section].open;
+}
+
+let layerThumbInterval;
+if (view.layerThumbs)
+	layerThumbInterval = setInterval(updateLayerThumbnails, 5 * 1000);
+
+function toggleLayerThumbnails () {
+	if (view.layerThumbs) {
+		clearInterval(layerThumbInterval);
+	} else {
+		layerThumbInterval = setInterval(updateLayerThumbnails, 5 * 1000);
+	}
+
+	view.layerThumbs = !view.layerThumbs;
+	updateLayers();
 }
 
 // Keyboard shortcuts
