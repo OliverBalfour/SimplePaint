@@ -15,7 +15,7 @@
 					<ul class='submenu'>
 						<li><span onclick="alert('TODO')">New</span></li>
 						<li><span onclick="alert('TODO')">Open</span></li>
-						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+S)</span></a></li>
+						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+E)</span></a></li>
 						<li>
 							<span>Save as<p>&#10093;</p></span>
 							<ul class='submenu'>
@@ -195,6 +195,7 @@
 						<li><a href='https://github.com/disjukr/croquis.js'>croquis.js</a> (for brush implementation)</li>
 						<li><a href='https://github.com/bgrins/TinyColor'>tinycolor.js</a> (for colour manipulation)</li>
 						<li><a href='https://craig.is/killing/mice'>mousetrap.js</a> (for keyboard shortcuts)</li>
+						<li><a href='https://github.com/eligrey/FileSaver.js'>FileSaver.js</a>, <a href='https://github.com/eligrey/canvas-toBlob.js'>canvas-toBlob.js</a> (for exporting images)</li>
 					</ul>
 				</p>
 				<p>Copyright Oliver Balfour, 2018. <a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
@@ -205,6 +206,8 @@
 		<script src='./croquis/croquis.js'></script>
 		<script src='./mousetrap/mousetrap.min.js'></script>
 		<script src='./tinycolor/dist/tinycolor-min.js'></script>
+		<script src='./canvas-to-blob/canvas-toBlob.js'></script>
+		<script src='./filesaver/FileSaver.js'></script>
 
 		<script type='text/javascript' src='index.js'></script>
 	</body>

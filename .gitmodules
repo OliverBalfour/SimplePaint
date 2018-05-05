@@ -10,3 +10,6 @@
 [submodule "mousetrap"]
 	path = mousetrap
 	url = https://github.com/ccampbell/mousetrap
+[submodule "canvas-to-blob"]
+	path = canvas-to-blob
+	url = https://github.com/eligrey/canvas-toBlob.js

@@ -460,19 +460,20 @@ function exportImageAs (el, ext) {
 	);
 }
 
-function download(){
-        var download = document.getElementById("download");
-        var image = document.getElementById("canvas").toDataURL("image/png")
-                    .replace("image/png", "image/octet-stream");
-        download.setAttribute("href", image);
-
-    }
-
 // Keyboard shortcuts
 
+// Export
+Mousetrap.bind(['ctrl+e', 'meta+e'], () => {
+	croquis.createFlattenThumbnail().toBlob(blob => {
+		saveAs(blob, 'image.' + (lastImageExport === 'image/png' ? 'png' : 'jpg'));
+	});
+});
+
+// Undo/Redo
 Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.redo);
 Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
 
+// Tools
 Mousetrap.bind(['p', 'n'], () => tool = 'pen');
 Mousetrap.bind('l', () => tool = 'line');
 Mousetrap.bind('e', () => tool = 'eraser');
