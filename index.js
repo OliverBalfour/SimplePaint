@@ -359,6 +359,28 @@ function uploadBrush () {
 		});
 }
 
+// Upload image
+
+function openImage () {
+	getImage(
+		'Please upload an image',
+		'The image will be blitted 1-to-1 to the canvas. (The canvas is not resized, this will be fixed later.)'
+	)
+		.then((data) => {
+			let img = document.createElement('img');
+			img.classList.add('brush-image');
+			img.src = data;
+			img.onload = () => {
+				let canvas = croquis.getLayers()[croquis.getCurrentLayerIndex()].children[0],
+					ctx = canvas.getContext('2d');
+				ctx.drawImage(img, 0, 0);
+			}
+		})
+		.catch((e) => {
+			alert('Error:\n' + e);
+		});
+}
+
 // resolve returns image data, reject returns error
 let getImagePromise = { resolve: null, reject: null };
 function getImage (title, info) {
@@ -461,6 +483,9 @@ function exportImageAs (el, ext) {
 }
 
 // Keyboard shortcuts
+
+// Import
+Mousetrap.bind(['ctrl+o', 'meta+o'], openImage);
 
 // Export
 Mousetrap.bind(['ctrl+e', 'meta+e'], () => {
