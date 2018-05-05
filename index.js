@@ -482,6 +482,41 @@ function exportImageAs (el, ext) {
 	);
 }
 
+// View menu
+
+document.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
+
+function enterFullscreen (element) {
+	if (element.requestFullscreen) {
+		element.requestFullscreen();
+	} else if (element.mozRequestFullScreen) {
+		element.mozRequestFullScreen();
+	} else if (element.webkitRequestFullScreen) {
+		element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+	}
+}
+function exitFullscreen () {
+	if (document.exitFullscreen) {
+		document.exitFullscreen();
+	} else if (document.webkitExitFullscreen) {
+		document.webkitExitFullscreen();
+	} else if (document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	} else if (document.msExitFullscreen) {
+		document.msExitFullscreen();
+	}
+}
+
+function toggleFullscreen () {
+	if (
+		!(window.fullScreen || (window.innerWidth == screen.width && window.innerHeight == screen.height))
+		&& document.fullscreenEnabled
+	)
+		enterFullscreen(document.documentElement);
+	else
+		exitFullscreen();
+}
+
 // Keyboard shortcuts
 
 // Import
