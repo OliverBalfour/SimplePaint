@@ -15,12 +15,12 @@
 					<ul class='submenu'>
 						<li><span onclick="alert('TODO')">New</span></li>
 						<li><span onclick="alert('TODO')">Open</span></li>
-						<li><span onclick="alert('TODO')">Save (Ctrl+S)</span></li>
+						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+S)</span></a></li>
 						<li>
 							<span>Save as<p>&#10093;</p></span>
 							<ul class='submenu'>
-								<li><span onclick="alert('TODO')">.png</span></li>
-								<li><span onclick="alert('TODO')">.jpg</span></li>
+								<li><a download='image.png'><span onclick='exportImageAs(this, "png")'>png</span></a></li>
+								<li><a download='image.jpg'><span onclick='exportImageAs(this, "jpg")'>jpg</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -192,9 +192,9 @@
 				<p>
 					Dependencies:
 					<ul>
-						<li>croquis.js (for brush implementation)</li>
-						<li>tinycolor.js (for colour manipulation)</li>
-						<li>mousetrap.js (for keyboard shortcuts)</li>
+						<li><a href='https://github.com/disjukr/croquis.js'>croquis.js</a> (for brush implementation)</li>
+						<li><a href='https://github.com/bgrins/TinyColor'>tinycolor.js</a> (for colour manipulation)</li>
+						<li><a href='https://craig.is/killing/mice'>mousetrap.js</a> (for keyboard shortcuts)</li>
 					</ul>
 				</p>
 				<p>Copyright Oliver Balfour, 2018. <a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>

@@ -390,6 +390,8 @@ function closeModal (className) {
 	document.querySelector('.' + className).classList.add('hidden');
 }
 
+// Layers
+
 function updateLayers () {
 	let shelf = document.querySelector('.layers-shelf'),
 		num = croquis.getLayerCount(),
@@ -429,6 +431,42 @@ function removeLayer (el) {
 	croquis.removeLayer(Array.from(el.parentElement.parentElement.children).indexOf(el.parentElement));
 	updateLayers();
 }
+
+// Export
+
+let lastImageExport = 'image/png';
+function exportImageAs (el, ext) {
+	const c = croquis.createFlattenThumbnail();
+	let type;
+	switch (ext) {
+		case 'png':
+			type = 'image/png'; break;
+		case 'jpg':
+		case 'jpeg':
+			type = 'image/jpeg'; break;
+		case 'last':
+		default:
+			type = lastImageExport;
+	}
+	lastImageExport = type;
+
+	el.parentElement.setAttribute('href', c.toDataURL(type));
+	el.parentElement.setAttribute(
+		'download',
+		'image.' + (
+			ext !== 'last' ? ext
+			 : (lastImageExport === 'image/png' ? 'png' : 'jpg')
+		)
+	);
+}
+
+function download(){
+        var download = document.getElementById("download");
+        var image = document.getElementById("canvas").toDataURL("image/png")
+                    .replace("image/png", "image/octet-stream");
+        download.setAttribute("href", image);
+
+    }
 
 // Keyboard shortcuts
 
