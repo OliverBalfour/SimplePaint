@@ -217,7 +217,7 @@ function getRelativePosition() {
 function openImage () {
 	modal.image(
 		'Please upload an image',
-		'The image will be blitted 1-to-1 to the canvas. (The canvas is not resized, this will be fixed later.)'
+		'The image will be blitted 1-to-1 to the canvas. (TODO: The canvas is not resized, this will be fixed later.)'
 	)
 		.then((data) => {
 			let img = document.createElement('img');
@@ -235,7 +235,7 @@ function openImage () {
 function openImageAsLayer () {
 	modal.image(
 		'Please upload an image to use as a layer',
-		'The image will be blitted 1-to-1 to the canvas. (The image is not resized, this will be fixed later.)'
+		'The image will be blitted 1-to-1 to the canvas. (TODO: The image is not resized, this will be fixed later.)'
 	)
 		.then((data) => {
 			let img = document.createElement('img');

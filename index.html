@@ -85,10 +85,11 @@
 					<ul class='submenu'>
 						<li><span onclick='modal.open("modal-about")'>About</span></li>
 						<li><span><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></span></li>
+						<li><span><a href='https://github.com/Tobsta/ImageEditor/issues' target='_blank'>Report a bug</a></span></li>
 					</ul>
 				</li>
 			</ul>
-			<span style='color: #1B2E2E; float: right; padding: 2px'>Image Editor</span>
+			<span class='program-name'>Image Editor (beta)</span>
 		</div>
 		<div class='toolbar'>
 			<button onclick='changeTool(this)' title='Hotkey: P or N' data-tool='pen'>Pen</button>
@@ -121,28 +122,28 @@
 			<fieldset>
 				<legend>Brush</legend>
 				<div id='brush-image-shelf'>
-					<img src='./brush/pixel.png' class='brush-image' data-flow='100' data-spacing='20'></img>
+					<img src='./brush/pixel.png' class='brush-image' data-flow='100' data-spacing='20' />
 					<div class='brush-image circle-brush on' data-flow='100' data-spacing='20'></div>
 					<div class='brush-image circle-brush' data-flow='4' data-spacing='2'></div>
-					<img src='./brush/25.png' class='brush-image' data-flow='100' data-spacing='10'></img>
-					<img src='./brush/50.png' class='brush-image' data-flow='100' data-spacing='10'></img>
-					<img src='./brush/75.png' class='brush-image' data-flow='100' data-spacing='10'></img>
-					<img src='./brush/b0.png' class='brush-image' data-flow='100' data-spacing='20'></img>
-					<img src='./brush/b1.png' class='brush-image' data-flow='100' data-spacing='20'></img>
-					<img src='./brush/b2.png' class='brush-image' data-flow='100' data-spacing='20'></img>
-					<img src='./brush/b3.png' class='brush-image' data-flow='100' data-spacing='20'></img>
-					<img src='./brush/b4.png' class='brush-image' data-flow='100' data-spacing='20'></img>
-					<img src='./brush/b5.png' class='brush-image' data-flow='100' data-spacing='100' data-rotate='true'></img>
-					<img src='./brush/acrylic1.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/acrylic2.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/acrylic3.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/acrylic4.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/acrylic5.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/chalk1.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/chalk2.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/chalk3.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/charcoal1.png' class='brush-image' data-flow='50' data-spacing='20'></img>
-					<img src='./brush/charcoal2.png' class='brush-image' data-flow='50' data-spacing='20'></img>
+					<img src='./brush/25.png' class='brush-image' data-flow='100' data-spacing='10' />
+					<img src='./brush/50.png' class='brush-image' data-flow='100' data-spacing='10' />
+					<img src='./brush/75.png' class='brush-image' data-flow='100' data-spacing='10' />
+					<img src='./brush/b0.png' class='brush-image' data-flow='100' data-spacing='20' />
+					<img src='./brush/b1.png' class='brush-image' data-flow='100' data-spacing='20' />
+					<img src='./brush/b2.png' class='brush-image' data-flow='100' data-spacing='20' />
+					<img src='./brush/b3.png' class='brush-image' data-flow='100' data-spacing='20' />
+					<img src='./brush/b4.png' class='brush-image' data-flow='100' data-spacing='20' />
+					<img src='./brush/b5.png' class='brush-image' data-flow='100' data-spacing='100' data-rotate='true' />
+					<img src='./brush/acrylic1.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/acrylic2.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/acrylic3.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/acrylic4.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/acrylic5.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/chalk1.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/chalk2.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/chalk3.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/charcoal1.png' class='brush-image' data-flow='50' data-spacing='20' />
+					<img src='./brush/charcoal2.png' class='brush-image' data-flow='50' data-spacing='20' />
 					<div class='new-brush-button small-button' onclick='uploadBrush()'>+</div>
 				</div>
 			</fieldset>
@@ -211,7 +212,9 @@
 						<li><a href='https://github.com/eligrey/FileSaver.js'>FileSaver.js</a>, <a href='https://github.com/eligrey/canvas-toBlob.js'>canvas-toBlob.js</a> (for exporting images)</li>
 					</ul>
 				</p>
-				<p>Copyright Oliver Balfour, 2018. <a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
+				<p>Copyright Oliver Balfour, 2018.</p>
+				<p><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
+				<p><a href='https://github.com/Tobsta/ImageEditor/issues' target='_blank'>Report a bug</a></p>
 			</div>
 		</div>
 

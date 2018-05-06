@@ -91,7 +91,7 @@ document.addEventListener('mousemove', (e) => {
 	mouse.y = e.clientY;
 	getRelativePosition();
 
-	let colour = 'black',
+	let colour = 'darkred',
 		xel = document.querySelector('.js-x-coord'),
 		yel = document.querySelector('.js-y-coord');
 
@@ -99,12 +99,12 @@ document.addEventListener('mousemove', (e) => {
 	yel.innerText = mouse.ry;
 
 	if (mouse.rx < 0 || mouse.rx > canvasSize.width)
-		xel.style.color = colour;
+		xel.style.background = colour;
 	else
-		xel.style.color = '';
+		xel.style.background = '';
 
 	if (mouse.ry < 0 || mouse.ry > canvasSize.height)
-		yel.style.color = colour;
+		yel.style.background = colour;
 	else
-		yel.style.color = '';
+		yel.style.background = '';
 });
