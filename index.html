@@ -81,7 +81,7 @@
 				<li>
 					<span>Help</span>
 					<ul class='submenu'>
-						<li><span onclick='openModal("modal-about")'>About</span></li>
+						<li><span onclick='modal.open("modal-about")'>About</span></li>
 						<li><span><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></span></li>
 					</ul>
 				</li>
@@ -180,28 +180,28 @@
 		</div>
 		<div class='modals hidden'>
 			<div class='modal hidden modal-image-upload'>
-				<div class='modal-close small-button' onclick='closeModal("modal-image-upload")'>&times;</div>
+				<div class='modal-close small-button' onclick='modal.close("modal-image-upload")'>&times;</div>
 				<h2></h2><p></p>
 				<input type='file' class='image-upload-input' accept='image/*'>
 				<br>
-				<button onclick='uploadImage()'>Done</button>
+				<button onclick='modal.imageDone()'>Done</button>
 			</div>
 			<div class='modal hidden modal-prompt'>
-				<div class='modal-close small-button' onclick='closeModal("modal-prompt")'>&times;</div>
+				<div class='modal-close small-button' onclick='modal.close("modal-prompt")'>&times;</div>
 				<h2></h2><p></p>
 				<input class='modal-prompt-input' />
 				<br>
-				<button onclick='finishGetData()'>Done</button>
+				<button onclick='modal.promptDone()'>Done</button>
 			</div>
 			<div class='modal hidden modal-confirm'>
-				<div class='modal-close small-button' onclick='closeModal("modal-confirm")'>&times;</div>
+				<div class='modal-close small-button' onclick='modal.close("modal-confirm")'>&times;</div>
 				<h2></h2><p></p>
 				<br>
-				<button onclick='finishGetBool(true)'>Ok</button>
-				<button onclick='finishGetBool(false)' class='modal-confirm-button'>Cancel</button>
+				<button onclick='modal.confirmDone(true)'>Ok</button>
+				<button onclick='modal.confirmDone(false)' class='modal-confirm-button'>Cancel</button>
 			</div>
 			<div class='modal hidden modal-about'>
-				<div class='modal-close small-button' onclick='closeModal("modal-about")'>&times;</div>
+				<div class='modal-close small-button' onclick='modal.close("modal-about")'>&times;</div>
 				<h2>About</h2>
 				<p>
 					Simple HTML5 Canvas based image editor designed for the web and ChromeOS.
@@ -226,6 +226,7 @@
 		<script src='./canvas-to-blob/canvas-toBlob.js'></script>
 		<script src='./filesaver/FileSaver.js'></script>
 
+		<script type='text/javascript' src='modal.js'></script>
 		<script type='text/javascript' src='index.js'></script>
 	</body>
 </html>

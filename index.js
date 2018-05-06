@@ -367,7 +367,7 @@ function getRelativePosition() {
 // Upload a brush
 
 function uploadBrush () {
-	getImage(
+	modal.image(
 		'Please upload an image',
 		'The image will be added as a brush. Make sure to use transparency and not white for empty spaces within the brush.'
 	)
@@ -389,7 +389,7 @@ function uploadBrush () {
 // Upload image
 
 function openImage () {
-	getImage(
+	modal.image(
 		'Please upload an image',
 		'The image will be blitted 1-to-1 to the canvas. (The canvas is not resized, this will be fixed later.)'
 	)
@@ -407,7 +407,7 @@ function openImage () {
 		});
 }
 function openImageAsLayer () {
-	getImage(
+	modal.image(
 		'Please upload an image to use as a layer',
 		'The image will be blitted 1-to-1 to the canvas. (The image is not resized, this will be fixed later.)'
 	)
@@ -433,98 +433,6 @@ function openImageAsLayer () {
 		.catch((e) => {
 			alert('Error:\n' + e);
 		});
-}
-
-// resolve returns image data, reject returns error
-let getImagePromise = { resolve: null, reject: null };
-function getImage (title, info) {
-	return new Promise ((resolve, reject) => {
-		getImagePromise = {resolve, reject};
-		document.querySelector('.modal-image-upload').children[1].innerText = title;
-		document.querySelector('.modal-image-upload').children[2].innerText = info;
-		openModal('modal-image-upload');
-	});
-}
-function uploadImage () {
-	if (document.querySelector('.image-upload-input').files.length) {
-		let reader = new FileReader();
-		reader.readAsDataURL(document.querySelector('.image-upload-input').files[0]);
-		reader.addEventListener('load', () => {
-			closeModal('modal-image-upload');
-			getImagePromise.resolve(reader.result);
-			getImagePromise = { resolve: null, reject: null };
-		});
-	}
-}
-
-// Prompt modal
-
-// type is a valid type for input elements
-let getDataPromise = { resolve: null, reject: null };
-function getData (title, info, type) {
-	return new Promise ((resolve, reject) => {
-		getDataPromise = {resolve, reject};
-
-		let modal = document.querySelector('.modal-prompt'),
-			input = document.querySelector('.modal-prompt-input');
-
-		modal.children[1].innerText = title;
-		modal.children[2].innerText = info;
-
-		input.type = type;
-		input.value = null;
-
-		openModal('modal-prompt');
-		input.focus();
-	});
-}
-function finishGetData () {
-	closeModal('modal-prompt');
-	getDataPromise.resolve(document.querySelector('.modal-prompt-input').value);
-	document.querySelector('.modal-prompt-input').value = null;
-	getDataPromise = { resolve: null, reject: null };
-}
-
-// Confirm/alert modal
-
-// type is 'alert' or 'confirm'
-// (determines whether it emulates window.alert or window.confirm)
-let getBoolPromise = { resolve: null, reject: null };
-function getBool (title, info, type) {
-	return new Promise ((resolve, reject) => {
-		getBoolPromise = {resolve, reject};
-
-		let modal = document.querySelector('.modal-confirm');
-
-		modal.children[1].innerText = title;
-		modal.children[2].innerText = info;
-
-		if (type !== 'confirm')
-			document.querySelector('.modal-confirm-button').classList.add('hidden');
-
-		openModal('modal-confirm');
-	});
-}
-function finishGetBool (val) {
-	closeModal('modal-confirm');
-	if (val)
-		getBoolPromise.resolve();
-	else
-		getBoolPromise.reject();
-
-	getBoolPromise.resolve(val);
-	document.querySelector('.modal-confirm-button').classList.remove('hidden');
-	getBoolPromise = { resolve: null, reject: null };
-}
-
-
-function openModal (className) {
-	document.querySelector('.modals').classList.remove('hidden');
-	document.querySelector('.' + className).classList.remove('hidden');
-}
-function closeModal (className) {
-	document.querySelector('.modals').classList.add('hidden');
-	document.querySelector('.' + className).classList.add('hidden');
 }
 
 // Layers
@@ -583,7 +491,7 @@ function layerClick (e) {
 }
 
 function addLayer () {
-	getData('Please enter a name for the new layer', '', 'text')
+	modal.prompt('Please enter a name for the new layer', '', 'text')
 		.then((name) => {
 			croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', name);
 			croquis.selectLayer(croquis.getLayerCount() - 1);
@@ -688,7 +596,7 @@ function toggleMenu () {
 	if (view.menu.open && !view.menu.altDown && !view.menu.promptAgain) {
 		closeMenu();
 	} else if (view.menu.open && !view.menu.altDown) {
-		getBool(
+		modal.confirm(
 			'Are you sure you want to close the menu?',
 			'You can re-open the menu by holding Alt/Option or pressing Ctrl+M',
 			'confirm'
