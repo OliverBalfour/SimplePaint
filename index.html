@@ -62,8 +62,8 @@
 				<li>
 					<span>Layer</span>
 					<ul class='submenu'>
-						<li><span onclick="alert('TODO')">New layer</span></li>
-						<li><span onclick="alert('TODO')">Delete active layer</span></li>
+						<li><span onclick='addLayer()'>New layer</span></li>
+						<li><span onclick='removeActiveLayer()'>Delete active layer</span></li>
 						<li><span onclick="alert('TODO')">Merge layers</span></li>
 					</ul>
 				</li>
@@ -184,6 +184,13 @@
 				<input type='file' class='image-upload-input' accept='image/*'>
 				<br>
 				<button onclick='uploadImage()'>Done</button>
+			</div>
+			<div class='modal hidden modal-prompt'>
+				<div class='modal-close small-button' onclick='closeModal("modal-prompt")'>&times;</div>
+				<h2></h2><p></p>
+				<input class='modal-prompt-input' />
+				<br>
+				<button onclick='finishGetData()'>Done</button>
 			</div>
 			<div class='modal hidden modal-about'>
 				<div class='modal-close small-button' onclick='closeModal("modal-about")'>&times;</div>

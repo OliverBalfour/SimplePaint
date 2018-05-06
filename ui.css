@@ -131,6 +131,7 @@ fieldset {
 .menu-bar span[onclick] {
 	cursor: pointer;
 }
+/* Grey out items with onclick='alert("TODO")' */
 .menu-bar span[onclick^='alert'] {
 	color: grey;
 }

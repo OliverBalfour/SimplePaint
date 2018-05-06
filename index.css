@@ -207,3 +207,6 @@ h1, h2, h3, h4, h5, h6 {
 .layer.active {
 	font-weight: 600;
 }
+.layer img {
+	margin-right: 5px;
+}

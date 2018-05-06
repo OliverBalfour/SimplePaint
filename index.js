@@ -28,7 +28,7 @@ croquis.unlockHistory();
 {
 	let layers = croquis.getLayers();
 	layers[0].setAttribute('data-name', 'Background');
-	layers[1].setAttribute('data-name', 'Layer 1');
+	layers[1].setAttribute('data-name', 'Canvas');
 }
 
 const mouse = {
@@ -450,6 +450,35 @@ function uploadImage () {
 	}
 }
 
+// Prompt modal
+
+// type is a valid type for input elements
+let getDataPromise = { resolve: null, reject: null };
+function getData (title, info, type) {
+	return new Promise ((resolve, reject) => {
+		getDataPromise = {resolve, reject};
+
+		let modal = document.querySelector('.modal-prompt'),
+			input = document.querySelector('.modal-prompt-input');
+
+		modal.children[1].innerText = title;
+		modal.children[2].innerText = info;
+
+		input.type = type;
+		input.value = null;
+
+		openModal('modal-prompt');
+		input.focus();
+	});
+}
+function finishGetData () {
+	closeModal('modal-prompt');
+	getDataPromise.resolve(document.querySelector('.modal-prompt-input').value);
+	document.querySelector('.modal-prompt-input').value = null;
+	getDataPromise = { resolve: null, reject: null };
+}
+
+
 function openModal (className) {
 	document.querySelector('.modals').classList.remove('hidden');
 	document.querySelector('.' + className).classList.remove('hidden');
@@ -501,22 +530,38 @@ function updateLayerThumbnails () {
 }
 
 function layerClick (e) {
-	let layers = Array.from(e.target.parentElement.children);
-	croquis.selectLayer(layers.indexOf(e.target));
-	layers.forEach(layer => {
-		layer.classList.remove('active');
+	// If no children, it must be the child <span> or <img> and not the parent layer (which we want)
+	let layer = e.target;
+	if (!e.target.children.length)
+		layer = e.target.parentElement;
+
+	let layers = Array.from(layer.parentElement.children);
+	croquis.selectLayer(layers.indexOf(layer));
+	layers.forEach(l => {
+		l.classList.remove('active');
 	});
-	layers[croquis.getCurrentLayerIndex()].classList.add('active');
+	layer.classList.add('active');
 }
 
 function addLayer () {
-	let layerName = prompt('Layer name:');
-	croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', layerName);
-	updateLayers();
+	getData('Please enter a name for the new layer', '', 'text')
+		.then((name) => {
+			croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', name);
+			croquis.selectLayer(croquis.getLayerCount() - 1);
+			updateLayers();
+		})
+		.catch((e) => {
+			alert('Error:\n' + e);
+		});
 }
 
 function removeLayer (el) {
 	croquis.removeLayer(Array.from(el.parentElement.parentElement.children).indexOf(el.parentElement));
+	updateLayers();
+}
+
+function removeActiveLayer () {
+	croquis.removeLayer(croquis.getCurrentLayerIndex());
 	updateLayers();
 }
 
