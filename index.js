@@ -1,3 +1,4 @@
+
 // Create croquis instance
 const croquis = new Croquis();
 
@@ -64,14 +65,21 @@ const view = {
 	layerThumbs: true
 }
 
+// pointer-events property support
+const pointerEvents = document.documentElement.style.pointerEvents !== undefined;
+
+let circleBrushes = Array.from(document.getElementsByClassName('circle-brush')),
+	brushImages = Array.from(document.getElementsByClassName('brush-image')),
+	currentBrush = circleBrushes[0];
+
 // Register mouse events
 
-function canvasPointerDown(e) {
+function canvasPointerDown (e) {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 	setPointerEvent(e);
 	getRelativePosition();
-	if (pointerEventsNone)
+	if (pointerEvents)
 		canvasContainer.style.setProperty('cursor', 'none');
 	if (tool === 'picker')
 		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
@@ -85,7 +93,7 @@ function canvasPointerDown(e) {
 		document.addEventListener('pointermove', canvasPointerMove);
 	document.addEventListener('pointerup', canvasPointerUp);
 }
-function canvasPointerMove(e) {
+function canvasPointerMove (e) {
 	setPointerEvent(e);
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
@@ -96,12 +104,12 @@ function canvasPointerMove(e) {
 	else if (tool !== 'picker')
 		croquis.move(mouse.rx, mouse.ry, e.pointerType === 'pen' ? e.pressure : 1);
 }
-function canvasPointerUp(e) {
+function canvasPointerUp (e) {
 	setPointerEvent(e);
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 	getRelativePosition();
-	if (pointerEventsNone)
+	if (pointerEvents)
 		canvasContainer.style.setProperty('cursor', 'crosshair');
 	if (tool === 'picker')
 		picker.setColour(tinycolor(croquis.eyeDrop(mouse.rx, mouse.ry)));
@@ -127,51 +135,11 @@ function fillLayer () {
 	}).toRgbString());
 }
 
-// Brush images
-
-let circleBrushes = Array.from(document.getElementsByClassName('circle-brush')),
-	brushImages = Array.from(document.getElementsByClassName('brush-image')),
-	currentBrush = circleBrushes[0];
-
-brushImages.forEach(brush => {
-	brush.addEventListener('pointerdown', brushImagePointerDown);
-});
-
-function brushImagePointerDown(e) {
-	var image = e.currentTarget;
-	currentBrush.classList.remove('on');
-	image.classList.add('on');
-	currentBrush = image;
-
-	[ 'opacity', 'size', 'flow', 'spacing', 'angle' ]
-	.forEach(attr => {
-		if (image.getAttribute('data-' + attr)) {
-			let el = document.querySelector('.brush-' + attr);
-			el.value = image.getAttribute('data-' + attr);
-			el.onchange({ target: el });
-		}
-	});
-
-	if (image.getAttribute('data-rotate')) {
-		let el = document.querySelector('.brush-rotate');
-		el.checked = (image.getAttribute('data-rotate') === 'true');
-		el.onchange({ target: el });
-	}
-
-	if (circleBrushes.indexOf(image) !== -1)
-		image = null;
-	brush.setImage(image);
-	updatePointer();
-}
-
-// checking pointer-events property support
-var pointerEventsNone = document.documentElement.style.pointerEvents !== undefined;
-
 //brush pointer
 var brushPointerContainer = document.createElement('div');
 brushPointerContainer.className = 'brush-pointer';
 
-if (pointerEventsNone) {
+if (pointerEvents) {
 	croquisElement.addEventListener('pointerover', function () {
 		croquisElement.addEventListener('pointermove', croquisPointerMove);
 		document.body.appendChild(brushPointerContainer);
@@ -185,38 +153,13 @@ if (pointerEventsNone) {
 function croquisPointerMove(e) {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
-	if (pointerEventsNone) {
+	if (pointerEvents) {
 		var x = mouse.x + window.pageXOffset;
 		var y = mouse.y + window.pageYOffset;
 		brushPointerContainer.style.setProperty('left', x + 'px');
 		brushPointerContainer.style.setProperty('top', y + 'px');
 	}
 }
-
-// Colour picker
-
-const colourPickerPreview = document.querySelector('.colour-picker-preview');
-const picker = new ColourPicker(c => {
-	colourPickerPreview.children[0].style.backgroundColor = c.toHslString();
-	colourPickerPreview.children[0].innerText = c.toHexString();
-	colourPickerPreview.children[0].style.color = c.isDark() ? 'white' : 'black';
-	brush.setColor(c);
-	updatePointer();
-}, 280);
-document.querySelector('.picker').appendChild(picker.element);
-
-let backgroundCheckerImage;
-(function () {
-	backgroundCheckerImage = document.createElement('canvas');
-	backgroundCheckerImage.width = backgroundCheckerImage.height = 20;
-	var backgroundImageContext = backgroundCheckerImage.getContext('2d');
-	backgroundImageContext.fillStyle = '#fff';
-	backgroundImageContext.fillRect(0, 0, 20, 20);
-	backgroundImageContext.fillStyle = '#ccc';
-	backgroundImageContext.fillRect(0, 0, 10, 10);
-	backgroundImageContext.fillRect(10, 10, 20, 20);
-})();
-colourPickerPreview.style.backgroundImage = 'url(' + backgroundCheckerImage.toDataURL() + ')';
 
 // Tools
 
@@ -240,7 +183,7 @@ function setPointerEvent(e) {
 }
 
 function updatePointer() {
-	if (pointerEventsNone) {
+	if (pointerEvents) {
 		var image = currentBrush;
 		var threshold;
 		if (circleBrushes.indexOf(currentBrush) !== -1) {
@@ -267,28 +210,6 @@ function getRelativePosition() {
 	mouse.rx = mouse.x - rect.left;
 	mouse.ry = mouse.y - rect.top;
 	return { x: mouse.rx, y: mouse.ry };
-}
-
-// Upload a brush
-
-function uploadBrush () {
-	modal.image(
-		'Please upload an image',
-		'The image will be added as a brush. Make sure to use transparency and not white for empty spaces within the brush.'
-	)
-		.then((data) => {
-			let img = document.createElement('img');
-			document.querySelector('#brush-image-shelf').insertBefore(
-				img,
-				document.querySelector('.new-brush-button')
-			);
-			img.classList.add('brush-image');
-			img.src = data;
-			img.addEventListener('pointerdown', brushImagePointerDown);
-		})
-		.catch((e) => {
-			alert('Error:\n' + e);
-		});
 }
 
 // Upload image
@@ -320,16 +241,10 @@ function openImageAsLayer () {
 			let img = document.createElement('img');
 			img.src = data;
 			croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', 'Pasted image');
-
-			let layers = Array.from(document.querySelector('.layers-shelf').children);
-			croquis.selectLayer(layers.length - 1);
-			layers.forEach(layer => {
-				layer.classList.remove('active');
-			});
-			layers[croquis.getCurrentLayerIndex()].classList.add('active');
+			croquis.selectLayer(croquis.getLayerCount() - 1);
 
 			img.onload = () => {
-				let canvas = croquis.getLayers()[layers.length].children[0],
+				let canvas = croquis.getLayers()[croquis.getLayerCount() - 1].children[0],
 					ctx = canvas.getContext('2d');
 				ctx.drawImage(img, 0, 0);
 				updateLayers();
@@ -362,11 +277,11 @@ function updateLayers () {
 	for (let i = 0; i < num; i++) {
 		let el = document.createElement('div');
 		el.classList.add('layer');
-		el.addEventListener('click', layerClick);
+		el.addEventListener('pointerdown', layerPointerDown);
 
 		el.innerHTML = (view.layerThumbs ? "<img src='" + getLayerThumbnail(i).toDataURL('image/png') + "' />" : '')
 		 + '<span>' + layers[i].getAttribute('data-name') + '</span>'
-		 + "<div class='remove-layer-button small-button' onclick='removeLayer(this)'>&times;</div>";
+		 + "<div class='remove-layer-button small-button' onpointerdown='removeLayer(this)'>&times;</div>";
 
 		shelf.appendChild(el);
 	}
@@ -381,7 +296,7 @@ function updateLayerThumbnails () {
 	});
 }
 
-function layerClick (e) {
+function layerPointerDown (e) {
 	// If no children, it must be the child <span> or <img> and not the parent layer (which we want)
 	let layer = e.target;
 	if (!e.target.children.length)

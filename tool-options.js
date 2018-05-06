@@ -1,4 +1,87 @@
 
+// Colour picker
+
+const colourPickerPreview = document.querySelector('.colour-picker-preview');
+const picker = new ColourPicker(c => {
+	colourPickerPreview.children[0].style.backgroundColor = c.toHslString();
+	colourPickerPreview.children[0].innerText = c.toHexString();
+	colourPickerPreview.children[0].style.color = c.isDark() ? 'white' : 'black';
+	brush.setColor(c);
+	updatePointer();
+}, 280);
+document.querySelector('.picker').appendChild(picker.element);
+
+let backgroundCheckerImage;
+(function () {
+	backgroundCheckerImage = document.createElement('canvas');
+	backgroundCheckerImage.width = backgroundCheckerImage.height = 20;
+	var backgroundImageContext = backgroundCheckerImage.getContext('2d');
+	backgroundImageContext.fillStyle = '#fff';
+	backgroundImageContext.fillRect(0, 0, 20, 20);
+	backgroundImageContext.fillStyle = '#ccc';
+	backgroundImageContext.fillRect(0, 0, 10, 10);
+	backgroundImageContext.fillRect(10, 10, 20, 20);
+})();
+colourPickerPreview.style.backgroundImage = 'url(' + backgroundCheckerImage.toDataURL() + ')';
+
+
+// Brush images
+
+brushImages.forEach(brush => {
+	brush.addEventListener('pointerdown', brushImagePointerDown);
+});
+
+function brushImagePointerDown (e) {
+	let image = e.currentTarget;
+	currentBrush.classList.remove('on');
+	image.classList.add('on');
+	currentBrush = image;
+
+	[ 'opacity', 'size', 'flow', 'spacing', 'angle' ]
+	.forEach(attr => {
+		if (image.getAttribute('data-' + attr)) {
+			let el = document.querySelector('.brush-' + attr);
+			el.value = image.getAttribute('data-' + attr);
+			el.onchange({ target: el });
+		}
+	});
+
+	if (image.getAttribute('data-rotate')) {
+		let el = document.querySelector('.brush-rotate');
+		el.checked = (image.getAttribute('data-rotate') === 'true');
+		el.onchange({ target: el });
+	}
+
+	if (circleBrushes.indexOf(image) !== -1)
+		image = null;
+
+	brush.setImage(image);
+	updatePointer();
+}
+
+// Upload a brush
+
+function uploadBrush () {
+	modal.image(
+		'Please upload an image',
+		'The image will be added as a brush. Make sure to use transparency and not white for empty spaces within the brush.'
+	)
+		.then((data) => {
+			let img = document.createElement('img');
+			document.querySelector('#brush-image-shelf').insertBefore(
+				img,
+				document.querySelector('.new-brush-button')
+			);
+			img.classList.add('brush-image');
+			img.src = data;
+			img.addEventListener('pointerdown', brushImagePointerDown);
+		})
+		.catch((e) => {
+			alert('Error:\n' + e);
+		});
+}
+
+
 // Render options
 
 // Stabilizer level
@@ -18,6 +101,7 @@ document.querySelector('.render-weight').onchange = e => {
 	croquis.setToolStabilizeWeight(parseFloat(e.target.value) * 0.01);
 	document.querySelector('.js-render-weight').innerText = croquis.getToolStabilizeWeight() * 100;
 }
+
 
 // Brush options
 
