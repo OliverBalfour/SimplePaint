@@ -82,3 +82,29 @@ function toggleLayerThumbnails () {
 	view.layerThumbs = !view.layerThumbs;
 	updateLayers();
 }
+
+// Other stuff
+
+// Mouse position indicators
+document.addEventListener('mousemove', (e) => {
+	mouse.x = e.clientX;
+	mouse.y = e.clientY;
+	getRelativePosition();
+
+	let colour = 'black',
+		xel = document.querySelector('.js-x-coord'),
+		yel = document.querySelector('.js-y-coord');
+
+	xel.innerText = mouse.rx;
+	yel.innerText = mouse.ry;
+
+	if (mouse.rx < 0 || mouse.rx > canvasSize.width)
+		xel.style.color = colour;
+	else
+		xel.style.color = '';
+
+	if (mouse.ry < 0 || mouse.ry > canvasSize.height)
+		yel.style.color = colour;
+	else
+		yel.style.color = '';
+});

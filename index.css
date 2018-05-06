@@ -73,6 +73,9 @@ h1, h2, h3, h4, h5, h6 {
 	border-top: var(--area-border);
 	background: var(--area-background);
 	z-index: 1;
+	color: white;
+	font-size: 14px;
+	padding: 3px;
 }
 
 .modals {

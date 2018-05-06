@@ -66,6 +66,8 @@
 						<li><span onclick='addLayer()'>New layer</span></li>
 						<li><span onclick='removeActiveLayer()'>Delete active layer</span></li>
 						<li><span onclick="alert('TODO')">Merge layers</span></li>
+						<li><span onclick='clearLayer()'>Clear layer</span></li>
+						<li><span onclick='fillLayer()'>Fill layer</span></li>
 					</ul>
 				</li>
 				<li>
@@ -165,16 +167,10 @@
 				<span>Rotate to direction</span>
 				<input type='checkbox' class='brush-rotate'>
 			</fieldset>
-			<fieldset>
-				<legend>Actions</legend>
-				<button type='button' onclick='clearLayer()'>Erase all</button>
-				<button type='button' onclick='fillLayer()'>Fill layer</button>
-			</fieldset>
 		</div>
 		<div class='footer'>
-			Footer
-			<span class='js-x-coord'></span>
-			<span class='js-y-coord'></span>
+			x: <span class='js-x-coord'>0</span>
+			y: <span class='js-y-coord'>0</span>
 		</div>
 		<div class='canvases'>
 		</div>

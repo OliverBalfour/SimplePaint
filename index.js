@@ -218,27 +218,6 @@ let backgroundCheckerImage;
 })();
 colourPickerPreview.style.backgroundImage = 'url(' + backgroundCheckerImage.toDataURL() + ')';
 
-// Mouse position indicators
-
-document.addEventListener('mousemove', (e) => {
-	mouse.x = e.clientX;
-	mouse.y = e.clientY;
-	getRelativePosition();
-
-	let xel = document.querySelector('.js-x-coord'),
-		yel = document.querySelector('.js-y-coord');
-	xel.innerText = mouse.rx;
-	yel.innerText = mouse.ry;
-	if (
-		mouse.rx < 0 || mouse.ry < 0 ||
-		mouse.rx > canvasSize.width || mouse.ry > canvasSize.height
-	) {
-		xel.style.color = yel.style.color = 'grey';
-	} else {
-		xel.style.color = yel.style.color = 'black';
-	}
-});
-
 // Tools
 
 function changeTool (el) {
