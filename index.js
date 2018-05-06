@@ -165,6 +165,10 @@ function croquisPointerMove(e) {
 
 function changeTool (el) {
 	tool = el.getAttribute('data-tool');
+	for (let i = 0; i < el.parentElement.children.length; i++) {
+		el.parentElement.children[i].classList.remove('active');
+	}
+	el.classList.add('active');
 }
 
 // Utility functions

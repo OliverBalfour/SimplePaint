@@ -89,13 +89,13 @@
 					</ul>
 				</li>
 			</ul>
-			<span class='program-name'>Image Editor (beta)</span>
+			<span class='program-name'>Image Editor <sub>(beta)</sub></span>
 		</div>
 		<div class='toolbar'>
-			<button onclick='changeTool(this)' title='Hotkey: P or N' data-tool='pen'>Pen</button>
-			<button onclick='changeTool(this)' title='Hotkey: L' data-tool='line'>Line</button>
-			<button onclick='changeTool(this)' title='Hotkey: E' data-tool='eraser'>Eraser</button>
-			<button onclick='changeTool(this)' title='Hotkey: C or O' data-tool='picker'>Eyedropper</button>
+			<img src='icons/pencil.svg' onclick='changeTool(this)' title='Pen. Hotkey: P or N' data-tool='pen' class='active' />
+			<img src='icons/line.svg' onclick='changeTool(this)' title='Line. Hotkey: L' data-tool='line' />
+			<img src='icons/rubber.svg' onclick='changeTool(this)' title='Eraser. Hotkey: E' data-tool='eraser' />
+			<img src='icons/picker.svg' onclick='changeTool(this)' title='Picker. Hotkey: C or O' data-tool='picker' />
 		</div>
 		<div class='tool-options'>
 			<span class='colour-picker-preview'>

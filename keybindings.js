@@ -24,10 +24,10 @@ Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.red
 Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
 
 // Tools
-Mousetrap.bind(['p', 'n'], () => tool = 'pen');
-Mousetrap.bind('l', () => tool = 'line');
-Mousetrap.bind('e', () => tool = 'eraser');
-Mousetrap.bind(['o', 'c'], () => tool = 'picker');
+Mousetrap.bind(['p', 'n'], () => changeTool(document.querySelector('img[data-tool="pen"]')));
+Mousetrap.bind('l', () => changeTool(document.querySelector('img[data-tool="line"]')));
+Mousetrap.bind('e', () => changeTool(document.querySelector('img[data-tool="eraser"]')));
+Mousetrap.bind(['o', 'c'], () => changeTool(document.querySelector('img[data-tool="picker"]')));
 
 // Distraction free mode
 Mousetrap.bind('tab', e => {
