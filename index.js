@@ -39,6 +39,13 @@ let tool = 'pen';
 
 const rootStyle = getComputedStyle(document.documentElement);
 const view = {
+	menu: {
+		open: true,
+		promptAgain: true, // has the user been prompted about wanting to close the menu?
+		altDown: false, // is the user pressing alt to hold the menu open?
+		prop: '--menu-height',
+		size: rootStyle.getPropertyValue('--menu-height')
+	},
 	statusBar: {
 		open: true,
 		prop: '--footer-height',
@@ -478,6 +485,38 @@ function finishGetData () {
 	getDataPromise = { resolve: null, reject: null };
 }
 
+// Confirm/alert modal
+
+// type is 'alert' or 'confirm'
+// (determines whether it emulates window.alert or window.confirm)
+let getBoolPromise = { resolve: null, reject: null };
+function getBool (title, info, type) {
+	return new Promise ((resolve, reject) => {
+		getBoolPromise = {resolve, reject};
+
+		let modal = document.querySelector('.modal-confirm');
+
+		modal.children[1].innerText = title;
+		modal.children[2].innerText = info;
+
+		if (type !== 'confirm')
+			document.querySelector('.modal-confirm-button').classList.add('hidden');
+
+		openModal('modal-confirm');
+	});
+}
+function finishGetBool (val) {
+	closeModal('modal-confirm');
+	if (val)
+		getBoolPromise.resolve();
+	else
+		getBoolPromise.reject();
+
+	getBoolPromise.resolve(val);
+	document.querySelector('.modal-confirm-button').classList.remove('hidden');
+	getBoolPromise = { resolve: null, reject: null };
+}
+
 
 function openModal (className) {
 	document.querySelector('.modals').classList.remove('hidden');
@@ -639,6 +678,29 @@ function toggleView (section) {
 	view[section].open = !view[section].open;
 }
 
+function toggleMenu () {
+	function closeMenu () {
+		toggleView('menu');
+		document.querySelector('.menu').classList.add('hidden');
+		view.menu.promptAgain = false;
+	}
+
+	if (view.menu.open && !view.menu.altDown && !view.menu.promptAgain) {
+		closeMenu();
+	} else if (view.menu.open && !view.menu.altDown) {
+		getBool(
+			'Are you sure you want to close the menu?',
+			'You can re-open the menu by holding Alt/Option or pressing Ctrl+M',
+			'confirm'
+		)
+			.then(closeMenu)
+			.catch(() => {});
+	} else {
+		toggleView('menu');
+		document.querySelector('.menu').classList.remove('hidden');
+	}
+}
+
 let layerThumbInterval;
 if (view.layerThumbs)
 	layerThumbInterval = setInterval(updateLayerThumbnails, 5 * 1000);
@@ -690,6 +752,26 @@ Mousetrap.bind('tab', e => {
 	toggleView('toolBar');
 	toggleView('toolOptions');
 });
+
+// Toggle menu
+Mousetrap.bind(['ctrl+m', 'meta+m'], e => {
+	e.preventDefault();
+	toggleMenu();
+});
+Mousetrap.bind('alt', e => {
+	e.preventDefault();
+	if (!view.menu.open) {
+		toggleMenu();
+		view.menu.altDown = true;
+	}
+}, 'keydown');
+Mousetrap.bind('alt', e => {
+	e.preventDefault();
+	if (view.menu.open && view.menu.altDown) {
+		toggleMenu();
+		view.menu.altDown = false;
+	}
+}, 'keyup');
 
 // Fullscreen
 Mousetrap.bind('f11', toggleFullscreen);

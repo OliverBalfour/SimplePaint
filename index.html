@@ -37,6 +37,7 @@
 					<span>View</span>
 					<ul class='submenu'>
 						<li><span onclick='toggleFullscreen()'>Toggle fullscreen (F11)</span></li>
+						<li><span onclick='toggleMenu()'>Toggle menu (Ctrl+M)</span></li>
 						<li><span onclick='toggleView("toolBar")'>Toggle tool bar (Tab)</span></li>
 						<li><span onclick='toggleView("toolOptions")'>Toggle tool options (Tab)</span></li>
 						<li><span onclick='toggleView("statusBar")'>Toggle status bar</span></li>
@@ -191,6 +192,13 @@
 				<input class='modal-prompt-input' />
 				<br>
 				<button onclick='finishGetData()'>Done</button>
+			</div>
+			<div class='modal hidden modal-confirm'>
+				<div class='modal-close small-button' onclick='closeModal("modal-confirm")'>&times;</div>
+				<h2></h2><p></p>
+				<br>
+				<button onclick='finishGetBool(true)'>Ok</button>
+				<button onclick='finishGetBool(false)' class='modal-confirm-button'>Cancel</button>
 			</div>
 			<div class='modal hidden modal-about'>
 				<div class='modal-close small-button' onclick='closeModal("modal-about")'>&times;</div>
