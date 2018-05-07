@@ -38,17 +38,19 @@ function toggleFullscreen () {
 function toggleView (section) {
 	if (view[section].open) {
 		document.documentElement.style.setProperty(view[section].prop, '0px');
+		document.querySelector(view[section].className).classList.add('hidden');
 	} else {
 		document.documentElement.style.setProperty(view[section].prop, view[section].size);
+		document.querySelector(view[section].className).classList.remove('hidden');
 	}
 
 	view[section].open = !view[section].open;
+	updateCanvasContainerSize();
 }
 
 function toggleMenu () {
 	function closeMenu () {
 		toggleView('menu');
-		document.querySelector('.menu').classList.add('hidden');
 		view.menu.promptAgain = false;
 	}
 
@@ -64,7 +66,6 @@ function toggleMenu () {
 			.catch(() => {});
 	} else {
 		toggleView('menu');
-		document.querySelector('.menu').classList.remove('hidden');
 	}
 }
 

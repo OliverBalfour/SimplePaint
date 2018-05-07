@@ -48,22 +48,26 @@ const view = {
 		promptAgain: true, // has the user been prompted about wanting to close the menu?
 		altDown: false, // is the user pressing alt to hold the menu open?
 		prop: '--menu-height',
-		size: rootStyle.getPropertyValue('--menu-height')
+		size: rootStyle.getPropertyValue('--menu-height'),
+		className: '.menu'
 	},
 	statusBar: {
 		open: true,
 		prop: '--footer-height',
-		size: rootStyle.getPropertyValue('--footer-height')
+		size: rootStyle.getPropertyValue('--footer-height'),
+		className: '.footer'
 	},
 	toolBar: {
 		open: true,
 		prop: '--toolbar-width',
-		size: rootStyle.getPropertyValue('--toolbar-width')
+		size: rootStyle.getPropertyValue('--toolbar-width'),
+		className: '.toolbar'
 	},
 	toolOptions: {
 		open: true,
 		prop: '--options-width',
-		size: rootStyle.getPropertyValue('--options-width')
+		size: rootStyle.getPropertyValue('--options-width'),
+		className: '.tool-options'
 	},
 	layerThumbs: true,
 	zoom: 1
