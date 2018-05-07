@@ -30,6 +30,10 @@ h1, h2, h3, h4, h5, h6 {
 	display: none !important;
 }
 
+.menu, .toolbar, .tool-options, .footer {
+	z-index: 2;
+}
+
 .menu {
 	position: absolute;
 	top: 0;
@@ -87,7 +91,6 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	border-top: var(--area-border);
 	background: var(--area-background);
-	z-index: 1;
 	color: white;
 	font-size: 14px;
 	padding: 3px 6px;
@@ -126,13 +129,20 @@ h1, h2, h3, h4, h5, h6 {
 	left: var(--toolbar-width);
 	height: calc(100% - var(--menu-height) - var(--footer-height));
 	width: calc(100% - var(--toolbar-width) - var(--options-width));
-	background: white;
+	background: lightgrey;
+	overflow: scroll;
+}
+
+.canvas-container {
+	width: 200%;
+	height: 200%;
 }
 
 .canvases canvas {
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 50%;
+	left: 50%;
+	border: 1px solid black;
 	/*width: 100%;
 	height: 100%;*/
 }

@@ -12,13 +12,15 @@ croquis.setToolStabilizeLevel(10);
 croquis.setToolStabilizeWeight(0.5);
 
 const croquisElement = croquis.getDOMElement();
-const canvasContainer = document.querySelector('.canvases');
+const canvasContainer = document.querySelector('.canvas-container');
 canvasContainer.appendChild(croquisElement);
 
 // Initialise croquis
 croquis.lockHistory();
 let canvasSize = canvasContainer.getBoundingClientRect();
-croquis.setCanvasSize(canvasSize.width, canvasSize.height);
+croquis.setCanvasSize(canvasSize.width / 2, canvasSize.height / 2);
+canvasContainer.parentElement.scrollTop = canvasSize.height / 4 + 1;
+canvasContainer.parentElement.scrollLeft = canvasSize.width / 4 + 1;
 croquis.addLayer();
 croquis.fillLayer('#fff');
 croquis.addLayer();
@@ -209,8 +211,8 @@ function updatePointer() {
 }
 updatePointer();
 
-function getRelativePosition() {
-	var rect = croquisElement.getBoundingClientRect();
+function getRelativePosition () {
+	const rect = canvasContainer.querySelector('canvas').getBoundingClientRect();
 	mouse.rx = mouse.x - rect.left;
 	mouse.ry = mouse.y - rect.top;
 	return { x: mouse.rx, y: mouse.ry };
@@ -232,9 +234,7 @@ function openImage () {
 				ctx.drawImage(img, 0, 0);
 			}
 		})
-		.catch((e) => {
-			alert('Error:\n' + e);
-		});
+		.catch(err);
 }
 function openImageAsLayer () {
 	modal.image(
@@ -254,9 +254,7 @@ function openImageAsLayer () {
 				updateLayers();
 			}
 		})
-		.catch((e) => {
-			alert('Error:\n' + e);
-		});
+		.catch(err);
 }
 
 // Layers
@@ -321,9 +319,7 @@ function addLayer () {
 			croquis.selectLayer(croquis.getLayerCount() - 1);
 			updateLayers();
 		})
-		.catch((e) => {
-			alert('Error:\n' + e);
-		});
+		.catch(err);
 }
 
 function removeLayer (el) {
@@ -362,4 +358,23 @@ function exportImageAs (el, ext) {
 			 : (lastImageExport === 'image/png' ? 'png' : 'jpg')
 		)
 	);
+}
+
+// Resize
+
+function resizeCanvas () {
+	modal.prompt('Width', '', 'number')
+		.then((width) => {
+			modal.prompt('Height', '', 'number')
+				.then((height) => {
+					croquis.setCanvasSize(width, height);
+					updateLayers();
+				})
+				.catch(err);
+		})
+		.catch(err);
+}
+
+function err (e) {
+	modal.confirm('Error', e, 'alert');
 }

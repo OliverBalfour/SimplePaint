@@ -16,13 +16,15 @@ let backgroundCheckerImage;
 	backgroundCheckerImage = document.createElement('canvas');
 	backgroundCheckerImage.width = backgroundCheckerImage.height = 20;
 	var backgroundImageContext = backgroundCheckerImage.getContext('2d');
-	backgroundImageContext.fillStyle = '#fff';
+	backgroundImageContext.fillStyle = '#ddd';
 	backgroundImageContext.fillRect(0, 0, 20, 20);
-	backgroundImageContext.fillStyle = '#ccc';
+	backgroundImageContext.fillStyle = '#bbb';
 	backgroundImageContext.fillRect(0, 0, 10, 10);
 	backgroundImageContext.fillRect(10, 10, 20, 20);
 })();
-colourPickerPreview.style.backgroundImage = 'url(' + backgroundCheckerImage.toDataURL() + ')';
+colourPickerPreview.style.backgroundImage
+ = document.querySelector('.canvases').style.backgroundImage
+ = 'url(' + backgroundCheckerImage.toDataURL() + ')';
 
 
 // Brush images
