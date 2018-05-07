@@ -16,7 +16,6 @@
 input[type="range"] {
 	-webkit-appearance: none;
 	margin: 0;
-	margin-bottom: 10px;
 	width: 100%;
 	background: transparent;
 }
