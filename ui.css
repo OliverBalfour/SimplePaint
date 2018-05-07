@@ -9,8 +9,9 @@
 
 	--menu-text-color: white;
 	--menu-background: darkslategrey;
+	--menu-item-background: #385E5E; /* slightly lighter than darkslategrey */
 	--menu-background-hover: lightslategrey;
-	--menu-item-width: 120px;
+	--menu-item-width: 190px;
 }
 
 input[type="range"] {
@@ -159,6 +160,9 @@ fieldset {
 	float: left;
 	margin: 0;
 	padding: 0;
+	background: var(--menu-item-background);
+}
+.menu-bar > li {
 	background: var(--menu-background);
 }
 
