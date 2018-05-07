@@ -71,7 +71,7 @@ Mousetrap.bind(['mod+=', 'mod+shift+='], e => {
 });
 // Mousetrap isn't working with the Ctrl+Minus shortcut, so I have to manually implement it...
 document.addEventListener('keydown', e => {
-	if (e.which === 173 && (e.ctrlKey || e.metaKey)) {
+	if ((e.which === 173 || e.which === 189) && (e.ctrlKey || e.metaKey)) {
 		e.preventDefault();
 		zoomOut();
 	}
