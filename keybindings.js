@@ -2,17 +2,17 @@
 // Keyboard shortcuts
 
 // Import
-Mousetrap.bind(['ctrl+o', 'meta+o'], e => {
+Mousetrap.bind('mod+o', e => {
 	e.preventDefault();
 	openImage();
 });
-Mousetrap.bind(['ctrl+alt+o', 'meta+alt+o'], e => {
+Mousetrap.bind('mod+alt+o', e => {
 	e.preventDefault();
 	openImageAsLayer();
 });
 
 // Export
-Mousetrap.bind(['ctrl+s', 'meta+s'], e => {
+Mousetrap.bind('mod+s', e => {
 	e.preventDefault();
 	croquis.createFlattenThumbnail().toBlob(blob => {
 		saveAs(blob, 'image.' + (lastImageExport === 'image/png' ? 'png' : 'jpg'));
@@ -20,8 +20,8 @@ Mousetrap.bind(['ctrl+s', 'meta+s'], e => {
 });
 
 // Undo/Redo
-Mousetrap.bind(['ctrl+y', 'ctrl+shift+z', 'meta+y', 'meta+shift+z'], croquis.redo);
-Mousetrap.bind(['ctrl+z', 'meta+z'], croquis.undo);
+Mousetrap.bind(['mod+y', 'mod+shift+z'], croquis.redo);
+Mousetrap.bind('mod+z', croquis.undo);
 
 // Tools
 Mousetrap.bind(['p', 'n'], () => changeTool(document.querySelector('img[data-tool="pen"]')));
@@ -37,7 +37,7 @@ Mousetrap.bind('tab', e => {
 });
 
 // Toggle menu
-Mousetrap.bind(['ctrl+m', 'meta+m'], e => {
+Mousetrap.bind('mod+m', e => {
 	e.preventDefault();
 	toggleMenu();
 });
@@ -58,3 +58,21 @@ Mousetrap.bind('alt', e => {
 
 // Fullscreen
 Mousetrap.bind('f11', toggleFullscreen);
+
+// Zoom in/out, reset zoom
+Mousetrap.bind('mod+0', resetZoom);
+Mousetrap.bind('mod+9', e => {
+	e.preventDefault();
+	centerImage();
+});
+Mousetrap.bind(['mod+=', 'mod+shift+='], e => {
+	e.preventDefault();
+	zoomIn();
+});
+// Mousetrap isn't working with the Ctrl+Minus shortcut, so I have to manually implement it...
+document.addEventListener('keydown', e => {
+	if (e.which === 173 && (e.ctrlKey || e.metaKey)) {
+		e.preventDefault();
+		zoomOut();
+	}
+})

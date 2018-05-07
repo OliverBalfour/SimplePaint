@@ -65,7 +65,8 @@ const view = {
 		prop: '--options-width',
 		size: rootStyle.getPropertyValue('--options-width')
 	},
-	layerThumbs: true
+	layerThumbs: true,
+	zoom: 1
 }
 
 // pointer-events property support
@@ -201,7 +202,7 @@ function updatePointer() {
 			threshold = 0x30;
 		}
 		var brushPointer = Croquis.createBrushPointer(
-			image, brush.getSize(), brush.getAngle(), threshold, true);
+			image, brush.getSize() * view.zoom, brush.getAngle(), threshold, true);
 		brushPointer.style.setProperty('margin-left',
 			'-' + (brushPointer.width * 0.5) + 'px');
 		brushPointer.style.setProperty('margin-top',
@@ -214,8 +215,8 @@ updatePointer();
 
 function getRelativePosition () {
 	const rect = canvasContainer.querySelector('canvas').getBoundingClientRect();
-	mouse.rx = mouse.x - rect.left;
-	mouse.ry = mouse.y - rect.top;
+	mouse.rx = (mouse.x - rect.left) * (1 / view.zoom);
+	mouse.ry = (mouse.y - rect.top) * (1 / view.zoom);
 	return { x: mouse.rx, y: mouse.ry };
 }
 
@@ -384,10 +385,38 @@ function err (e) {
 function updateCanvasContainerSize () {
 	canvasContainerSize = document.querySelector('.canvases').getBoundingClientRect();
 
-	canvasContainer.style.width  = (canvasContainerSize.width  + croquis.getCanvasWidth()) + 'px';
-	canvasContainer.style.height = (canvasContainerSize.height + croquis.getCanvasHeight()) + 'px';
+	canvasContainer.style.width  = (canvasContainerSize.width  + croquis.getCanvasWidth()  * view.zoom) + 'px';
+	canvasContainer.style.height = (canvasContainerSize.height + croquis.getCanvasHeight() * view.zoom) + 'px';
 }
 
 window.onresize = () => {
 	updateCanvasContainerSize();
+}
+
+// Zoom
+
+const zoomIn = () => setZoom(view.zoom + 0.1);
+const zoomOut = () => setZoom(view.zoom - 0.1);
+const resetZoom = () => setZoom(1);
+
+function setZoom (zoom) {
+	view.zoom = zoom;
+	if (view.zoom < 0.1) view.zoom = 0.1;
+	if (view.zoom > 10) view.zoom = 10;
+	document.querySelector('.js-zoom').innerText = Math.round(view.zoom * 100) + '%';
+
+	document.querySelectorAll('.canvases canvas').forEach(el => {
+		el.style.width = Math.round(croquis.getCanvasWidth() * view.zoom + 2) + 'px';
+		el.style.height = Math.round(croquis.getCanvasHeight() * view.zoom + 2) + 'px';
+	});
+
+	updateCanvasContainerSize();
+	updatePointer();
+}
+
+function centerImage () {
+	canvasSize = canvasContainer.getBoundingClientRect();
+
+	canvasContainer.parentElement.scrollTop = (canvasSize.height - croquis.getCanvasHeight()) / 2 + 1;
+	canvasContainer.parentElement.scrollLeft = (canvasSize.width - croquis.getCanvasWidth())  / 2 + 1;
 }

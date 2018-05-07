@@ -95,15 +95,15 @@ document.addEventListener('mousemove', (e) => {
 		xel = document.querySelector('.js-x-coord'),
 		yel = document.querySelector('.js-y-coord');
 
-	xel.innerText = mouse.rx;
-	yel.innerText = mouse.ry;
+	xel.innerText = Math.round(mouse.rx);
+	yel.innerText = Math.round(mouse.ry);
 
-	if (mouse.rx < 0 || mouse.rx > canvasSize.width)
+	if (mouse.rx < 0 || mouse.rx > croquis.getCanvasWidth())
 		xel.style.background = colour;
 	else
 		xel.style.background = '';
 
-	if (mouse.ry < 0 || mouse.ry > canvasSize.height)
+	if (mouse.ry < 0 || mouse.ry > croquis.getCanvasHeight())
 		yel.style.background = colour;
 	else
 		yel.style.background = '';

@@ -91,9 +91,12 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	border-top: var(--area-border);
 	background: var(--area-background);
-	color: white;
+	color: lightgrey;
 	font-size: 14px;
 	padding: 3px 6px;
+}
+.footer span {
+	color: white;
 }
 
 .modals {
@@ -143,8 +146,6 @@ h1, h2, h3, h4, h5, h6 {
 	top: 50%;
 	left: 50%;
 	border: 1px solid black;
-	/*width: 100%;
-	height: 100%;*/
 }
 
 .picker {

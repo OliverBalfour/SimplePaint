@@ -42,8 +42,10 @@
 						<li><span onclick='toggleView("toolOptions")'>Toggle tool options (Tab)</span></li>
 						<li><span onclick='toggleView("statusBar")'>Toggle status bar</span></li>
 						<li><span onclick='toggleLayerThumbnails()'>Toggle layer thumbs</span></li>
-						<li><span onclick="alert('TODO')">Zoom in</span></li>
-						<li><span onclick="alert('TODO')">Zoom out</span></li>
+						<li><span onclick='zoomIn()'>Zoom in (Ctrl++)</span></li>
+						<li><span onclick='zoomOut()'>Zoom out (Ctrl+-)</span></li>
+						<li><span onclick='resetZoom()'>Reset zoom (Ctrl+0)</span></li>
+						<li><span onclick='centerImage()'>Center image (Ctrl+9)</span></li>
 					</ul>
 				</li>
 				<li>
@@ -170,6 +172,7 @@
 			</fieldset>
 		</div>
 		<div class='footer'>
+			zoom: <span class='js-zoom' onclick='resetZoom()' title='Click to reset zoom'>100%</span>
 			x: <span class='js-x-coord'>0</span>
 			y: <span class='js-y-coord'>0</span>
 		</div>
