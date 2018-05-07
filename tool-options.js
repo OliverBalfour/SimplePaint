@@ -92,7 +92,7 @@ document.querySelector('.render-stabilizer').value
  = croquis.getToolStabilizeLevel();
 document.querySelector('.render-stabilizer').onchange = e => {
 	croquis.setToolStabilizeLevel(parseFloat(e.target.value));
-	document.querySelector('.js-render-stabilizer').innerText = Math.round(croquis.getToolStabilizeLevel());
+	document.querySelector('.js-render-stabilizer').innerText = Math.round(croquis.getToolStabilizeLevel() * 10) / 10;
 }
 
 // Weight
@@ -101,7 +101,7 @@ document.querySelector('.render-weight').value
  = croquis.getToolStabilizeWeight() * 100;
 document.querySelector('.render-weight').onchange = e => {
 	croquis.setToolStabilizeWeight(parseFloat(e.target.value) * 0.01);
-	document.querySelector('.js-render-weight').innerText = Math.round(croquis.getToolStabilizeWeight() * 100);
+	document.querySelector('.js-render-weight').innerText = Math.round(croquis.getToolStabilizeWeight() * 100 * 10) / 10;
 }
 
 
@@ -113,7 +113,7 @@ document.querySelector('.brush-opacity').value
  = croquis.getPaintingOpacity() * 100;
 document.querySelector('.brush-opacity').onchange = e => {
 	croquis.setPaintingOpacity(parseFloat(e.target.value) * 0.01);
-	document.querySelector('.js-brush-opacity').innerText = Math.round(croquis.getPaintingOpacity() * 100);
+	document.querySelector('.js-brush-opacity').innerText = Math.round(croquis.getPaintingOpacity() * 100 * 10) / 10;
 }
 
 // Brush size
@@ -122,7 +122,7 @@ document.querySelector('.brush-size').value
  = brush.getSize();
 document.querySelector('.brush-size').onchange = e => {
 	brush.setSize(parseFloat(e.target.value));
-	document.querySelector('.js-brush-size').innerText = Math.round(brush.getSize());
+	document.querySelector('.js-brush-size').innerText = Math.round(brush.getSize() * 10) / 10;
 	updatePointer();
 }
 
@@ -132,7 +132,7 @@ document.querySelector('.brush-flow').value
  = brush.getFlow() * 100;
 document.querySelector('.brush-flow').onchange = e => {
 	brush.setFlow(parseFloat(e.target.value) * 0.01);
-	document.querySelector('.js-brush-flow').innerText = Math.round(brush.getFlow() * 100);
+	document.querySelector('.js-brush-flow').innerText = Math.round(brush.getFlow() * 100 * 10) / 10;
 }
 
 // Brush spacing
@@ -141,7 +141,7 @@ document.querySelector('.brush-spacing').value
  = brush.getSpacing() * 100;
 document.querySelector('.brush-spacing').onchange = e => {
 	brush.setSpacing(parseFloat(e.target.value) * 0.01);
-	document.querySelector('.js-brush-spacing').innerText = Math.round(brush.getSpacing() * 100);
+	document.querySelector('.js-brush-spacing').innerText = Math.round(brush.getSpacing() * 100 * 10) / 10;
 }
 
 // Brush angle
@@ -150,7 +150,7 @@ document.querySelector('.brush-angle').value
  = brush.getAngle();
 document.querySelector('.brush-angle').onchange = e => {
 	brush.setAngle(parseFloat(e.target.value));
-	document.querySelector('.js-brush-angle').innerText = Math.round(brush.getAngle());
+	document.querySelector('.js-brush-angle').innerText = Math.round(brush.getAngle() * 10) / 10;
 }
 
 // Rotate brush to direction
