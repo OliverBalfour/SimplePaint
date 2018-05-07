@@ -18,6 +18,7 @@ canvasContainer.appendChild(croquisElement);
 // Initialise croquis
 croquis.lockHistory();
 let canvasSize = canvasContainer.getBoundingClientRect();
+let canvasContainerSize = document.querySelector('.canvases').getBoundingClientRect();
 croquis.setCanvasSize(canvasSize.width / 2, canvasSize.height / 2);
 canvasContainer.parentElement.scrollTop = canvasSize.height / 4 + 1;
 canvasContainer.parentElement.scrollLeft = canvasSize.width / 4 + 1;
@@ -368,6 +369,7 @@ function resizeCanvas () {
 			modal.prompt('Height', '', 'number')
 				.then((height) => {
 					croquis.setCanvasSize(width, height);
+					updateCanvasContainerSize();
 					updateLayers();
 				})
 				.catch(err);
@@ -377,4 +379,15 @@ function resizeCanvas () {
 
 function err (e) {
 	modal.confirm('Error', e, 'alert');
+}
+
+function updateCanvasContainerSize () {
+	canvasContainerSize = document.querySelector('.canvases').getBoundingClientRect();
+
+	canvasContainer.style.width  = (canvasContainerSize.width  + croquis.getCanvasWidth()) + 'px';
+	canvasContainer.style.height = (canvasContainerSize.height + croquis.getCanvasHeight()) + 'px';
+}
+
+window.onresize = () => {
+	updateCanvasContainerSize();
 }

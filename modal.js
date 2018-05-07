@@ -35,7 +35,7 @@ const modal = {
 	// type is a valid type for input elements
 	prompt: function (title, info, type) {
 		return new Promise ((resolve, reject) => {
-			this.promise = { resolve, reject };
+			this.promise = { resolve, reject, type };
 
 			let modal = document.querySelector('.modal-prompt'),
 				input = document.querySelector('.modal-prompt-input');
@@ -52,7 +52,13 @@ const modal = {
 	},
 	promptDone: function () {
 		this.close('modal-prompt');
-		this.promise.resolve(document.querySelector('.modal-prompt-input').value);
+
+		let value = document.querySelector('.modal-prompt-input').value;
+		this.promise.resolve(
+			(this.promise.type === 'number' || this.promise.type === 'range')
+			 ? parseFloat(value) : value
+		);
+
 		document.querySelector('.modal-prompt-input').value = null;
 		this.promise = { resolve: null, reject: null };
 	},
