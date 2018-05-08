@@ -49,20 +49,19 @@ function toggleView (section) {
 }
 
 function toggleMenu () {
-	function closeMenu () {
+	if (view.menu.open && !view.menu.altDown && !view.menu.promptAgain) {
 		toggleView('menu');
 		view.menu.promptAgain = false;
-	}
-
-	if (view.menu.open && !view.menu.altDown && !view.menu.promptAgain) {
-		closeMenu();
 	} else if (view.menu.open && !view.menu.altDown) {
 		modal.confirm(
 			'Are you sure you want to close the menu?',
 			'You can re-open the menu by holding Alt/Option or pressing Ctrl+M',
 			'confirm'
 		)
-			.then(closeMenu)
+			.then(() => {
+				toggleView('menu');
+				view.menu.promptAgain = false;
+			})
 			.catch(() => {});
 	} else {
 		toggleView('menu');

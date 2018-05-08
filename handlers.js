@@ -2,7 +2,7 @@
 {
 	const click = (className, handler) =>
 		Array.from(document.querySelectorAll('.js-click-' + className))
-		.forEach(el => el.addEventListener('click', handler));
+		.forEach(el => el.addEventListener('pointerdown', handler));
 
 	click('todo', () => {modal.confirm('TODO','','alert')});
 	click('openImage', openImage);

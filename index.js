@@ -289,12 +289,16 @@ function updateLayers () {
 
 		el.innerHTML = (view.layerThumbs ? "<img src='" + getLayerThumbnail(i).toDataURL('image/png') + "' />" : '')
 		 + '<span>' + layers[i].getAttribute('data-name') + '</span>'
-		 + "<div class='remove-layer-button small-button' onpointerdown='removeLayer(this)'>&times;</div>";
+		 + "<div class='remove-layer-button small-button js-click-removeLayer'>&times;</div>";
 
 		shelf.appendChild(el);
 	}
 
 	Array.from(shelf.children)[croquis.getCurrentLayerIndex()].classList.add('active');
+
+	Array.from(document.querySelectorAll('.js-click-removeLayer')).forEach(el => {
+		el.addEventListener('pointerdown', e => removeLayer(e.target));
+	});
 }
 updateLayers();
 
@@ -323,6 +327,7 @@ function addLayer () {
 		.then((name) => {
 			croquis.addLayer(croquis.getLayerCount()).setAttribute('data-name', name);
 			croquis.selectLayer(croquis.getLayerCount() - 1);
+			setZoom(view.zoom);
 			updateLayers();
 		})
 		.catch(err);
@@ -384,6 +389,7 @@ function resizeCanvas () {
 
 function err (e) {
 	modal.confirm('Error', e, 'alert');
+	console.log(e);
 }
 
 function updateCanvasContainerSize () {

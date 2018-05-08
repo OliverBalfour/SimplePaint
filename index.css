@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6 {
 	background: var(--area-background);
 	overflow-y: scroll;
 	overflow-x: hidden;
-	font-size: 0.8em;
+	font-size: 13px;
 }
 
 .footer {

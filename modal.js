@@ -14,10 +14,10 @@ const modal = {
 	// resolve returns base64 image data
 	image: function (title, info) {
 		return new Promise ((resolve, reject) => {
-			this.promise = { resolve, reject };
+			modal.promise = { resolve, reject };
 			document.querySelector('.modal-image-upload').children[1].innerText = title;
 			document.querySelector('.modal-image-upload').children[2].innerText = info;
-			this.open('modal-image-upload');
+			modal.open('modal-image-upload');
 		});
 	},
 	imageDone: function () {
@@ -26,8 +26,8 @@ const modal = {
 			reader.readAsDataURL(document.querySelector('.image-upload-input').files[0]);
 			reader.addEventListener('load', () => {
 				modal.close('modal-image-upload');
-				this.promise.resolve(reader.result);
-				this.promise = { resolve: null, reject: null };
+				modal.promise.resolve(reader.result);
+				modal.promise = { resolve: null, reject: null };
 			});
 		}
 	},
@@ -35,59 +35,59 @@ const modal = {
 	// type is a valid type for input elements
 	prompt: function (title, info, type) {
 		return new Promise ((resolve, reject) => {
-			this.promise = { resolve, reject, type };
+			modal.promise = { resolve, reject, type };
 
-			let modal = document.querySelector('.modal-prompt'),
+			let el = document.querySelector('.modal-prompt'),
 				input = document.querySelector('.modal-prompt-input');
 
-			modal.children[1].innerText = title;
-			modal.children[2].innerText = info;
+			el.children[1].innerText = title;
+			el.children[2].innerText = info;
 
 			input.type = type;
 			input.value = null;
 
-			this.open('modal-prompt');
+			modal.open('modal-prompt');
 			input.focus();
 		});
 	},
 	promptDone: function () {
-		this.close('modal-prompt');
+		modal.close('modal-prompt');
 
 		let value = document.querySelector('.modal-prompt-input').value;
-		this.promise.resolve(
-			(this.promise.type === 'number' || this.promise.type === 'range')
+		modal.promise.resolve(
+			(modal.promise.type === 'number' || modal.promise.type === 'range')
 			 ? parseFloat(value) : value
 		);
 
 		document.querySelector('.modal-prompt-input').value = null;
-		this.promise = { resolve: null, reject: null };
+		modal.promise = { resolve: null, reject: null };
 	},
 
 	// type is 'alert' or 'confirm'
 	// (determines whether it emulates window.alert or window.confirm)
 	confirm: function (title, info, type) {
 		return new Promise ((resolve, reject) => {
-			this.promise = { resolve, reject };
+			modal.promise = { resolve, reject };
 
-			let modal = document.querySelector('.modal-confirm');
+			let el = document.querySelector('.modal-confirm');
 
-			modal.children[1].innerText = title;
-			modal.children[2].innerText = info;
+			el.children[1].innerText = title;
+			el.children[2].innerText = info;
 
 			if (type !== 'confirm')
 				document.querySelector('.modal-confirm-button').classList.add('hidden');
 
-			this.open('modal-confirm');
+			modal.open('modal-confirm');
 		});
 	},
 	confirmDone: function (val) {
-		this.close('modal-confirm');
+		modal.close('modal-confirm');
 		if (val)
-			this.promise.resolve();
+			modal.promise.resolve();
 		else
-			this.promise.reject();
+			modal.promise.reject();
 
 		document.querySelector('.modal-confirm-button').classList.remove('hidden');
-		this.promise = { resolve: null, reject: null };
+		modal.promise = { resolve: null, reject: null };
 	}
 };

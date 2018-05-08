@@ -65,7 +65,7 @@
 				<li>
 					<span>Layer</span>
 					<ul class='submenu'>
-						<li><span class='js-click-addLayer'>New layer</span></li>
+						<li><span class='js-click-addLayer'>New layer (Ctrl+Alt+N)</span></li>
 						<li><span class='js-click-removeActiveLayer'>Delete active layer</span></li>
 						<li><span class='js-click-todo'>Merge layers</span></li>
 						<li><span class='js-click-clearLayer'>Clear layer</span></li>
@@ -94,7 +94,7 @@
 			<span class='program-name'>Image Editor <sub>(beta)</sub></span>
 		</div>
 		<div class='toolbar'>
-			<img src='icons/pencil.svg' class='js-click-changeTool' title='Pen. Hotkey: P or N' data-tool='pen' class='active' />
+			<img src='icons/pencil.svg' class='js-click-changeTool active' title='Pen. Hotkey: P or N' data-tool='pen' />
 			<img src='icons/line.svg' class='js-click-changeTool' title='Line. Hotkey: L' data-tool='line' />
 			<img src='icons/rubber.svg' class='js-click-changeTool' title='Eraser. Hotkey: E' data-tool='eraser' />
 			<img src='icons/picker.svg' class='js-click-changeTool' title='Picker. Hotkey: C or O' data-tool='picker' />
@@ -108,7 +108,7 @@
 			<fieldset>
 				<legend>Layers</legend>
 				<div class='layers-shelf'></div>
-				<div class='new-layer-button small-button' class='js-click-addLayer'>+</div>
+				<div class='new-layer-button small-button js-click-addLayer'>+</div>
 			</fieldset>
 
 			<fieldset>
@@ -146,7 +146,7 @@
 					<img src='./brush/chalk3.png' class='brush-image' data-flow='35' data-spacing='7' />
 					<img src='./brush/charcoal1.png' class='brush-image' data-flow='40' data-spacing='8' />
 					<img src='./brush/charcoal2.png' class='brush-image' data-flow='40' data-spacing='8' />
-					<div class='new-brush-button small-button' class='js-click-uploadBrush'>+</div>
+					<div class='new-brush-button small-button js-click-uploadBrush'>+</div>
 				</div>
 			</fieldset>
 			<fieldset id='brush-shelf'>
@@ -181,28 +181,28 @@
 		</div>
 		<div class='modals hidden'>
 			<div class='modal hidden modal-image-upload'>
-				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
+				<div class='modal-close small-button js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<input type='file' class='image-upload-input' accept='image/*'>
 				<br>
 				<button class='js-click-modalImageDone'>Done</button>
 			</div>
 			<div class='modal hidden modal-prompt'>
-				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
+				<div class='modal-close small-button js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<input class='modal-prompt-input' />
 				<br>
 				<button class='js-click-modalPromptDone'>Done</button>
 			</div>
 			<div class='modal hidden modal-confirm'>
-				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
+				<div class='modal-close small-button js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<br>
 				<button class='js-click-modalConfirmDone' data-value='true'>Ok</button>
-				<button class='js-click-modalConfirmDone' data-value='false' class='modal-confirm-button'>Cancel</button>
+				<button class='js-click-modalConfirmDone modal-confirm-button' data-value='false'>Cancel</button>
 			</div>
 			<div class='modal hidden modal-about'>
-				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
+				<div class='modal-close small-button js-click-modalClose'>&times;</div>
 				<h2>About</h2>
 				<p>
 					Simple HTML5 Canvas based image editor designed for the web and ChromeOS.

@@ -11,6 +11,12 @@ Mousetrap.bind('mod+alt+o', e => {
 	openImageAsLayer();
 });
 
+// New layer
+Mousetrap.bind('mod+alt+n', e => {
+	e.preventDefault();
+	addLayer();
+});
+
 // Export
 Mousetrap.bind('mod+s', e => {
 	e.preventDefault();
