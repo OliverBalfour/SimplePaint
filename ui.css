@@ -133,14 +133,12 @@ fieldset {
 	text-decoration: none;
 	font-size: 12px;
 	padding: 5px 8px;
-	cursor: default;
-}
-.menu-bar span[onclick] {
 	cursor: pointer;
 }
 /* Grey out items with onclick='alert("TODO")' */
-.menu-bar span[onclick^='alert'] {
+.menu-bar span.js-click-todo {
 	color: grey;
+	cursor: default;
 }
 .menu-bar p {
 	padding: 0;

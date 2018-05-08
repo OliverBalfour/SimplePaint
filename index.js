@@ -424,3 +424,4 @@ function centerImage () {
 	canvasContainer.parentElement.scrollTop = (canvasSize.height - croquis.getCanvasHeight()) / 2 + 1;
 	canvasContainer.parentElement.scrollLeft = (canvasSize.width - croquis.getCanvasWidth())  / 2 + 1;
 }
+

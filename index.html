@@ -13,15 +13,15 @@
 				<li>
 					<span>File</span>
 					<ul class='submenu'>
-						<li><span onclick="alert('TODO')">New</span></li>
-						<li><span onclick='openImage()'>Open (Ctrl+O)</span></li>
-						<li><span onclick='openImageAsLayer()'>Open as Layer (Ctrl+Alt+O)</span></li>
-						<li><a download='image'><span onclick='exportImageAs(this, "last")'>Save (Ctrl+S)</span></a></li>
+						<li><span class='js-click-todo'>New</span></li>
+						<li><span class='js-click-openImage'>Open (Ctrl+O)</span></li>
+						<li><span class='js-click-openImageAsLayer'>Open as Layer (Ctrl+Alt+O)</span></li>
+						<li><a download='image'><span class='js-click-exportImageAsLast'>Save (Ctrl+S)</span></a></li>
 						<li>
 							<span>Save as<p>&#10093;</p></span>
 							<ul class='submenu'>
-								<li><a download='image.png'><span onclick='exportImageAs(this, "png")'>png</span></a></li>
-								<li><a download='image.jpg'><span onclick='exportImageAs(this, "jpg")'>jpg</span></a></li>
+								<li><a download='image.png'><span class='js-click-exportImageAsPNG'>png</span></a></li>
+								<li><a download='image.jpg'><span class='js-click-exportImageAsJPG'>jpg</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -29,23 +29,23 @@
 				<li>
 					<span>Edit</span>
 					<ul class='submenu'>
-						<li><span onclick='croquis.undo()'>Undo (Ctrl+Z)</li>
-						<li><span onclick='croquis.redo()'>Redo (Ctrl+Y)</li>
+						<li><span class='js-click-undo'>Undo (Ctrl+Z)</li>
+						<li><span class='js-click-redo'>Redo (Ctrl+Y)</li>
 					</ul>
 				</li>
 				<li>
 					<span>View</span>
 					<ul class='submenu'>
-						<li><span onclick='toggleFullscreen()'>Toggle fullscreen (F11)</span></li>
-						<li><span onclick='toggleMenu()'>Toggle menu (Ctrl+M)</span></li>
-						<li><span onclick='toggleView("toolBar")'>Toggle tool bar (Tab)</span></li>
-						<li><span onclick='toggleView("toolOptions")'>Toggle tool options (Tab)</span></li>
-						<li><span onclick='toggleView("statusBar")'>Toggle status bar</span></li>
-						<li><span onclick='toggleLayerThumbnails()'>Toggle layer thumbnails</span></li>
-						<li><span onclick='zoomIn()'>Zoom in (Ctrl++)</span></li>
-						<li><span onclick='zoomOut()'>Zoom out (Ctrl+-)</span></li>
-						<li><span onclick='resetZoom()'>Reset zoom (Ctrl+0)</span></li>
-						<li><span onclick='centerImage()'>Center image (Ctrl+9)</span></li>
+						<li><span class='js-click-toggleFullscreen'>Toggle fullscreen (F11)</span></li>
+						<li><span class='js-click-toggleMenu'>Toggle menu (Ctrl+M)</span></li>
+						<li><span class='js-click-toggleToolBar'>Toggle tool bar (Tab)</span></li>
+						<li><span class='js-click-toggleToolOptions'>Toggle tool options (Tab)</span></li>
+						<li><span class='js-click-toggleStatusBar'>Toggle status bar</span></li>
+						<li><span class='js-click-toggleLayerThumbnails'>Toggle layer thumbnails</span></li>
+						<li><span class='js-click-zoomIn'>Zoom in (Ctrl++)</span></li>
+						<li><span class='js-click-zoomOut'>Zoom out (Ctrl+-)</span></li>
+						<li><span class='js-click-resetZoom'>Reset zoom (Ctrl+0)</span></li>
+						<li><span class='js-click-centerImage'>Center image (Ctrl+9)</span></li>
 					</ul>
 				</li>
 				<li>
@@ -54,38 +54,38 @@
 						<li>
 							<span>Rotate<p>&#10093;</p></span>
 							<ul class='submenu'>
-								<li><span onclick="alert('TODO')">90&#176; (clockwise)</li>
-								<li><span onclick="alert('TODO')">180&#176;</li>
-								<li><span onclick="alert('TODO')">270&#176;</li>
+								<li><span class='js-click-todo'>90&#176; (clockwise)</li>
+								<li><span class='js-click-todo'>180&#176;</li>
+								<li><span class='js-click-todo'>270&#176;</li>
 							</ul>
 						</li>
-						<li><span onclick='resizeCanvas()'>Resize canvas</span></li>
+						<li><span class='js-click-resizeCanvas'>Resize canvas</span></li>
 					</ul>
 				</li>
 				<li>
 					<span>Layer</span>
 					<ul class='submenu'>
-						<li><span onclick='addLayer()'>New layer</span></li>
-						<li><span onclick='removeActiveLayer()'>Delete active layer</span></li>
-						<li><span onclick="alert('TODO')">Merge layers</span></li>
-						<li><span onclick='clearLayer()'>Clear layer</span></li>
-						<li><span onclick='fillLayer()'>Fill layer</span></li>
+						<li><span class='js-click-addLayer'>New layer</span></li>
+						<li><span class='js-click-removeActiveLayer'>Delete active layer</span></li>
+						<li><span class='js-click-todo'>Merge layers</span></li>
+						<li><span class='js-click-clearLayer'>Clear layer</span></li>
+						<li><span class='js-click-fillLayer'>Fill layer</span></li>
 					</ul>
 				</li>
 				<li>
 					<span>Filter</span>
 					<ul class='submenu'>
-						<li><span onclick="alert('TODO')">Gaussian blur</span></li>
-						<li><span onclick="alert('TODO')">Sobel edge detection</span></li>
-						<li><span onclick="alert('TODO')">Saturate/Desaturate</span></li>
-						<li><span onclick="alert('TODO')">Greyscale</span></li>
-						<li><span onclick="alert('TODO')">Hue shift</span></li>
+						<li><span class='js-click-todo'>Gaussian blur</span></li>
+						<li><span class='js-click-todo'>Sobel edge detection</span></li>
+						<li><span class='js-click-todo'>Saturate/Desaturate</span></li>
+						<li><span class='js-click-todo'>Greyscale</span></li>
+						<li><span class='js-click-todo'>Hue shift</span></li>
 					</ul>
 				</li>
 				<li>
 					<span>Help</span>
 					<ul class='submenu'>
-						<li><span onclick='modal.open("modal-about")'>About</span></li>
+						<li><span class='js-click-modalAbout'>About</span></li>
 						<li><span><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></span></li>
 						<li><span><a href='https://github.com/Tobsta/ImageEditor/issues' target='_blank'>Report a bug</a></span></li>
 					</ul>
@@ -94,10 +94,10 @@
 			<span class='program-name'>Image Editor <sub>(beta)</sub></span>
 		</div>
 		<div class='toolbar'>
-			<img src='icons/pencil.svg' onclick='changeTool(this)' title='Pen. Hotkey: P or N' data-tool='pen' class='active' />
-			<img src='icons/line.svg' onclick='changeTool(this)' title='Line. Hotkey: L' data-tool='line' />
-			<img src='icons/rubber.svg' onclick='changeTool(this)' title='Eraser. Hotkey: E' data-tool='eraser' />
-			<img src='icons/picker.svg' onclick='changeTool(this)' title='Picker. Hotkey: C or O' data-tool='picker' />
+			<img src='icons/pencil.svg' class='js-click-changeTool' title='Pen. Hotkey: P or N' data-tool='pen' class='active' />
+			<img src='icons/line.svg' class='js-click-changeTool' title='Line. Hotkey: L' data-tool='line' />
+			<img src='icons/rubber.svg' class='js-click-changeTool' title='Eraser. Hotkey: E' data-tool='eraser' />
+			<img src='icons/picker.svg' class='js-click-changeTool' title='Picker. Hotkey: C or O' data-tool='picker' />
 		</div>
 		<div class='tool-options'>
 			<span class='colour-picker-preview'>
@@ -108,7 +108,7 @@
 			<fieldset>
 				<legend>Layers</legend>
 				<div class='layers-shelf'></div>
-				<div class='new-layer-button small-button' onclick='addLayer()'>+</div>
+				<div class='new-layer-button small-button' class='js-click-addLayer'>+</div>
 			</fieldset>
 
 			<fieldset>
@@ -146,7 +146,7 @@
 					<img src='./brush/chalk3.png' class='brush-image' data-flow='35' data-spacing='7' />
 					<img src='./brush/charcoal1.png' class='brush-image' data-flow='40' data-spacing='8' />
 					<img src='./brush/charcoal2.png' class='brush-image' data-flow='40' data-spacing='8' />
-					<div class='new-brush-button small-button' onclick='uploadBrush()'>+</div>
+					<div class='new-brush-button small-button' class='js-click-uploadBrush'>+</div>
 				</div>
 			</fieldset>
 			<fieldset id='brush-shelf'>
@@ -172,7 +172,7 @@
 			</fieldset>
 		</div>
 		<div class='footer'>
-			zoom: <span class='js-zoom' onclick='resetZoom()' title='Click to reset zoom'>100%</span>
+			zoom: <span class='js-zoom js-click-resetZoom' title='Click to reset zoom'>100%</span>
 			x: <span class='js-x-coord'>0</span>
 			y: <span class='js-y-coord'>0</span>
 		</div>
@@ -181,28 +181,28 @@
 		</div>
 		<div class='modals hidden'>
 			<div class='modal hidden modal-image-upload'>
-				<div class='modal-close small-button' onclick='modal.close("modal-image-upload")'>&times;</div>
+				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<input type='file' class='image-upload-input' accept='image/*'>
 				<br>
-				<button onclick='modal.imageDone()'>Done</button>
+				<button class='js-click-modalImageDone'>Done</button>
 			</div>
 			<div class='modal hidden modal-prompt'>
-				<div class='modal-close small-button' onclick='modal.close("modal-prompt")'>&times;</div>
+				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<input class='modal-prompt-input' />
 				<br>
-				<button onclick='modal.promptDone()'>Done</button>
+				<button class='js-click-modalPromptDone'>Done</button>
 			</div>
 			<div class='modal hidden modal-confirm'>
-				<div class='modal-close small-button' onclick='modal.close("modal-confirm")'>&times;</div>
+				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
 				<h2></h2><p></p>
 				<br>
-				<button onclick='modal.confirmDone(true)'>Ok</button>
-				<button onclick='modal.confirmDone(false)' class='modal-confirm-button'>Cancel</button>
+				<button class='js-click-modalConfirmDone' data-value='true'>Ok</button>
+				<button class='js-click-modalConfirmDone' data-value='false' class='modal-confirm-button'>Cancel</button>
 			</div>
 			<div class='modal hidden modal-about'>
-				<div class='modal-close small-button' onclick='modal.close("modal-about")'>&times;</div>
+				<div class='modal-close small-button' class='js-click-modalClose'>&times;</div>
 				<h2>About</h2>
 				<p>
 					Simple HTML5 Canvas based image editor designed for the web and ChromeOS.
@@ -234,5 +234,6 @@
 		<script type='text/javascript' src='tool-options.js'></script>
 		<script type='text/javascript' src='view.js'></script>
 		<script type='text/javascript' src='keybindings.js'></script>
+		<script type='text/javascript' src='handlers.js'></script>
 	</body>
 </html>
