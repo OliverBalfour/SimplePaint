@@ -4,9 +4,10 @@ const croquis = new Croquis();
 
 // Initialise brush
 const brush = new Croquis.Brush();
-brush.setSize(30);
+brush.setSize(20);
 brush.setColor('#000');
-brush.setSpacing(0.2);
+brush.setSpacing(0.02);
+brush.setFlow(0.04)
 croquis.setTool(brush);
 croquis.setToolStabilizeLevel(10);
 croquis.setToolStabilizeWeight(0.5);
@@ -430,4 +431,3 @@ function centerImage () {
 	canvasContainer.parentElement.scrollTop = (canvasSize.height - croquis.getCanvasHeight()) / 2 + 1;
 	canvasContainer.parentElement.scrollLeft = (canvasSize.width - croquis.getCanvasWidth())  / 2 + 1;
 }
-

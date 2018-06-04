@@ -50,7 +50,7 @@ h1, h2, h3, h4, h5, h6 {
 	top: var(--menu-height);
 	left: 0;
 	height: calc(100% - var(--menu-height) - var(--footer-height));
-	width: var(--toolbar-width);
+	width: calc(1px + var(--toolbar-width));
 	border-right: var(--area-border);
 	background: var(--area-background);
 }
@@ -61,6 +61,14 @@ h1, h2, h3, h4, h5, h6 {
 	display: block;
 	border-bottom: 1px solid darkgrey;
 	cursor: pointer;
+}
+.toolbar-bottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 66px;
+	width: 32px;
+	border-top: 1px solid darkgrey;
 }
 .toolbar img:hover {
 	background: slategrey;

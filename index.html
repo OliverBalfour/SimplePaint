@@ -94,10 +94,16 @@
 			<span class='program-name'>Image Editor <sub>(beta)</sub></span>
 		</div>
 		<div class='toolbar'>
-			<img src='icon.svg' width='32' class='js-click-changeTool active' title='Pen. Hotkey: P or N' data-tool='pen' />
-			<img src='icons/line.svg' class='js-click-changeTool' title='Line. Hotkey: L' data-tool='line' />
-			<img src='icons/rubber.svg' class='js-click-changeTool' title='Eraser. Hotkey: E' data-tool='eraser' />
-			<img src='icons/picker.svg' class='js-click-changeTool' title='Picker. Hotkey: C or O' data-tool='picker' />
+			<div class='toolbar-top'>
+				<img src='icon.svg' width='32' class='js-click-changeTool active' title='Pen. Hotkey: P or N' data-tool='pen' />
+				<img src='icons/line.svg' class='js-click-changeTool' title='Line. Hotkey: L' data-tool='line' />
+				<img src='icons/rubber.svg' class='js-click-changeTool' title='Eraser. Hotkey: E' data-tool='eraser' />
+				<img src='icons/picker.svg' class='js-click-changeTool' title='Picker. Hotkey: C or O' data-tool='picker' />
+			</div>
+			<div class='toolbar-bottom'>
+				<img src='icons/undo.svg' class='js-click-undo' title='Undo' />
+				<img src='icons/redo.svg' class='js-click-redo' title='Redo' />
+			</div>
 		</div>
 		<div class='tool-options'>
 			<span class='colour-picker-preview'>
@@ -125,8 +131,8 @@
 				<legend>Brush</legend>
 				<div id='brush-image-shelf'>
 					<img src='./brush/pixel.png' class='brush-image' data-flow='100' data-spacing='20' />
-					<div class='brush-image circle-brush on' data-flow='100' data-spacing='20'></div>
-					<div class='brush-image circle-brush' data-flow='4' data-spacing='2'></div>
+					<div class='brush-image circle-brush' data-flow='100' data-spacing='20'></div>
+					<div class='brush-image circle-brush on' data-flow='6' data-spacing='2'></div>
 					<img src='./brush/25.png' class='brush-image' data-flow='100' data-spacing='10' />
 					<img src='./brush/50.png' class='brush-image' data-flow='100' data-spacing='10' />
 					<img src='./brush/75.png' class='brush-image' data-flow='100' data-spacing='10' />
@@ -219,6 +225,13 @@
 				<p>Copyright Oliver Balfour, 2018.</p>
 				<p><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
 				<p><a href='https://github.com/Tobsta/ImageEditor/issues' target='_blank'>Report a bug</a></p>
+				<p>
+					Icons (other than homemade ones; all under CC-BY license from The Noun Project unless otherwise specified):
+					<ul>
+						<li>Undo by Xinh Studio</li>
+						<li>Redo by Xinh Studio</li>
+					</ul>
+				</p>
 			</div>
 		</div>
 
@@ -226,7 +239,6 @@
 		<script src='./croquis/croquis.js'></script>
 		<script src='./mousetrap/mousetrap.min.js'></script>
 		<script src='./tinycolor/dist/tinycolor-min.js'></script>
-		<script src='./canvas-to-blob/canvas-toBlob.js'></script>
 		<script src='./filesaver/FileSaver.js'></script>
 
 		<script type='text/javascript' src='modal.js'></script>
