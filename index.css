@@ -86,9 +86,36 @@ h1, h2, h3, h4, h5, h6 {
 	width: var(--options-width);
 	border-left: var(--area-border);
 	background: var(--area-background);
-	overflow-y: scroll;
-	overflow-x: hidden;
 	font-size: 13px;
+}
+
+.tool-options-container {
+	height: calc(100% - var(--options-width));
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.picker {
+	position: relative;
+	height: var(--options-width);
+	width: var(--options-width);
+}
+.picker div {
+	position: relative;
+}
+.picker div canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.colour-picker-preview {
+	border-top: 1px solid black;
+	border-right: 1px solid black;
+	position: absolute;
+	bottom: calc(100% - var(--options-width));
+	left: 0;
+	margin-left: 0;
+	z-index: 1;
 }
 
 .footer {
@@ -154,29 +181,6 @@ h1, h2, h3, h4, h5, h6 {
 	top: 50%;
 	left: 50%;
 	border: 1px solid black;
-}
-
-.picker {
-	position: relative;
-	height: calc(var(--options-width) - 20px);
-	width: calc(var(--options-width) - 20px);
-}
-.picker div {
-	position: relative;
-}
-.picker div canvas {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-.colour-picker-preview {
-	border-top: 1px solid black;
-	border-right: 1px solid black;
-	position: absolute;
-	top: calc(var(--options-width) - 36px);
-	left: 0;
-	margin-left: 0;
-	z-index: 1;
 }
 
 .line-thickness {

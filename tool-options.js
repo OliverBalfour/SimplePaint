@@ -8,7 +8,7 @@ const picker = new ColourPicker(c => {
 	colourPickerPreview.children[0].style.color = c.isDark() ? 'white' : 'black';
 	brush.setColor(c);
 	updatePointer();
-}, 280);
+}, 300);
 document.querySelector('.picker').appendChild(picker.element);
 
 let backgroundCheckerImage;

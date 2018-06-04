@@ -111,71 +111,73 @@
 			</span>
 			<div class='picker'></div>
 
-			<fieldset>
-				<legend>Layers</legend>
-				<div class='layers-shelf'></div>
-				<div class='new-layer-button small-button js-click-addLayer'>+</div>
-			</fieldset>
+			<div class='tool-options-container'>
+				<fieldset>
+					<legend>Layers</legend>
+					<div class='layers-shelf'></div>
+					<div class='new-layer-button small-button js-click-addLayer'>+</div>
+				</fieldset>
 
-			<fieldset>
-				<legend>Render options</legend>
-				<div id='tool-shelf'>
-					<span title='Higher stabilizer level makes lines smoother'>Stabilizer level: <code class='js-render-stabilizer'></code></span>
-					<input type='range' class='render-stabilizer' min='3' max='20'>
+				<fieldset>
+					<legend>Render options</legend>
+					<div id='tool-shelf'>
+						<span title='Higher stabilizer level makes lines smoother'>Stabilizer level: <code class='js-render-stabilizer'></code></span>
+						<input type='range' class='render-stabilizer' min='3' max='20'>
 
-					<span title='Higher weight slows rendering down'>Weight: <code class='js-render-weight'></code></span>
-					<input type='range' class='render-weight' min='0' max='80'>
-				</div>
-			</fieldset>
-			<fieldset>
-				<legend>Brush</legend>
-				<div id='brush-image-shelf'>
-					<img src='./brush/pixel.png' class='brush-image' data-flow='100' data-spacing='20' />
-					<div class='brush-image circle-brush' data-flow='100' data-spacing='20'></div>
-					<div class='brush-image circle-brush on' data-flow='6' data-spacing='2'></div>
-					<img src='./brush/25.png' class='brush-image' data-flow='100' data-spacing='10' />
-					<img src='./brush/50.png' class='brush-image' data-flow='100' data-spacing='10' />
-					<img src='./brush/75.png' class='brush-image' data-flow='100' data-spacing='10' />
-					<img src='./brush/b0.png' class='brush-image' data-flow='30' data-spacing='5' />
-					<img src='./brush/b1.png' class='brush-image' data-flow='35' data-spacing='7' />
-					<img src='./brush/b2.png' class='brush-image' data-flow='50' data-spacing='8' />
-					<img src='./brush/b3.png' class='brush-image' data-flow='20' data-spacing='4' data-rotate='false' />
-					<img src='./brush/b4.png' class='brush-image' data-flow='30' data-spacing='5' />
-					<img src='./brush/b5.png' class='brush-image' data-flow='100' data-spacing='100' data-rotate='true' />
-					<img src='./brush/acrylic1.png' class='brush-image' data-flow='50' data-spacing='15' />
-					<img src='./brush/acrylic2.png' class='brush-image' data-flow='50' data-spacing='20' />
-					<img src='./brush/acrylic3.png' class='brush-image' data-flow='40' data-spacing='4' />
-					<img src='./brush/acrylic4.png' class='brush-image' data-flow='70' data-spacing='14' />
-					<img src='./brush/acrylic5.png' class='brush-image' data-flow='40' data-spacing='8' />
-					<img src='./brush/chalk1.png' class='brush-image' data-flow='35' data-spacing='7' />
-					<img src='./brush/chalk2.png' class='brush-image' data-flow='35' data-spacing='7' />
-					<img src='./brush/chalk3.png' class='brush-image' data-flow='35' data-spacing='7' />
-					<img src='./brush/charcoal1.png' class='brush-image' data-flow='40' data-spacing='8' />
-					<img src='./brush/charcoal2.png' class='brush-image' data-flow='40' data-spacing='8' />
-					<div class='new-brush-button small-button js-click-uploadBrush'>+</div>
-				</div>
-			</fieldset>
-			<fieldset id='brush-shelf'>
-				<legend>Brush options</legend>
+						<span title='Higher weight slows rendering down'>Weight: <code class='js-render-weight'></code></span>
+						<input type='range' class='render-weight' min='0' max='80'>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Brush</legend>
+					<div id='brush-image-shelf'>
+						<img src='./brush/pixel.png' class='brush-image' data-flow='100' data-spacing='20' />
+						<div class='brush-image circle-brush' data-flow='100' data-spacing='20'></div>
+						<div class='brush-image circle-brush on' data-flow='6' data-spacing='2'></div>
+						<img src='./brush/25.png' class='brush-image' data-flow='100' data-spacing='10' />
+						<img src='./brush/50.png' class='brush-image' data-flow='100' data-spacing='10' />
+						<img src='./brush/75.png' class='brush-image' data-flow='100' data-spacing='10' />
+						<img src='./brush/b0.png' class='brush-image' data-flow='30' data-spacing='5' />
+						<img src='./brush/b1.png' class='brush-image' data-flow='35' data-spacing='7' />
+						<img src='./brush/b2.png' class='brush-image' data-flow='50' data-spacing='8' />
+						<img src='./brush/b3.png' class='brush-image' data-flow='20' data-spacing='4' data-rotate='false' />
+						<img src='./brush/b4.png' class='brush-image' data-flow='30' data-spacing='5' />
+						<img src='./brush/b5.png' class='brush-image' data-flow='100' data-spacing='100' data-rotate='true' />
+						<img src='./brush/acrylic1.png' class='brush-image' data-flow='50' data-spacing='15' />
+						<img src='./brush/acrylic2.png' class='brush-image' data-flow='50' data-spacing='20' />
+						<img src='./brush/acrylic3.png' class='brush-image' data-flow='40' data-spacing='4' />
+						<img src='./brush/acrylic4.png' class='brush-image' data-flow='70' data-spacing='14' />
+						<img src='./brush/acrylic5.png' class='brush-image' data-flow='40' data-spacing='8' />
+						<img src='./brush/chalk1.png' class='brush-image' data-flow='35' data-spacing='7' />
+						<img src='./brush/chalk2.png' class='brush-image' data-flow='35' data-spacing='7' />
+						<img src='./brush/chalk3.png' class='brush-image' data-flow='35' data-spacing='7' />
+						<img src='./brush/charcoal1.png' class='brush-image' data-flow='40' data-spacing='8' />
+						<img src='./brush/charcoal2.png' class='brush-image' data-flow='40' data-spacing='8' />
+						<div class='new-brush-button small-button js-click-uploadBrush'>+</div>
+					</div>
+				</fieldset>
+				<fieldset id='brush-shelf'>
+					<legend>Brush options</legend>
 
-				<span>Opacity: <code class='js-brush-opacity'></code></span>
-				<input type='range' class='brush-opacity' min='0' max='100'>
+					<span>Opacity: <code class='js-brush-opacity'></code></span>
+					<input type='range' class='brush-opacity' min='0' max='100'>
 
-				<span>Thickness: <code class='js-brush-size'></code></span>
-				<input type='range' class='brush-size' min='0.1' max='100' step='0.1'>
+					<span>Thickness: <code class='js-brush-size'></code></span>
+					<input type='range' class='brush-size' min='0.1' max='100' step='0.1'>
 
-				<span>Flow: <code class='js-brush-flow'></code></span>
-				<input type='range' class='brush-flow' min='0' max='100'>
+					<span>Flow: <code class='js-brush-flow'></code></span>
+					<input type='range' class='brush-flow' min='0' max='100'>
 
-				<span>Spacing: <code class='js-brush-spacing'></code></span>
-				<input type='range' class='brush-spacing' min='0' max='100'>
+					<span>Spacing: <code class='js-brush-spacing'></code></span>
+					<input type='range' class='brush-spacing' min='0' max='100'>
 
-				<span>Angle: <code class='js-brush-angle'></code></span>
-				<input type='range' class='brush-angle' min='0' max='360'>
+					<span>Angle: <code class='js-brush-angle'></code></span>
+					<input type='range' class='brush-angle' min='0' max='360'>
 
-				<span>Rotate to direction</span>
-				<input type='checkbox' class='brush-rotate'>
-			</fieldset>
+					<span>Rotate to direction</span>
+					<input type='checkbox' class='brush-rotate'>
+				</fieldset>
+			</div>
 		</div>
 		<div class='footer'>
 			zoom: <span class='js-zoom js-click-resetZoom' title='Click to reset zoom'>100%</span>
