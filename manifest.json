@@ -1,7 +1,7 @@
 {
   "name": "Simple Paint",
   "description": "Simple yet powerful drawing tool and image editor for ChromeOS with no ads and stylus support.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 2,
   "app": {
     "background": {
