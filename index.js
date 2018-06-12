@@ -27,14 +27,15 @@ croquis.addLayer();
 croquis.fillLayer('#fff');
 croquis.addLayer();
 croquis.selectLayer(1);
-croquis.setUndoLimit(100);
+croquis.setUndoLimit(1000);
 croquis.unlockHistory();
 
-{
+function initialiseCanvasNames () {
 	let layers = croquis.getLayers();
 	layers[0].setAttribute('data-name', 'Background');
 	layers[1].setAttribute('data-name', 'Canvas');
 }
+initialiseCanvasNames();
 
 const mouse = {
 	x: 0, y: 0,
@@ -225,6 +226,50 @@ function getRelativePosition () {
 	return { x: mouse.rx, y: mouse.ry };
 }
 
+// New image
+
+function newImage () {
+	modal.confirm('Are you sure you want to make a new image?', 'This will overwrite your existing image.', 'confirm')
+		.then(() => {
+			modal.options('Canvas properties', [
+				{
+					name: 'width',
+					text: 'Canvas width (in pixels)',
+					value: 1366,
+					type: 'number'
+				}, {
+					name: 'height',
+					text: 'Canvas height (in pixels)',
+					value: 768,
+					type: 'number'
+				}, {
+					name: 'colour',
+					text: 'Background fill colour',
+					value: 'white',
+					type: 'text'
+				}
+			])
+				.then(data => {
+					croquis.setCanvasSize(data.width, data.height);
+					updateCanvasContainerSize();
+					croquis.lockHistory();
+					let layers = croquis.getLayers();
+					for (let i = 0; i < layers.length - 1; i++) {
+						croquis.removeLayer(0);
+					}
+					croquis.addLayer();
+					croquis.fillLayer('#fff');
+					croquis.addLayer();
+					croquis.selectLayer(1);
+					croquis.unlockHistory();
+					initialiseCanvasNames();
+					updateLayers();
+				})
+				.catch(err);
+		})
+		.catch(() => {});
+}
+
 // Upload image
 
 function openImage () {
@@ -380,6 +425,8 @@ function resizeCanvas () {
 			modal.prompt('Height', '', 'number')
 				.then((height) => {
 					croquis.setCanvasSize(width, height);
+					zoomIn();
+					zoomOut();
 					updateCanvasContainerSize();
 					updateLayers();
 				})

@@ -1,0 +1,24 @@
+
+This is a simple and powerful ad-free image editor and drawing tool for ChromeOS, with an emphasis on stylus/tablet functionality. It is currently in beta, so it isn't a fully fledged image editor yet, but it is a functional drawing application at the moment.
+
+You can try it out in your browser (Chrome or Firefox are supported) at: https://tobsta.github.io/ImageEditor/ and view the source code here: https://github.com/Tobsta/ImageEditor
+
+Features:
+ • 100% Free and Open Source (so no ads or tracking scripts)
+ • Pressure sensitive stylus/drawing tablet support
+ • 23 highly configurable brushes, and you can make your own!
+ • Import and export images in a variety of formats
+ • Fully fledged layer implementation
+ • Distraction-free mode (just press F11 & Tab)
+ • Intuitive HSV colour picker
+ • Extremely accurate line stabilisation
+ • Zoom in/out, undo/redo etc.
+
+And features on the roadmap include:
+ • Colour filters (recolour, greyscale, Gaussian blur, edge detection, etc.)
+ • Scaling/rotating/flipping the image
+ • A text tool, with customisable fonts, colours, sizes, and emphasis
+ • Editing multiple images at once
+ • Automatically saving images
+
+Feel free to request features through feedback here on the Chrome Web Store or by opening a ticket over at the GitHub repository here: https://github.com/Tobsta/ImageEditor/issues

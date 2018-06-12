@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
-		<title>Image Editor</title>
+		<title>Simple Paint</title>
 		<meta charset='utf-8'>
 		<link rel='stylesheet' type='text/css' href='index.css'>
 		<link rel='stylesheet' type='text/css' href='ui.css'>
+		<link rel="shortcut icon" type="image/png" href='favicon.ico' />
 	</head>
 	<body>
 		<object id='tablet-api' type='application/x-wacomtabletplugin'></object>
@@ -13,7 +14,7 @@
 				<li>
 					<span>File</span>
 					<ul class='submenu'>
-						<li><span class='js-click-todo'>New</span></li>
+						<li><span class='js-click-newImage'>New (Ctrl+N)</span></li>
 						<li><span class='js-click-openImage'>Open (Ctrl+O)</span></li>
 						<li><span class='js-click-openImageAsLayer'>Open as Layer (Ctrl+Alt+O)</span></li>
 						<li><a download='image'><span class='js-click-exportImageAsLast'>Save (Ctrl+S)</span></a></li>
@@ -91,7 +92,7 @@
 					</ul>
 				</li>
 			</ul>
-			<span class='program-name'>Image Editor <sub>(beta)</sub></span>
+			<span class='program-name'>Simple Paint <sub>(beta)</sub></span>
 		</div>
 		<div class='toolbar'>
 			<div class='toolbar-top'>
@@ -101,6 +102,8 @@
 				<img src='icons/picker.svg' class='js-click-changeTool' title='Picker. Hotkey: C or O' data-tool='picker' />
 			</div>
 			<div class='toolbar-bottom'>
+				<img src='icons/zoom-in.svg' class='js-click-zoomIn' title='Zoom in' />
+				<img src='icons/zoom-out.svg' class='js-click-zoomOut' title='Zoom out' />
 				<img src='icons/undo.svg' class='js-click-undo' title='Undo' />
 				<img src='icons/redo.svg' class='js-click-redo' title='Redo' />
 			</div>
@@ -209,6 +212,12 @@
 				<button class='js-click-modalConfirmDone' data-value='true'>Ok</button>
 				<button class='js-click-modalConfirmDone modal-confirm-button' data-value='false'>Cancel</button>
 			</div>
+			<div class='modal hidden modal-options'>
+				<button class='modal-close small-button js-click-modalClose'>&times;</button>
+				<h2></h2>
+				<div class='js-modal-options-fields'></div>
+				<button class='js-click-optionsDone'>Save settings</button>
+			</div>
 			<div class='modal hidden modal-about'>
 				<div class='modal-close small-button js-click-modalClose'>&times;</div>
 				<h2>About</h2>
@@ -228,10 +237,12 @@
 				<p><a href='https://github.com/Tobsta/ImageEditor' target='_blank'>Source code</a></p>
 				<p><a href='https://github.com/Tobsta/ImageEditor/issues' target='_blank'>Report a bug</a></p>
 				<p>
-					Icons (other than homemade ones; all under CC-BY license from The Noun Project unless otherwise specified):
+					Icons (other than homemade ones; all under CC-BY license unless otherwise specified):
 					<ul>
-						<li>Undo by Xinh Studio</li>
-						<li>Redo by Xinh Studio</li>
+						<li>Undo by Xinh Studio from the Noun Project</li>
+						<li>Redo by Xinh Studio from the Noun Project</li>
+						<li>Zoom In by TS Graphics from the Noun Project</li>
+						<li>Zoom Out by TS Graphics from the Noun Project</li>
 					</ul>
 				</p>
 			</div>

@@ -5,6 +5,8 @@
 		.forEach(el => el.addEventListener('pointerdown', handler));
 
 	click('todo', () => {modal.confirm('TODO','','alert')});
+
+	click('newImage', newImage);
 	click('openImage', openImage);
 	click('openImageAsLayer', openImageAsLayer);
 	click('exportImageAsLast', e => {
@@ -43,5 +45,12 @@
 	click('modalPromptDone', modal.promptDone);
 	click('modalConfirmDone', e => {
 		modal.confirmDone(e.target.getAttribute('data-value') === 'true');
+	});
+	click('optionsDone', modal.optionsDone);
+	document.querySelector('.canvases').addEventListener('wheel', e => {
+		if (e.ctrlKey || e.metaKey) {
+			if (e.deltaY < 0) zoomIn();
+			else zoomOut();
+		}
 	});
 }

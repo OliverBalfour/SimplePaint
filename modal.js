@@ -1,14 +1,21 @@
 
 const modal = {
 	promise: { resolve: null, reject: null },
+	data: null,
 
 	open: function (className) {
 		document.querySelector('.modals').classList.remove('hidden');
 		document.querySelector('.' + className).classList.remove('hidden');
+		document.querySelector('.' + className).focus();
 	},
 	close: function (className) {
 		document.querySelector('.modals').classList.add('hidden');
-		document.querySelector('.' + className).classList.add('hidden');
+		// className might also be a close button <button> element (saves typing in the HTML)
+		(
+			typeof className === 'string'
+			? document.querySelector('.' + className)
+			: className.parentElement
+		).classList.add('hidden');
 	},
 
 	// resolve returns base64 image data
@@ -89,5 +96,48 @@ const modal = {
 
 		document.querySelector('.modal-confirm-button').classList.remove('hidden');
 		modal.promise = { resolve: null, reject: null };
+	},
+
+	// fields: [{name, text, value, type[, ...placeholder]}]
+	options: function (title, fields) {
+		return new Promise ((resolve, reject) => {
+			modal.promise = { resolve, reject };
+			modal.data = fields;
+
+			let el = document.querySelector('.modal-options');
+
+			el.children[1].innerText = title;
+
+			let container = document.querySelector('.js-modal-options-fields');
+
+			for (let field of fields) {
+				let label = document.createElement('label');
+				label.innerText = field.text;
+				container.appendChild(label);
+
+				let input = document.createElement('input');
+				input.type = field.type;
+				input.value = field.value;
+				if (field.placeholder)
+					input.placeholder = field.placeholder;
+				input.id = 'js-modal-options-' + field.name;
+				container.appendChild(input);
+			}
+
+			modal.open('modal-options');
+		});
+	},
+	optionsDone: function () {
+		modal.close('modal-options');
+
+		let data = {};
+		for (let field of modal.data) {
+			data[field.name] = document.querySelector('#js-modal-options-' + field.name).value;
+		}
+
+		modal.promise.resolve(data);
+		modal.promise = { resolve: null, reject: null };
+		modal.data = null;
+		document.querySelector('.js-modal-options-fields').innerHTML = '';
 	}
 };

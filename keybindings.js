@@ -1,6 +1,9 @@
 
 // Keyboard shortcuts
 
+// New
+Mousetrap.bind('mod+n', newImage);
+
 // Import
 Mousetrap.bind('mod+o', e => {
 	e.preventDefault();
