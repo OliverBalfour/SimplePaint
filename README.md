@@ -1,6 +1,6 @@
-# Image Editor (beta)
+# Image Editor
 
-Available at: https://tobsta.github.io/ImageEditor/
+Available at: https://oliverbalfour.github.io/ImageEditor/
 
 ![Screenshot of the image editor](./screenshot.png)
 
