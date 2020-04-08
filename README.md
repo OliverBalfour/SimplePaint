@@ -1,6 +1,6 @@
-# Image Editor
+# Simple Paint
 
-Available at: https://oliverbalfour.github.io/ImageEditor/
+Available at: https://oliverbalfour.github.io/SimplePaint/
 
 ![Screenshot of the image editor](./screenshot.png)
 
